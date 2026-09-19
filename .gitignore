@@ -1,0 +1,18 @@
+# Ignore everything under data/ except the one frozen metric output
+# (a plain "data/" pattern would stop git descending into it at all,
+# making the nested negation below silently do nothing — data/* avoids
+# that gotcha).
+data/*
+!data/processed/
+data/processed/*
+!data/processed/player_season_metrics.parquet
+*.ckpt
+*.pt
+*.pth
+*.h5
+*.safetensors
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+venv/
