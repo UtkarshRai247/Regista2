@@ -199,3 +199,44 @@ point estimate, and say so in the abstract.
 - If a definition turns out to be impossible to implement, the builder
   STOPS and the research lead issues a dated amendment before any
   result under the changed definition is computed.
+
+---
+
+## AMENDMENT v2-1 — 2026-09-20
+
+Made after Task 04 (situation join, option typing, counts only), BEFORE
+any Study A, B or C value quantity was computed. No EV, gap, Decision,
+Execution or realized value has been examined by cell, type, team,
+competition or player.
+
+### v2-1.1 Normalization of L(c,k)
+"Per team-season" in 3.3 is ambiguous because tournament teams play 3-7
+matches and club sides 30+. L(c,k) is defined as:
+  G(c,k) x (qualifying passes per team-match) x 38
+i.e. goal-equivalents per standardized 38-match season, upper bound.
+
+### v2-1.2 Additional sensitivity check 3.6d: tournaments only
+Task 04 showed every club competition-season is built around one focal
+team (PSG x2, Leverkusen, Barcelona, Inter Miami). A club-derived blind
+spot could be one elite side's habit. Every blind spot is also reported
+using World Cup 2022, Euro 2020 and Euro 2024 matches only (no focal
+team). Reported in full; not a gate.
+
+### v2-1.3 High visibility defined
+Median visible players per frame is 17. "High visibility" in 3.6b
+means at least 18 visible players (strictly above the median).
+
+### v2-1.4 Descriptive field definitions confirmed
+Channel = equal thirds of normalized width. Position group =
+GK/Defender/Midfielder/Forward from StatsBomb position names. Both are
+descriptive only and never define a primary cell.
+
+### v2-1.5 MLS 2023 retained
+Three matches, all Inter Miami. Retained as-is in all studies. In Study
+B it is one team context, shrunk by the model. Excluding it would be an
+unregistered sample change.
+
+### v2-1.6 Interpretive note on option types (no change to definitions)
+Under the 45/135 degree rule, "lateral" spans half the compass (64% of
+options). Findings about lateral types are to be described as broad
+categories in the write-up, not as precise passing patterns.
