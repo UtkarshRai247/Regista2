@@ -240,3 +240,52 @@ unregistered sample change.
 Under the 45/135 degree rule, "lateral" spans half the compass (64% of
 options). Findings about lateral types are to be described as broad
 categories in the write-up, not as precise passing patterns.
+
+---
+
+## AMENDMENT v2-2 — 2026-09-20
+
+Made AFTER the discovery-half results (docs/results/05-study-a-discovery.md)
+and BEFORE any confirmation-half data was loaded. Disclosed as such.
+This amendment makes Gate D STRICTER. No discovery criterion is changed
+and no candidate is added or removed.
+
+### v2-2.1 The flaw
+Plan 3.5 compares type k's calibration to "the modal chosen type in the
+same cell". All 10 discovery candidates are lateral_short or
+lateral_medium, which are themselves the most frequently chosen types
+(s around 0.30-0.35). In most candidate cells the modal chosen type IS
+type k, so the gate would compare a type's calibration to itself and
+pass automatically. As written, Gate D cannot fail for these candidates.
+
+### v2-2.2 Replacement reference group
+Reference = chosen passes in cell c whose chosen type is NOT k — the
+alternatives players actually chose instead, which is exactly what g_k
+compares against.
+  Bias_k   = mean(realized value - EV) over chosen passes of type k in c
+  Bias_ref = mean(realized value - EV) over chosen passes of type != k in c
+  Delta    = Bias_ref - Bias_k
+Positive Delta means the model overvalues type k relative to the
+alternatives. Realized value is defined exactly as for Execution.
+
+### v2-2.3 Replacement pass criterion
+Computed on the CONFIRMATION half, bootstrap by match (1,000 draws).
+PASS only if the upper bound of Delta's 95% CI is below the candidate's
+confirmation-half G(c,k). Reason: "the CI includes zero" is too weak —
+a model bias as large as the gap itself would explain the whole gap.
+Completion calibration (p_success vs actual, relative in the same way)
+is reported in percentage points, descriptive only.
+
+### v2-2.4 Pooled type-level diagnostic (descriptive, not a gate)
+All candidates share two option types and none are under pressure. A
+real sport-wide blind spot is plausibly situation-specific; a model
+calibration error is type-specific and appears in every cell. So Delta
+is also reported for lateral_short and lateral_medium pooled across all
+18 cells, and for every other option type pooled likewise, for
+comparison.
+
+### v2-2.5 Disclosure carried to the write-up
+The pass-success and possession-value models were trained on data that
+includes confirmation-half matches. Gate D is therefore an in-sample
+calibration check for the models, even though it is out-of-sample for
+candidate selection. Stated as a limitation.
