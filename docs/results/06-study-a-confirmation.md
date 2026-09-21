@@ -272,13 +272,14 @@ Amendment v2-2 was implementable exactly as written.
 - `src/decision_engine/task06_study_a_confirmation.py` — the script
   producing all of the above.
 - Git commits made this task: `d60f604` (CLAUDE.md, research lead's
-  edit), `4fdbe81` (Amendment v2-2 to `analysis-plan-v2.md`), and — per
-  CLAUDE.md item 9 — a further commit (hash TBD, filled in immediately
-  after this page is first committed, since a commit cannot record its
-  own hash) covering this script, this results page, and
-  `docs/JOURNAL.md` (which changed on disk independently of this task,
-  per the note in Section 2, and was not part of either of Step 0's two
-  scoped commits).
+  edit), `4fdbe81` (Amendment v2-2 to `analysis-plan-v2.md`), `82cd8dd`
+  (`docs/JOURNAL.md`, research lead's edit — changed on disk
+  independently of this task, per Section 2, not part of either of Step
+  0's two scoped commits, given its own commit for the same reason
+  CLAUDE.md's edit got one), and `6fc17d7` (this script and this results
+  page, per CLAUDE.md item 9; this line was added in a follow-up edit to
+  `6fc17d7`'s own results page since a commit cannot record its own
+  hash — see Task 05's results page, 2026-09-20, for the same pattern).
 
 ## 8. Confidence
 High on Steps 1-3's mechanics: the join reached 100% match rate after
