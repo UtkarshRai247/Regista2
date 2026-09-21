@@ -233,14 +233,12 @@ STOP condition was triggered.
   `data/task07_study_b.json` — run summaries. Gitignored.
 - `docs/specs/analysis-plan-v2.md` — Amendments v2-3 and v2-4 (already
   present on disk before this task; committed here).
-- Git commits made this task: `7f747da` (Amendments v2-3 + v2-4). Per
-  CLAUDE.md item 9, the remaining new/changed files under `src/`/`docs/`
-  from this task (the three scripts above, this results page, and
-  `docs/JOURNAL.md`/`docs/ROADMAP.md`, which changed on disk
-  independently of this task, same pattern as Tasks 05-06) are committed
-  immediately after this page is written; those hashes are reported to
-  the user directly, per their explicit instruction not to paste this
-  page's contents in the reply.
+- Git commits made this task: `7f747da` (Amendments v2-3 + v2-4),
+  `625fd5f` (`docs/JOURNAL.md`/`docs/ROADMAP.md`, research lead's edits,
+  same pattern as Tasks 05-06), `6b02a50` (the three scripts above and
+  this results page, per CLAUDE.md item 9; this line was added in a
+  follow-up edit since a commit cannot record its own hash — see Task
+  05/06's results pages, 2026-09-20, for the same pattern).
 
 ## 8. Confidence
 High on Step B1 (byte-exact reproduction of the frozen metric) and on
