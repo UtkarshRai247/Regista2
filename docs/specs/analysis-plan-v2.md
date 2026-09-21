@@ -289,3 +289,92 @@ The pass-success and possession-value models were trained on data that
 includes confirmation-half matches. Gate D is therefore an in-sample
 calibration check for the models, even though it is out-of-sample for
 candidate selection. Stated as a limitation.
+
+---
+
+## AMENDMENT v2-3 — 2026-09-20
+
+Made AFTER Study A confirmation (docs/results/06-study-a-confirmation.md)
+and BEFORE any Study B quantity was computed.
+
+### v2-3.1 Study A post-hoc robustness checks (LABELED POST HOC)
+Sensitivity 3.6a showed the max-vs-max gap shrinks sharply, and flips
+sign in two final-third cells, when mean EV is used instead of max.
+lateral_medium has more candidates per pass (2.1-2.2) than the chosen
+type (1.9-2.0). The max of more noisy estimates is inflated (winner's
+curse on model noise), so part of G may be an artefact of counting.
+Two post-hoc checks for the 7 confirmed candidates, confirmation half:
+  PH-1: G using mean EV (as in 3.6a), now WITH a 95% bootstrap CI.
+  PH-2: count-matched G — max-vs-max gap restricted to passes where the
+        number of type-k options equals the number of chosen-type-j
+        options, so both maxima are taken over equally many candidates.
+        With 95% bootstrap CI and n.
+Interpretation rule, fixed now before these are computed: a candidate
+may be described in the paper as a ROBUST blind spot only if it passed
+confirmation and Gate D AND both PH-1 and PH-2 are positive with CIs
+excluding zero. Otherwise it is described as not robust to the counting
+artefact. These checks are reported as post hoc in the paper.
+
+### v2-3.2 Study B software (no change to the model)
+R is not available. Stage 2 of plan 4.3 is implemented directly in
+Python: restricted maximum likelihood for y = Xb + u_player + v_team + e,
+with e having known unit-specific variance (stage-1 SE squared) and
+u, v independent normal random effects with variances var_player and
+var_team, optimized over log-variances with scipy.
+Because this is hand-built, it must first pass a PARAMETER RECOVERY
+TEST on simulated data with the real design (same players, teams and
+SEs): simulate from known variance pairs including (a) both variances
+equal to the observed stage-1 variance / 3, (b) var_team = 0,
+(c) var_player = 0. 100 simulations per scenario. PASS requires:
+in (a), the mean estimate of each variance within 10% of truth and the
+mean absolute error of S below 0.05; in (b) and (c), the mean estimate
+of the zero variance below 5% of the non-zero one, and S recovered
+within 0.05 of 1 or 0 respectively. If any scenario fails, STOP — no
+Study B result is reported from an unvalidated estimator.
+
+---
+
+## AMENDMENT v2-4 — 2026-09-20
+
+Made after Study A confirmation, BEFORE any Study B, Study C or
+cross-fitted quantity was computed.
+
+### v2-4.1 Why
+The pass-success, possession-value and behavior-policy models were
+trained on matches that include the confirmation half (v2-2.5). Gate D
+is therefore in-sample for the models. Cross-fitting removes this: every
+match is scored only by models that never saw it.
+
+### v2-4.2 Procedure
+- 5 folds by MATCH, stratified by competition-season, seed 20260920,
+  drawn independently of the discovery/confirmation split. Fold file
+  committed before any model is retrained.
+- For each fold: retrain all three models on the other four folds with
+  EXACTLY the frozen code, features and hyperparameters of commit
+  9db72ef. Only the training data changes. The possession-value model
+  uses the full event stream of the training folds' matches (D-010).
+- Score the held-out fold's options: p_success, EV, policy_probability,
+  Decision, Execution, realized value.
+- Report out-of-fold vs in-sample AUC and calibration for each model.
+
+### v2-4.3 Study A under cross-fitted values (the decision rule)
+For the 7 confirmed candidates, on the CONFIRMATION half, recompute G
+with CI, P, L, Gate D (v2-2 criterion), PH-1 and PH-2.
+A candidate called ROBUST under v2-3.1 stays ROBUST in the paper only
+if, under cross-fitted values, ALL of these hold: G > 0 with CI
+excluding zero; L >= 0.5; Gate D PASS; PH-1 and PH-2 positive with CIs
+excluding zero. Otherwise it is reported as "not robust to out-of-sample
+models" and cannot be the paper's headline. Candidates not ROBUST under
+v2-3.1 are recomputed and reported for completeness but cannot be
+promoted by this check.
+
+### v2-4.4 Studies B and C under cross-fitted values (secondary)
+Point estimates of S (Study B) and the choice share (Study C) recomputed
+with cross-fitted Decision and Execution, reported next to the primary
+estimates. No bootstrap required. Not gates.
+
+### v2-4.5 What this does not fix
+Cross-fitting removes in-sample flattery. It does not address hidden
+information the freeze frame cannot show, nor the overvaluation of
+backward passes (which biases against the Study A finding and is left
+in place as the conservative choice).
