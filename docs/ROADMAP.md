@@ -41,3 +41,27 @@ Draft, figures, reproducibility check, final repo. Submit Dec 3.
 ## Status
 Current task: Task 0 (data audit)
 Headline pillar: UNDECIDED — set at GO/NO-GO 1
+
+---
+
+## REVISED ROADMAP — 2026-09-20 (supersedes Phases 1-4 above)
+
+Headline pivoted (D-012) to three studies on one engine, governed by
+docs/specs/analysis-plan-v2.md. Market work closed.
+
+| Date | Task | Gate |
+|---|---|---|
+| Sep 20 | Task 04 situation context — DONE | — |
+| Sep 20 | Task 05 Study A discovery — DONE | — |
+| Sep 20 | Task 06 Study A confirmation + Gate D — DONE | Gate D |
+| Sep 21-22 | Task 07 Study A post-hoc checks + Study B | Gate E |
+| Sep 23 | Task 08 Study C + reliability audit | — |
+| Sep 24-25 | Task 09 Cross-fitting (Amendment v2-4) | Robustness rule |
+| Sep 26 | Go/No-Go 2: which study leads | Decision |
+| Sep 27 | Leaderboard + face validity | — |
+| Sep 27-28 | Abstract draft, two figures | — |
+| Sep 29 | Repo cleanup, make public | — |
+| Sep 30 | Submit | — |
+
+Deferred to the full paper: type-aware models, out-of-sample
+recalibration, EV shrinkage before maxima (a Regista 2.1 engine).

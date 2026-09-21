@@ -450,3 +450,83 @@ Process: CLAUDE.md's Reporting discipline list had been truncated at
 item 5 since the original paste, so items 6-8 — including the rule
 against unrequested memory writes — were never in force. Repaired by
 the research lead.
+
+---
+
+## 2026-09-20 — Task 06: Study A confirmation and Gate D
+
+Full results: `docs/results/06-study-a-confirmation.md`
+
+**7 of 10 candidates confirmed** on the untouched half (BH q=0.05, P>0.5,
+L>=0.5). Two short-lateral cells failed only the practical floor; one
+failed significance. **5 of the 7 pass the (stricter) Gate D — all
+lateral_medium.** Every lateral_short candidate failed Gate D, so those
+are described as model limitations, not blind spots.
+
+Pooled calibration diagnostic (Gate D logic, all situations): the model
+does NOT overvalue lateral_medium relative to the alternatives players
+chose (Delta -0.00024 [-0.00047, 0.00004]); if anything it slightly
+undervalues it. It DOES overvalue backward passes (backward_medium
++0.00168, backward_short +0.00066) and forward_medium (+0.00068). Since
+the gap compares against the best option of the type chosen, an
+overvalued chosen type makes the gap smaller, not larger — this cuts in
+favour of the lateral_medium finding. The backward-pass overvaluation is
+itself a model limitation for the write-up.
+
+Sensitivity: high-visibility frames — all 7 positive with CIs excluding
+zero. Per competition — 48 of 49 signs positive; the one reversal is
+final third / trailing / lateral_medium in Ligue 1 21/22. Tournaments
+only — all 7 positive with CIs excluding zero, so this is not a
+focal-team effect.
+
+**But sensitivity 3.6a (mean EV instead of max) cuts deep.** In the
+final third, lateral_medium's gap shrinks to near zero (leading) or flips
+negative (level, trailing). In midfield it survives at about half size
+(0.00025-0.00062). lateral_medium has more candidates per pass (2.1-2.2)
+than the chosen type (1.9-2.0), and the maximum of more noisy estimates
+is inflated — a winner's curse on model noise.
+
+Research-lead read at this point: the credible survivor is narrow.
+**Midfield, not under pressure, lateral_medium, in every game state** —
+confirmed, Gate D pass (with the model if anything undervaluing it),
+high-visibility pass, 7/7 competitions positive, tournaments-only pass,
+and it survives the mean-EV check at roughly half size. The final-third
+cells look largely like a counting artefact. Worth noting for the
+narrative, carefully: the 15-30m sideways ball across midfield is the
+regista's pass.
+
+**Amendment v2-3**, before any Study B quantity: two POST-HOC checks —
+PH-1 (mean-EV gap with a CI) and PH-2 (count-matched gap, both maxima
+over equally many options, which isolates the winner's curse directly),
+with the rule for calling anything "robust" fixed BEFORE those numbers
+exist. And because R is not installed, Study B's second stage is
+hand-built in Python REML, which must pass a parameter-recovery test on
+simulated data with the real design before any real estimate is
+reported.
+
+---
+
+## 2026-09-20 — Cross-fitting added (Amendment v2-4)
+
+Question from the author: can the model's deficiencies be fixed? Decision:
+not before the abstract, with one exception.
+
+Why not: the engine was frozen before these results existed, and the
+freeze is what makes them credible. Retraining now, with the misjudged
+pass types and the surviving blind spot in view, would be tuning with
+the answer visible. The backward-pass overvaluation is the sharpest case:
+fixing it would enlarge the Study A gap, so it is a correction whose
+direction is known to favour us — left in place as the conservative
+choice and reported as a limitation.
+
+The exception is cross-fitting, because it retrains nothing toward any
+result: 5 match-level folds, frozen code and hyperparameters, every match
+scored only by models that never saw it. That turns Gate D into a
+genuinely out-of-sample check. The rule for what survives was written
+before any cross-fitted number exists: a candidate stays ROBUST only if
+it passes G, L, Gate D, PH-1 and PH-2 again under cross-fitted values,
+and cross-fitting can demote a candidate but never promote one.
+
+Scheduled as Task 09 (Sep 24-25). Go/No-Go 2 moves from Sep 25 to
+Sep 26. Deferred to the full paper: type-aware models, out-of-sample
+recalibration, and shrinking noisy option values before taking maxima.
