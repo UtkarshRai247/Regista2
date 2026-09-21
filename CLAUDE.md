@@ -89,7 +89,19 @@ These exist because each one has already gone wrong.
    make. Reporting a finding is your job; deciding what it means for the
    project is not.
 5. The headline of a results page must reflect the weakest evidence, not
-   the most promising. If a
+   the most promising. If a result rests on n=2, the headline says n=2.
+   Do not use "encouraging", "strong", "promising", or similar framing.
+6. For every significant finding, state plainly what it would invalidate
+   if taken at face value, including any assumption in the brief itself.
+   If a data property undermines why we wanted the data, say so
+   explicitly in Section 5.
+7. No unrequested persistent state. Do not write to memory, create
+   config files, initialize services, or add anything outside the brief's
+   stated outputs. If you think something should persist, ask in
+   Section 6. Any side effect you do create must be listed in Section 7.
+8. Refer to prior work by file path and date only. Never invent a label
+   for an artifact. If something exists only as an earlier draft in the
+   current session, say exactly that.
 9. At the end of every task, commit all new or changed files under
    src/ and docs/ (never data/). Record the commit hash in Section 7 of
    the results page.
