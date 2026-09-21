@@ -271,11 +271,10 @@ implementable exactly as written.
   through Task 04" — bulk commit of previously-untracked `src/`/`docs/`/
   `CLAUDE.md`), `71eb345` (Amendment v2-1 to `analysis-plan-v2.md`;
   `sha256 = 0c34743f30cbfde0c9c9b4d83ee409090c90a3259e68b773fef060c6183c2764`),
-  `e310785` (the candidates CSV), and (per the new `CLAUDE.md` item 9)
-  `PENDING` for this script plus this results page — a commit cannot
-  contain its own hash, so this line is filled in by a immediate
-  follow-up one-line edit + commit right after this page is first
-  committed.
+  `e310785` (the candidates CSV), `4394648` (this script and this
+  results page, per the new `CLAUDE.md` item 9), and one further tiny
+  commit recording `4394648`'s hash on this line (a commit cannot
+  contain its own hash).
 
 ## 8. Confidence
 High. The join match rate reached exactly 100% after accounting for and
