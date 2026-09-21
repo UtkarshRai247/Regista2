@@ -279,7 +279,9 @@ Amendment v2-2 was implementable exactly as written.
   CLAUDE.md's edit got one), and `6fc17d7` (this script and this results
   page, per CLAUDE.md item 9; this line was added in a follow-up edit to
   `6fc17d7`'s own results page since a commit cannot record its own
-  hash — see Task 05's results page, 2026-09-20, for the same pattern).
+  hash — see Task 05's results page, 2026-09-20, for the same pattern),
+  plus `69ccce0` tracking `docs/specs/task-06-study-a-confirmation.md`
+  itself (previously untracked, per CLAUDE.md item 9).
 
 ## 8. Confidence
 High on Steps 1-3's mechanics: the join reached 100% match rate after
