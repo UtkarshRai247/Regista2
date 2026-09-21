@@ -403,3 +403,50 @@ untracked. That undermines both reproducibility (SSAC requires it) and
 the preregistration's credibility (the code history should show the
 analysis followed the plan). Fixed in Task 05 Step 0, with a standing
 commit-every-task rule added to CLAUDE.md.
+
+---
+
+## 2026-09-20 — Task 05: Study A discovery
+
+Full results: `docs/results/05-study-a-discovery.md`
+
+Of 107 analyzable pairs, **10 candidates**. All 10 are lateral_short or
+lateral_medium; none under pressure; they span all three zones and all
+game states. The wider table shows a near-universal type pattern:
+backward options negative in every cell, forward options mostly
+negative, lateral_long negative, short and medium lateral positive.
+
+Magnitudes are small per pass: G around 0.0006-0.0021 (a tenth of a
+percentage point of scoring probability), P only 0.54-0.58 (better
+barely more often than not), L 0.7-1.8 goal-equivalents per 38-match
+season per cell, upper bound. Candidate cells draw 42-58% of passes from
+tournaments, so no candidate is a focal-team artefact at this stage.
+
+Research-lead read: this is one pattern, not ten findings. And the shape
+of the pattern is the warning. A genuine sport-wide blind spot would
+plausibly depend on the situation; a model calibration error attaches to
+a TYPE of pass and shows up in every situation. What we see is
+type-specific and nearly situation-invariant. It also runs against
+conventional analytics wisdom (which says teams should be more
+progressive, not circulate more) — not disqualifying, but a reason for
+extra scrutiny. The max-over-more-candidates artefact is at most a
+partial explanation: lateral_medium has more candidates than the chosen
+type (2.0 vs 1.7), but lateral_short has FEWER (1.5 vs 1.9) and still
+shows the effect.
+
+**Flaw found in my own Gate D.** It compared a candidate type's
+calibration with the modal chosen type in the same cell — but short and
+medium lateral are themselves the modal choices, so the gate would have
+compared each candidate to itself and passed automatically. **Amendment
+v2-2** (after discovery, before any confirmation data was loaded) fixes
+this and makes the gate stricter: the reference is the alternatives
+players actually chose; the pass criterion requires the upper bound of
+the relative calibration bias to sit below the gap itself; and a pooled
+type-level diagnostic is added because that is exactly where a model
+error would show. Also disclosed: the models were trained on data that
+includes confirmation matches, so Gate D is in-sample for the models.
+
+Process: CLAUDE.md's Reporting discipline list had been truncated at
+item 5 since the original paste, so items 6-8 — including the rule
+against unrequested memory writes — were never in force. Repaired by
+the research lead.
