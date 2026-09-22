@@ -445,3 +445,70 @@ international-side reliability to 0.5 and to 0.7, via Spearman-Brown
 projection from the observed pass counts. Reported as the requirement
 for a future test. Computed only if Tier 2 is NOT ALLOWED, and it may
 not be used to reinterpret or rescue Tier 2.
+
+---
+
+## AMENDMENT v2-6 — 2026-09-22
+
+Made after Task 08 (docs/results/08-studies-b-c.md), before Task 09.
+
+### v2-6.1 Study B's interval method is not valid, in EITHER version
+The corrected 95% CI for S is [0.363, 0.573] but the point estimate is
+0.654 — the interval does not contain the estimate. That is a diagnostic
+of a broken interval method, not of the estimate.
+Mechanism: in a crossed design, resampling one factor damages the other.
+With original ids (Task 07), duplicate draws of a player looked like one
+player perfectly replicating himself, inflating var_player. With fresh
+ids (Task 08), the duplicated identical units sit inside the SAME team
+context and now look like team-level replication, inflating var_team.
+The first biases S up, the second biases S down. Neither is valid.
+
+Replacement procedure, chosen by SIMULATION COVERAGE, not by outcome:
+  1. Candidate methods: (i) cluster bootstrap with fresh ids (Task 08's),
+     (ii) parametric bootstrap — simulate from the fitted model on the
+     real design, refit, take percentiles, (iii) profile-likelihood
+     interval for S from the REML objective.
+  2. Coverage test: simulate 200 datasets on the REAL design at the
+     fitted variances, build each method's 95% interval, report the
+     share containing the true S, plus mean interval width.
+  3. PRIMARY = the method whose coverage is closest to 0.95 among those
+     with coverage >= 0.90. If none reaches 0.90, Study B reports the
+     point estimate with NO interval and is descriptive only.
+  4. Report every method's coverage and every method's interval on the
+     real data, so the choice is auditable.
+The v2-5.4 claim rules are then re-applied using the primary interval.
+This is disclosed as a post-hoc correction of a demonstrably invalid
+procedure, and the selection rule is fixed before any new interval on
+the real data is computed. Tier verdicts stand as NOT ALLOWED unless the
+validated interval changes them.
+
+### v2-6.2 Horizon sensitivity for Study A (folded into cross-fitting)
+The possession-value model scores the probability of scoring within the
+next 10 actions. A short horizon may reward retention over progression
+and could by itself generate a "play sideways more" result. Within Task
+09, retrain the value model at horizons of 5 and 15 actions (frozen code,
+otherwise identical) and recompute the 3 ROBUST candidates' G, CI, P, L
+and PH-2 at each horizon.
+Interpretation rule, fixed now: the finding may be described as
+horizon-robust only if G stays positive with CI excluding zero at BOTH
+5 and 15 actions. If it holds at one horizon only, the paper reports the
+dependence explicitly. If it fails at both, the finding is reported as
+an artefact of the 10-action horizon.
+
+### v2-6.3 Outcome validation (new, preregistered here)
+Nothing in the project yet links decision quality to real outcomes.
+Unit: team-match (598). Predictor: the team's mean Decision in that
+match. Controls: possession share (share of the match's eligible passes),
+competition-season fixed effects, and home/away if available.
+H-O1: team mean Decision is positively associated with that team's
+      expected goals in the same match.
+H-O2: it remains positive after adding the team's completion rate,
+      progressive-pass rate and xA per pass as controls (incremental
+      validity over public metrics).
+Outcomes: xG for (primary), goals for (secondary, noisier).
+Standard errors clustered by team context. Report coefficients in
+plain units (xG per SD of Decision) with CIs.
+Failure conditions: a null on H-O1 is reported as a null and means the
+paper cannot claim decision quality matters for outcomes; a significant
+NEGATIVE coefficient is reported as such. No specification changes
+after seeing results.
