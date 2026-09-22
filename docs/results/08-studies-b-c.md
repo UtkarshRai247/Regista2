@@ -293,14 +293,12 @@ through v2-5 and plan sections 4-6 was implementable exactly as written.
 - `src/decision_engine/task08_reliability_audit.py` — Part 3 script.
 - `data/task08_studyb_corrections.json`, `data/task08_study_c.json`,
   `data/task08_reliability_audit.json` — run summaries. Gitignored.
-- Git commits made this task: `0943000` (Amendment v2-5). Per CLAUDE.md
-  item 9, the remaining new/changed files under `src/`/`docs/` from this
-  task (the three new scripts, the `reml_crossed.py` extension, this
-  results page, and `docs/JOURNAL.md`, which changed on disk
-  independently of this task, same pattern as Tasks 05-07) are committed
-  immediately after this page is written; those hashes are reported to
-  the user directly, per their explicit instruction not to paste this
-  page's contents in the reply.
+- Git commits made this task: `0943000` (Amendment v2-5), `0b32864`
+  (`docs/JOURNAL.md`, research lead's edit, same pattern as Tasks 05-07),
+  `dd130a3` (the three new scripts, the `reml_crossed.py` extension, and
+  this results page, per CLAUDE.md item 9; this line was added in a
+  follow-up edit since a commit cannot record its own hash — see Task
+  05-07's results pages for the same pattern).
 
 ## 8. Confidence
 High on Part 1.1's fix: a direct, mechanical unit test (not an indirect
