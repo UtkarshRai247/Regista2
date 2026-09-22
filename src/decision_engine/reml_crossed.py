@@ -121,6 +121,36 @@ def fit_reml(units: pd.DataFrame, x_cols: list, y_col: str = "mean_decision",
     }
 
 
+def bootstrap_by_player(units: pd.DataFrame, x_cols: list, n_boot: int, seed: int,
+                         y_col: str = "mean_decision", se_col: str = "se") -> np.ndarray:
+    """Cluster bootstrap resampling players (Amendment v2-5.1 fix).
+
+    Task 07's original version kept the real player_id on every resampled
+    copy, so a player drawn twice was pooled by _factorize into ONE
+    inflated group instead of two independent draws of the player-level
+    random effect -- inflating var_player and biasing S's interval
+    upward. Fix: each of the P drawn *slots* gets a synthetic id
+    (f"{player_id}__{slot}"), so two draws of the same real player are
+    always treated as two distinct players. Team context ids are left
+    untouched, per the brief."""
+    rng = np.random.default_rng(seed)
+    players = units["player_id"].unique()
+    P = len(players)
+    groups = units.groupby("player_id").indices
+    s_hats = np.empty(n_boot)
+    for b in range(n_boot):
+        drawn = rng.choice(players, size=P, replace=True)
+        parts = []
+        for slot, p in enumerate(drawn):
+            block = units.iloc[groups[p]].copy()
+            block["player_id"] = f"{p}__{slot}"
+            parts.append(block)
+        rep = pd.concat(parts, ignore_index=True)
+        fit = fit_reml(rep, x_cols=x_cols, y_col=y_col, se_col=se_col)
+        s_hats[b] = fit["S"]
+    return s_hats
+
+
 def simulate_units(units: pd.DataFrame, var_player: float, var_team: float, seed: int) -> pd.DataFrame:
     """Simulate y (mean_decision) from known variance components on the
     REAL design (real players/contexts/SEs). True fixed effects are 0 --
@@ -185,3 +215,40 @@ if __name__ == "__main__":
     assert abs(fit_sparse["var_player"] - dense_var_p) < 1e-4
     assert abs(fit_sparse["var_team"] - dense_var_t) < 1e-4
     print("OK: sparse Woodbury REML matches brute-force dense REML.")
+
+    # Unit test (Amendment v2-5.1): a player drawn twice in
+    # bootstrap_by_player must be treated as two distinct players, not
+    # pooled into one inflated group under their shared real player_id.
+    test_units = pd.DataFrame({
+        "player_id": [1, 1, 2, 2, 3, 3], "team": [10, 11, 12, 13, 14, 15],
+        "competition_id": 1, "season_id": 1, "se": 0.1,
+        "mean_decision": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    })
+
+    class _FixedChoice:
+        """Forces np.random.default_rng(...).choice to always return
+        player 1 twice and player 2 once, regardless of seed, so the
+        bootstrap draw is deterministic for this test."""
+        def choice(self, a, size, replace):
+            return np.array([1, 1, 2])
+
+    drawn = _FixedChoice().choice(test_units["player_id"].unique(), size=3, replace=True)
+    groups = test_units.groupby("player_id").indices
+    buggy_parts = [test_units.iloc[groups[p]] for p in drawn]
+    buggy_rep = pd.concat(buggy_parts, ignore_index=True)
+    _, n_players_buggy, _, _ = _factorize(buggy_rep)
+
+    fixed_parts = []
+    for slot, p in enumerate(drawn):
+        block = test_units.iloc[groups[p]].copy()
+        block["player_id"] = f"{p}__{slot}"
+        fixed_parts.append(block)
+    fixed_rep = pd.concat(fixed_parts, ignore_index=True)
+    _, n_players_fixed, _, _ = _factorize(fixed_rep)
+
+    print(f"\nbootstrap fresh-id test: buggy grouping -> {n_players_buggy} distinct players "
+          f"(player 1 drawn twice collapses to 1); fixed grouping -> {n_players_fixed} distinct players "
+          "(player 1's two draws counted separately)")
+    assert n_players_buggy == 2, "expected the buggy (pre-fix) path to collapse player 1's two draws into one group"
+    assert n_players_fixed == 3, "expected the fixed path to keep player 1's two draws as two distinct groups"
+    print("OK: bootstrap_by_player's fresh-id fix is verified (v2-5.1).")
