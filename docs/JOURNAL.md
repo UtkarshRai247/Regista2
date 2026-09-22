@@ -530,3 +530,49 @@ and cross-fitting can demote a candidate but never promote one.
 Scheduled as Task 09 (Sep 24-25). Go/No-Go 2 moves from Sep 25 to
 Sep 26. Deferred to the full paper: type-aware models, out-of-sample
 recalibration, and shrinking noisy option values before taking maxima.
+
+---
+
+## 2026-09-21 — Task 07: Study A post-hoc checks, Study B primary fit
+
+Full results: `docs/results/07-study-b.md`
+
+**Study A: 3 of 7 confirmed candidates are ROBUST — middle third, not
+under pressure, lateral_medium, in all three game states.** Both the
+mean-EV check and the count-matched check stay positive with CIs
+excluding zero for all three (count-matched G 0.00032-0.00064, about
+30% of passes retained). Every final-third candidate is NOT ROBUST: the
+two that passed Gate D collapse under the counting checks. This is the
+outcome predicted after Task 06, and the rule deciding it was fixed
+before the numbers existed. Cross-fitting (Task 09) is the last test.
+
+**Study B primary fit:** the hand-built REML estimator passed all three
+recovery scenarios on the real design (mean |S error| 0.032, 0.002,
+0.003), and the real data reproduced decision_per_100 exactly. S = 0.654
+from 1,701 units, 1,232 players, 157 team contexts; Gate E passed.
+Position-matched refit unchanged (0.652). Fixed effects: middle-third
+share has the highest Decision, final and defensive shares lower, and
+pressure lowers it — consistent with Study A's midfield result.
+
+**Two problems found by the research lead on reading the page and code:**
+1. A bootstrap bug. Resampled duplicate players kept their original id,
+   so a player drawn twice looked like one player with perfectly
+   replicated units, inflating the player share in every bootstrap
+   sample. The reported interval [0.626, 0.785] sits lopsided above the
+   point estimate for exactly this reason. Point estimate unaffected;
+   intervals superseded.
+2. S is not the "does it travel" test it was sold as. Only 345 of 1,232
+   players appear in more than one team context, so S is identified
+   mostly from spread between players WITHIN one system, which includes
+   role (position was not a fixed effect). The one direct test — the
+   same player in club and international football — gave r = 0.053
+   [-0.126, 0.259]. That may be pure noise from small international
+   samples, which is itself unknown.
+
+**Amendment v2-5** (before Study C or cross-fitting): the bug fix; three
+post-hoc checks (position fixed effects; a noise-corrected mover
+correlation; a fit using only multi-context players); and two claim
+tiers fixed in advance. Tier 1 — "most systematic variation sits with
+players, within the systems observed" — needs S's corrected lower bound
+above 0.5 with and without position controls. Tier 2 — "it travels" —
+additionally needs the corrected mover correlation to exclude zero.
