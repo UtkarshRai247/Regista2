@@ -378,3 +378,70 @@ Cross-fitting removes in-sample flattery. It does not address hidden
 information the freeze frame cannot show, nor the overvaluation of
 backward passes (which biases against the Study A finding and is left
 in place as the conservative choice).
+
+---
+
+## AMENDMENT v2-5 — 2026-09-21
+
+Made AFTER Study B's primary fit (docs/results/07-study-b.md) and BEFORE
+any Study C or cross-fitted quantity was computed. Disclosed as post hoc.
+
+### v2-5.1 Bootstrap bug (correction, not a methodology change)
+bootstrap_by_player resamples players with replacement but keeps the
+original player_id for duplicate draws. A player drawn twice therefore
+appears as one player with perfectly replicated units, which inflates
+var_player in every bootstrap sample and biases the interval for S
+upward. Correct practice: every drawn copy gets a fresh player id. The
+point estimate is unaffected. All Study B intervals (B4, B5a) are to be
+recomputed with fresh ids; the Task 07 intervals are superseded.
+
+### v2-5.2 What S is identified from
+Only 345 of 1,232 players appear in more than one team context; most
+players appear once. S is therefore identified mainly from the spread
+between players WITHIN a team context versus the spread between team
+contexts — not from anyone changing systems. Within-team spread includes
+role: players in different positions face different option sets, and
+position group is not in the fixed effects. And the one direct test of
+"travelling", the mover correlation, was r = 0.053 [-0.126, 0.259] —
+but on small international samples, so it may simply be noise.
+
+### v2-5.3 Post-hoc Study B checks (LABELED POST HOC)
+  PH-B1: primary model plus position-group fixed effects (unit's
+         position-group mode; Midfielder as reference).
+  PH-B2: disattenuated mover correlation. For each side (club,
+         international), estimate reliability of movers' side-means by
+         splitting each mover's passes on that side into random halves,
+         correlating half-means across movers, Spearman-Brown
+         corrected, median of 100 splits. r_true = r_obs /
+         sqrt(rel_club x rel_intl). Bootstrap CI resampling movers with
+         both reliabilities recomputed inside each draw (100 splits
+         reduced to 20 inside the bootstrap for time; disclosed). Cap
+         at 1 and report the share of draws capped. If either median
+         reliability is below 0.10, no disattenuated value is reported
+         and the direct test is declared unmeasurable.
+  PH-B3: primary model fitted only on players with 2+ units (all their
+         units), so identification leans on players seen in several
+         contexts.
+All with corrected (fresh-id) bootstrap intervals, 1,000 draws.
+
+### v2-5.4 Claim rules, fixed now
+Tier 1 — "within the systems observed, most systematic variation in
+decision quality sits with players rather than team contexts" — allowed
+only if the corrected CI lower bound for S exceeds 0.5 in BOTH the
+primary fit and PH-B1.
+Tier 2 — "decision quality travels between systems" — additionally
+requires PH-B2 positive with CI excluding zero AND PH-B3's CI lower
+bound above 0.5.
+If Tier 1 holds but Tier 2 does not, the paper states plainly that the
+direct test, the same player in two systems, is inconclusive at
+open-data sample sizes. If Tier 1 fails, Study B is descriptive only.
+
+### v2-5.5 If Tier 2 is NOT ALLOWED: design calculation (descriptive)
+Using PH-B2's reliability estimates, compute what a decisive direct test
+would require: for true correlations of 0.3 and 0.5, the number of
+movers needed for 80% power (two-sided, alpha 0.05) at the observed
+reliabilities; and the international passes per mover needed to bring
+international-side reliability to 0.5 and to 0.7, via Spearman-Brown
+projection from the observed pass counts. Reported as the requirement
+for a future test. Computed only if Tier 2 is NOT ALLOWED, and it may
+not be used to reinterpret or rescue Tier 2.
