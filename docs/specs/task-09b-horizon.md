@@ -5,16 +5,20 @@ Short task. Only Part 2 of Task 09, resumed.
 ## Step 0 — Commit Amendment v2-7 alone. Record hash and SHA-256.
 
 ## Step 1 — Check the machine first
-Report `sysctl vm.swapusage` and free physical pages BEFORE starting.
-If swap in use exceeds 1.0 GB, STOP and report — the user needs to close
-other applications first. Do not start the rebuild under pressure.
+Swap-in-use is NOT the gate: macOS never reclaims written swap, so it
+records past pressure, not present headroom. Use live pressure instead.
+Report `memory_pressure | tail -3` and `vm_stat`. Compute available
+memory as (free + inactive + purgeable) x page size.
+Gate: proceed if system-wide memory free percentage >= 40% AND
+available memory >= 3 GB. Otherwise STOP and report both numbers.
 
 ## Step 2 — Resume horizon 5, then run horizon 15
 Resume from data/processed/possession_value_parts_h5/ (197 of 299
 matches cached). Then build horizon 15 from scratch. Per-match parquet
 parts, nothing accumulated in memory across matches.
-Re-check swap every 50 matches; if it crosses 2.0 GB, STOP, report how
-many matches are cached, and leave the cache resumable.
+Re-check live pressure every 50 matches; if free percentage drops below
+20% OR available memory falls below 1.5 GB, STOP, report how many
+matches are cached, and leave the cache resumable. Do not gate on swap.
 
 ## Step 3 — Recompute and apply the rule
 Non-cross-fitted values, confirmation half, for the 3 candidates that

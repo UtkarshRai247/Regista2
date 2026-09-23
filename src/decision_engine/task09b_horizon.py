@@ -2,11 +2,16 @@
 Task 09b — Horizon sensitivity retry (Amendments v2-6.2, v2-7.2).
 
 Resumes Task 09 Part 2, which stopped on diagnosed system memory
-pressure, not a code fault. This script adds explicit machine-health
-gates around the same (frozen, unmodified) row-building function Task 09
-already validated: check swap before starting (stop if > 1.0GB), and
-re-check every 50 matches during the rebuild (stop if > 2.0GB), instead
-of discovering the problem mid-run again.
+pressure, not a code fault. The first Task 09b attempt gated on swap
+usage and correctly stopped -- but swap-used is the wrong signal: macOS
+never reclaims written swap pages, so a high reading records PAST
+pressure, not PRESENT headroom, and could block this retry forever even
+once the system is healthy again. This version gates on LIVE memory
+pressure instead: macOS's own `memory_pressure` free-percentage figure,
+plus an "available memory" figure computed from `vm_stat` (free +
+inactive + purgeable pages). Checked before starting and every 50
+matches during the rebuild, around the same (frozen, unmodified)
+row-building function Task 09 already validated.
 
 Run: python src/decision_engine/task09b_horizon.py
 """
@@ -31,9 +36,11 @@ from task06_study_a_confirmation import cand_mask, confirmation_match_ids
 
 warnings.filterwarnings("ignore")
 
-PREFLIGHT_SWAP_LIMIT_MB = 1024.0
-RUNTIME_SWAP_LIMIT_MB = 2048.0
-SWAP_CHECK_EVERY = 50
+PREFLIGHT_MIN_FREE_PCT = 40.0
+PREFLIGHT_MIN_AVAILABLE_GB = 3.0
+RUNTIME_MIN_FREE_PCT = 20.0
+RUNTIME_MIN_AVAILABLE_GB = 1.5
+MEMORY_CHECK_EVERY = 50
 HORIZONS = [5, 15]
 EV_PATH = DATA_DIR / "processed" / "options_ev.parquet"
 TYPED_PATH = DATA_DIR / "processed" / "options_typed.parquet"
@@ -41,28 +48,34 @@ PASSES_PATH = DATA_DIR / "processed" / "passes_situation.parquet"
 SUMMARY_PATH = DATA_DIR / "task09b_horizon.json"
 
 
-def get_swap_mb() -> float:
-    out = subprocess.run(["sysctl", "vm.swapusage"], capture_output=True, text=True).stdout
-    m = re.search(r"used\s*=\s*([\d.]+)M", out)
+def get_free_pct() -> float:
+    out = subprocess.run(["memory_pressure"], capture_output=True, text=True).stdout
+    m = re.search(r"System-wide memory free percentage:\s*(\d+)%", out)
     return float(m.group(1)) if m else float("nan")
 
 
-def get_free_pages_mb() -> float:
+def get_available_gb() -> float:
     out = subprocess.run(["vm_stat"], capture_output=True, text=True).stdout
     page_size_m = re.search(r"page size of (\d+) bytes", out)
     free_m = re.search(r"Pages free:\s*(\d+)\.", out)
-    if not page_size_m or not free_m:
+    inactive_m = re.search(r"Pages inactive:\s*(\d+)\.", out)
+    purgeable_m = re.search(r"Pages purgeable:\s*(\d+)\.", out)
+    if not all([page_size_m, free_m, inactive_m, purgeable_m]):
         return float("nan")
     page_size = int(page_size_m.group(1))
-    free_pages = int(free_m.group(1))
-    return free_pages * page_size / (1024 * 1024)
+    pages = int(free_m.group(1)) + int(inactive_m.group(1)) + int(purgeable_m.group(1))
+    return pages * page_size / (1024 ** 3)
+
+
+def check_memory() -> tuple:
+    return get_free_pct(), get_available_gb()
 
 
 def build_horizon_rows_gated(lookahead: int, match_ids: list) -> tuple:
     """Per-match parquet caching (resumable, skips already-cached
-    matches) with a live swap re-check every SWAP_CHECK_EVERY matches
-    actually PROCESSED (not skipped). Returns (dataframe_or_None,
-    stopped_bool, n_cached_total)."""
+    matches) with a live memory-pressure re-check every
+    MEMORY_CHECK_EVERY matches actually PROCESSED (not skipped).
+    Returns (dataframe_or_None, stopped_bool, n_cached_total)."""
     out_dir = DATA_DIR / "processed" / f"possession_value_parts_h{lookahead}"
     out_dir.mkdir(parents=True, exist_ok=True)
     n_processed_this_run = 0
@@ -74,15 +87,15 @@ def build_horizon_rows_gated(lookahead: int, match_ids: list) -> tuple:
         if rows:
             pd.DataFrame(rows).to_parquet(out_path)
         n_processed_this_run += 1
-        if n_processed_this_run % SWAP_CHECK_EVERY == 0:
-            swap_mb = get_swap_mb()
+        if n_processed_this_run % MEMORY_CHECK_EVERY == 0:
+            free_pct, available_gb = check_memory()
             n_cached = len(list(out_dir.glob("*.parquet")))
             print(f"    [horizon={lookahead}] processed {n_processed_this_run} this run, "
-                  f"{n_cached}/{len(match_ids)} cached total, swap={swap_mb:.0f}MB")
-            if swap_mb > RUNTIME_SWAP_LIMIT_MB:
-                print(f"    STOPPING horizon={lookahead}: swap {swap_mb:.0f}MB > "
-                      f"{RUNTIME_SWAP_LIMIT_MB:.0f}MB limit. {n_cached}/{len(match_ids)} matches cached; "
-                      "cache left as-is for a future resume.")
+                  f"{n_cached}/{len(match_ids)} cached total, free={free_pct:.0f}%, available={available_gb:.2f}GB")
+            if free_pct < RUNTIME_MIN_FREE_PCT or available_gb < RUNTIME_MIN_AVAILABLE_GB:
+                print(f"    STOPPING horizon={lookahead}: free%={free_pct:.0f} (min {RUNTIME_MIN_FREE_PCT:.0f}) "
+                      f"or available={available_gb:.2f}GB (min {RUNTIME_MIN_AVAILABLE_GB:.1f}GB) breached. "
+                      f"{n_cached}/{len(match_ids)} matches cached; cache left as-is for a future resume.")
                 return None, True, n_cached
     n_cached = len(list(out_dir.glob("*.parquet")))
     parts = list(out_dir.glob("*.parquet"))
@@ -101,21 +114,22 @@ def fit_horizon_model(df: pd.DataFrame):
 
 
 def main():
-    print("Step 1: preflight machine check ...")
-    swap_mb = get_swap_mb()
-    free_mb = get_free_pages_mb()
-    print(f"  swap used: {swap_mb:.2f} MB, free physical pages: {free_mb:.2f} MB")
-    if swap_mb > PREFLIGHT_SWAP_LIMIT_MB:
-        summary = {"status": "BLOCKED", "reason": "preflight swap check failed",
-                   "swap_used_mb": swap_mb, "free_pages_mb": free_mb,
-                   "preflight_limit_mb": PREFLIGHT_SWAP_LIMIT_MB}
+    print("Step 1: preflight machine check (live memory pressure, not swap) ...")
+    free_pct, available_gb = check_memory()
+    print(f"  System-wide memory free percentage: {free_pct:.0f}%")
+    print(f"  Available memory (free+inactive+purgeable): {available_gb:.2f} GB")
+    if free_pct < PREFLIGHT_MIN_FREE_PCT or available_gb < PREFLIGHT_MIN_AVAILABLE_GB:
+        summary = {"status": "BLOCKED", "reason": "preflight memory-pressure check failed",
+                   "free_pct": free_pct, "available_gb": available_gb,
+                   "preflight_min_free_pct": PREFLIGHT_MIN_FREE_PCT,
+                   "preflight_min_available_gb": PREFLIGHT_MIN_AVAILABLE_GB}
         SUMMARY_PATH.write_text(json.dumps(summary, indent=2))
-        print(f"STOPPING: swap used ({swap_mb:.2f}MB) exceeds the {PREFLIGHT_SWAP_LIMIT_MB:.0f}MB preflight "
-              "limit. The user needs to close other applications before this retry can run. "
-              f"See {SUMMARY_PATH}")
+        print(f"STOPPING: free%={free_pct:.0f} (need >= {PREFLIGHT_MIN_FREE_PCT:.0f}) or "
+              f"available={available_gb:.2f}GB (need >= {PREFLIGHT_MIN_AVAILABLE_GB:.1f}GB) failed the "
+              f"preflight gate. See {SUMMARY_PATH}")
         return
 
-    print("Step 2: resuming/building horizon=5 and horizon=15 row caches, with a live swap gate ...")
+    print("Step 2: resuming/building horizon=5 and horizon=15 row caches, with a live memory-pressure gate ...")
     all_match_ids = sorted(int(p.stem) for p in EVENTS_DIR.glob("*.parquet"))
     horizon_dfs = {}
     stopped = False
@@ -126,9 +140,11 @@ def main():
               f"{n_cached}/{len(all_match_ids)} cached, {time.time() - t0:.1f}s")
         if this_stopped:
             stopped = True
-            summary = {"status": "PARTIAL", "reason": "runtime swap check tripped",
+            summary = {"status": "PARTIAL", "reason": "runtime memory-pressure check tripped",
                        "stopped_at_horizon": horizon, "n_cached": n_cached,
-                       "n_total_matches": len(all_match_ids), "swap_limit_mb": RUNTIME_SWAP_LIMIT_MB}
+                       "n_total_matches": len(all_match_ids),
+                       "runtime_min_free_pct": RUNTIME_MIN_FREE_PCT,
+                       "runtime_min_available_gb": RUNTIME_MIN_AVAILABLE_GB}
             SUMMARY_PATH.write_text(json.dumps(summary, indent=2))
             print(f"STOPPING before completing horizon={horizon}. See {SUMMARY_PATH}")
             break
@@ -189,7 +205,7 @@ def main():
     verdicts_df = pd.DataFrame(verdicts)
     print(verdicts_df.to_string())
 
-    summary = {"status": "COMPLETE", "preflight_swap_mb": swap_mb, "preflight_free_pages_mb": free_mb,
+    summary = {"status": "COMPLETE", "preflight_free_pct": free_pct, "preflight_available_gb": available_gb,
                "results_by_horizon": results_by_horizon, "verdicts": verdicts_df.to_dict("records")}
     SUMMARY_PATH.write_text(json.dumps(summary, indent=2, default=str))
     print(f"\nWrote summary to {SUMMARY_PATH}")
