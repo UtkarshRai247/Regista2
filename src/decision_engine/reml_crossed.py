@@ -33,8 +33,9 @@ Run standalone for a self-check: python src/decision_engine/reml_crossed.py
 import numpy as np
 import pandas as pd
 from scipy import sparse
-from scipy.optimize import minimize
+from scipy.optimize import brentq, minimize, minimize_scalar
 from scipy.sparse.linalg import splu
+from scipy.stats import chi2
 
 
 def _factorize(units: pd.DataFrame):
@@ -168,6 +169,61 @@ def simulate_units(units: pd.DataFrame, var_player: float, var_team: float, seed
     return out
 
 
+def profile_likelihood_ci_S(units: pd.DataFrame, x_cols: list, y_col: str = "mean_decision",
+                             se_col: str = "se", alpha: float = 0.05) -> dict:
+    """Profile-likelihood CI for S = var_player/(var_player+var_team)
+    (Amendment v2-6.1, method iii).
+
+    Reparametrize (var_player, var_team) as (S, total_var) with
+    var_player = S*total_var, var_team = (1-S)*total_var. At each
+    candidate S, profile out the single nuisance parameter total_var by
+    1-D minimization of the REML -2*log-likelihood (over log(total_var),
+    unconstrained and bounded, since a fixed 3-point bracket around the
+    MLE's total_var fails whenever S is far from S_hat -- verified during
+    development). The 95% CI is where the profile deviance rises by
+    chi2(1, 1-alpha) above the deviance at the unconstrained MLE."""
+    y = units[y_col].values.astype(float)
+    se2 = units[se_col].values.astype(float) ** 2
+    inv_se2 = 1.0 / se2
+    log_se2_sum = float(np.sum(np.log(se2)))
+    X = _build_X(units, x_cols)
+    player_codes, P, context_codes, T = _factorize(units)
+
+    fit = fit_reml(units, x_cols=x_cols, y_col=y_col, se_col=se_col)
+    S_hat = fit["S"]
+    log_total_var_hat = np.log(fit["var_player"] + fit["var_team"])
+    neg2ll_hat = fit["neg2ll"]
+    crit = float(chi2.ppf(1 - alpha, df=1))
+
+    def neg2ll_at(log_total_var, S):
+        total_var = np.exp(log_total_var)
+        var_p = max(S * total_var, 1e-15)
+        var_t = max((1 - S) * total_var, 1e-15)
+        log_vars = np.log([var_p, var_t])
+        neg2ll, _, _, _ = _neg2_reml(log_vars, y, X, inv_se2, log_se2_sum, player_codes, context_codes, P, T)
+        return neg2ll
+
+    def profile_neg2ll(S):
+        res = minimize_scalar(lambda ltv: neg2ll_at(ltv, S), method="bounded",
+                               bounds=(log_total_var_hat - 5, log_total_var_hat + 5))
+        return res.fun
+
+    def f(S):
+        return profile_neg2ll(S) - neg2ll_hat - crit
+
+    eps = 1e-4
+    try:
+        lo = brentq(f, eps, S_hat, xtol=1e-6) if f(eps) > 0 else eps
+    except ValueError:
+        lo = eps
+    try:
+        hi = brentq(f, S_hat, 1 - eps, xtol=1e-6) if f(1 - eps) > 0 else 1 - eps
+    except ValueError:
+        hi = 1 - eps
+
+    return {"S_hat": float(S_hat), "ci_low": float(lo), "ci_high": float(hi)}
+
+
 if __name__ == "__main__":
     # Self-check: sparse Woodbury REML vs. brute-force dense REML on a
     # tiny synthetic design, before trusting this on the real 1,701-unit
@@ -252,3 +308,13 @@ if __name__ == "__main__":
     assert n_players_buggy == 2, "expected the buggy (pre-fix) path to collapse player 1's two draws into one group"
     assert n_players_fixed == 3, "expected the fixed path to keep player 1's two draws as two distinct groups"
     print("OK: bootstrap_by_player's fresh-id fix is verified (v2-5.1).")
+
+    # Self-check (Amendment v2-6.1, method iii): the profile-likelihood
+    # CI should be a sane interval around S_hat, wider than a point, and
+    # not fail even for a dataset whose S_hat sits far from 0.5.
+    pl_units = simulate_units(units, true_var_p, true_var_t, seed=2)
+    pl = profile_likelihood_ci_S(pl_units, x_cols=["x1"])
+    print(f"\nprofile-likelihood CI self-check: S_hat={pl['S_hat']:.4f}, "
+          f"95% CI=[{pl['ci_low']:.4f}, {pl['ci_high']:.4f}]")
+    assert pl["ci_low"] < pl["S_hat"] < pl["ci_high"], "profile-likelihood CI must bracket its own point estimate"
+    print("OK: profile_likelihood_ci_S produces a sane, self-consistent interval.")
