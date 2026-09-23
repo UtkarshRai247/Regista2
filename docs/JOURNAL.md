@@ -668,3 +668,43 @@ call collective decision-making "close to optimal" for pairs where a
 1.0 goal-equivalent effect would have been detected, and must report
 what share of pairs that is. This is what makes the calibration framing
 honest rather than rhetorical.
+
+---
+
+## 2026-09-22 — Task 09b: horizon sensitivity
+
+Full results: `docs/results/09b-horizon.md`
+
+**All 3 candidates are horizon-robust under v2-6.2**: G stays positive
+with CI excluding zero at a 5-action and a 15-action value horizon. The
+sharpest technical objection to Study A — that a short horizon rewards
+retention and manufactures a "pass sideways" result — does not hold. The
+direction of the finding is not an artefact of the 10-action choice.
+
+**But the magnitude is horizon-dependent, and the paper must say so.**
+For middle/leading, L runs 0.47 (h=5), 1.35 (h=10), 1.82 (h=15); for
+middle/level, 0.43, 1.25, 1.24; for middle/trailing, 0.84, 1.93, 1.57.
+At h=5 two of the three fall BELOW the 0.5 practical floor the
+preregistration set for discovery. The rule is stated on G's CI alone,
+so the verdicts stand as computed — but honesty requires reporting the
+effect as a RANGE across horizons, never as a single number. Also
+reported: PH-2's CI for middle/trailing at h=15 includes zero, so the
+counting-artefact check is fragile in that cell at that horizon.
+
+Machine note: the run completed with live memory pressure between 61%
+and 66% free throughout, never tripping the runtime floor. The earlier
+failure was diagnosed by the research lead as a bad gate (swap in use is
+never reclaimed by macOS, so it records past pressure, not headroom)
+combined with the original script accumulating all 299 matches in
+memory; both fixed.
+
+**Final Study A status.** Middle third, not under pressure,
+lateral_medium: LEVEL and TRAILING survive everything — confirmation,
+Gate D, both counting checks, cross-fitting and both horizons. LEADING
+survives everything except the cross-fitted counting check, which it
+missed by 0.0000006, and under the fixed rule it is reported as failing.
+
+Next (Task 10): the Study B interval method chosen by simulated
+coverage; outcome validation at team-match level; and the
+detectable-effect audit that decides whether the calibration framing
+can be used.
