@@ -594,3 +594,52 @@ possession-value-based decision metrics — including our own.
 If the diagnostics show the negative sign is compositional, the paper
 reports BOTH the preregistered negative result and the compositional
 explanation, and never reports the diagnostic alone.
+
+---
+
+## AMENDMENT v2-9 — 2026-09-23
+
+Made after Task 11. Adds one descriptive specification and the
+presentation artifacts. The v2-8.4 verdict (NOT ALLOWED) is final and
+is NOT revisited by anything here.
+
+### v2-9.1 Possession share is plausibly a MEDIATOR, not a confounder
+Step 1 shows mean Decision correlates with xG at r = +0.021 — zero —
+but correlates +0.341 with possession share, which in turn correlates
++0.384 with xG. The negative coefficient appears only after possession
+share is controlled. So H-O1/PH-O1/PH-O2 estimate a DIRECT effect
+holding possession fixed, and if better decisions produce value partly
+BY producing more possession, that specification removes the pathway it
+was meant to detect. This is a flaw in the preregistered specification,
+authored by the research lead, and it is disclosed as such in the paper.
+The preregistered results stand exactly as reported.
+
+### v2-9.2 PH-O4 — total-effect specification (descriptive)
+H-O1 and PH-O1 refit WITHOUT possession share, for xG and goals, same
+clustering. This estimates the total association rather than the direct
+one. Reported alongside, never instead of, the preregistered results.
+It cannot change the v2-8.4 verdict, which is closed.
+
+### v2-9.3 How the outcome result is reported in the paper
+All three layers, together, in this order:
+  (1) unconditionally, decision quality is unrelated to team xG;
+  (2) holding possession fixed, it is negatively associated with xG and
+      goals, and zone mix does not explain this;
+  (3) at possession level it raises the chance a possession ends in a
+      shot (+0.012 points per SD) but does not raise the possession's xG.
+The summary sentence, fixed here: a possession-value-based decision
+metric can be reliable, orthogonal to public metrics, and still fail to
+predict chance creation. No single layer may be reported alone.
+
+### v2-9.4 Presentation artifacts (no hypotheses)
+  a. Leaderboard: players pooled across contexts with >=200 eligible
+     passes, Decision shrunk toward the mean by its reliability (0.744).
+     Top 20 and bottom 20 with position, competitions and pass counts.
+     Face validity only; no claims attached.
+  b. Worked example: one pass from the surviving Study A cells (middle
+     third, unpressured, level or trailing, where the player chose a
+     non-lateral_medium option and a lateral_medium option was
+     available). Report match, minute, both options' coordinates,
+     p_success, EV, the policy probabilities and the realized outcome.
+     Chosen by a fixed rule: the median-gap pass among qualifying
+     passes, not the largest — no cherry-picking.
