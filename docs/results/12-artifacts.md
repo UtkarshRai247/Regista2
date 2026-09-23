@@ -241,8 +241,9 @@ a judgment call about the science).
   "nothing under data/ is committed" rule this task makes.
 - Git commits made this task: `07114da` (Amendment v2-9 alone, Step 0);
   `b693c03` (docs/JOURNAL.md, research lead's own Task 11 entry,
-  committed separately per the established pattern); `[this task's own
-  commit hash, to be recorded below once made]`.
+  committed separately per the established pattern); `f5cfec0` (this
+  task's own script, spec file, results page, `.gitignore` allowlist
+  addition, and `worked_example.csv`).
 
 ## 8. Confidence
 High. Both numerical bugs encountered were caught by the code failing
