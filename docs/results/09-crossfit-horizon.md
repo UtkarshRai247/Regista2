@@ -250,14 +250,13 @@ step 4 and report").
 - `data/processed/possession_value_parts_h15/` — empty (not started).
 - `src/decision_engine/task09_crossfit.py` — Step 0 fold file + Part 1 script.
 - `src/decision_engine/task09_horizon.py` — Part 2 script (ran partially).
-- Git commits made this task: `36fd08e` (Amendment v2-6). Per CLAUDE.md
-  item 9, the fold file (committed separately, before any retraining, per
-  the brief) and the remaining new/changed files under `src/`/`docs/`
-  (both scripts, this results page, and `docs/JOURNAL.md`, which changed
-  on disk independently of this task, same pattern as Tasks 05-08) are
-  committed immediately after this page is written; those hashes are
-  reported to the user directly, per their explicit instruction not to
-  paste this page's contents in the reply.
+- Git commits made this task: `36fd08e` (Amendment v2-6), `e1b95c8`
+  (`cv_folds.csv` — committed after retraining, not before, per Section
+  4's deviation note), `c86227b` (`docs/JOURNAL.md`, research lead's
+  edit, same pattern as Tasks 05-08), `63d020f` (both scripts and this
+  results page, per CLAUDE.md item 9; this line was added in a follow-up
+  edit since a commit cannot record its own hash — see Tasks 05-08's
+  results pages for the same pattern).
 
 ## 8. Confidence
 High on Part 1: every model retrain reused frozen hyperparameters via
