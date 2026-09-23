@@ -543,3 +543,54 @@ v2-6.2 interpretation rule is unchanged. If it cannot complete, the
 paper states that horizon sensitivity was not testable within the
 available compute, and the 10-action horizon stands as an explicit,
 unvalidated assumption. It may not be quietly omitted.
+
+---
+
+## AMENDMENT v2-8 — 2026-09-22
+
+Made after Task 10 Part B, which returned a significantly NEGATIVE
+association between team mean Decision and both team xG and team goals
+(4 of 4 regressions, p<0.001). Disclosed as post hoc.
+
+### v2-8.1 The preregistered result stands
+H-O1 and H-O2 were preregistered in v2-6.3 with their specifications
+and failure conditions fixed. The negative coefficients ARE the result
+of that test and are reported as the primary outcome-validation finding
+in the paper, in the abstract if outcome validation is mentioned at all.
+Nothing below replaces them, and no diagnostic below may be presented
+as the primary test.
+
+### v2-8.2 Why a diagnostic is warranted (mechanism, not rescue)
+Decision varies systematically by pitch zone: Study B's fixed effects
+show middle-third passes carry the highest Decision and final-third the
+lowest. A team that attacks more plays a greater share of its passes in
+the final third, which mechanically lowers its mean Decision while
+raising its xG. H-O1 controls possession share but NOT the zone mix of
+that possession. So the negative sign may reflect where a team played
+rather than how well it chose. This is a compositional confound with a
+concrete, testable signature.
+
+### v2-8.3 Post-hoc diagnostics (LABELED POST HOC)
+  PH-O1: H-O1 plus the team's zone shares (defensive, final; middle as
+         reference) and pressure share.
+  PH-O2: PH-O1 plus team-context fixed effects, so the comparison is a
+         team against itself across matches rather than between teams.
+  PH-O3: possession level, which is the level at which the metric is
+         defined. Unit: open-play possession with at least 3 eligible
+         passes. Predictor: mean Decision over that possession's passes.
+         Outcome: (a) whether the possession ends in a shot (logistic),
+         (b) the possession's xG (sum of StatsBomb shot xG in it).
+         Controls: starting zone, number of passes, team-context fixed
+         effects. Clustered by match.
+All reported in full, whatever they show.
+
+### v2-8.4 Claim rules, fixed now
+The paper may state "decision quality is associated with chance
+creation" ONLY if PH-O2 and PH-O3(a) are both positive with CIs
+excluding zero. If they are not, the paper states plainly that the
+metric does not predict, or inversely predicts, real chance creation at
+the levels tested, and treats that as a principal limitation of
+possession-value-based decision metrics — including our own.
+If the diagnostics show the negative sign is compositional, the paper
+reports BOTH the preregistered negative result and the compositional
+explanation, and never reports the diagnostic alone.
