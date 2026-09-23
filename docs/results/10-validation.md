@@ -209,8 +209,9 @@ Not yet run.
   Gitignored.
 - Git commits made so far this task: `746ac3c` (docs/JOURNAL.md,
   research lead's own Task 09b entry, committed separately per the
-  established pattern) [Part A's own commit hash to be recorded below
-  once made].
+  established pattern); `4116455` (Part A: `reml_crossed.py`,
+  `task10_partA_interval.py`, `task10_partA_tiebreak.py`, this results
+  page, and `docs/specs/task-10-validation.md`).
 
 ## 8. Confidence
 Part A: moderate-high. The coverage test ran to completion at the full
