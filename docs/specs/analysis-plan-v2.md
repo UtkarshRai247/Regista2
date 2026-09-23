@@ -512,3 +512,34 @@ Failure conditions: a null on H-O1 is reported as a null and means the
 paper cannot claim decision quality matters for outcomes; a significant
 NEGATIVE coefficient is reported as such. No specification changes
 after seeing results.
+
+---
+
+## AMENDMENT v2-7 — 2026-09-22
+
+Made after Task 09 Part 1, before Task 10.
+
+### v2-7.1 Detectable-effect audit (decides whether the calibration
+### framing is honest)
+Across 107 pairs, most gaps were not significant. That is only evidence
+of well-calibrated collective behaviour if we could have DETECTED
+meaningful miscalibration. For every one of the 107 pairs, using the
+confirmation-half bootstrap standard error of G, compute the minimum
+detectable effect at 80% power (two-sided, alpha 0.05), i.e. 2.802 x SE,
+and convert it into L units (goal-equivalents per 38-match season) with
+that pair's own pass rate.
+Report: the distribution of MDE in L units; the median; the share of
+pairs where an effect of 1.0 L, and of 0.5 L, would have been detected.
+Claim rule, fixed now: the paper may state "collective decision-making
+is close to optimal across the situations examined" ONLY for the subset
+of pairs whose MDE is below 1.0 L, and must report what share of pairs
+that subset represents. Pairs above that threshold are reported as
+"not powered to say".
+
+### v2-7.2 Horizon retry
+Task 09 Part 2 stopped on system memory pressure, not a code fault.
+It is retried as its own task, resuming the cached horizon-5 parts. The
+v2-6.2 interpretation rule is unchanged. If it cannot complete, the
+paper states that horizon sensitivity was not testable within the
+available compute, and the 10-action horizon stands as an explicit,
+unvalidated assumption. It may not be quietly omitted.
