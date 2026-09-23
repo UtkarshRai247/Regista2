@@ -1,33 +1,40 @@
 # Task 10: Interval validity, outcome validation, detectable-effect audit
 Date: 2026-09-22
-Status: PARTIAL (Parts A and B complete; Part C in progress)
+Status: COMPLETE
 
 ## Per-section checklist (per brief docs/specs/task-10-validation.md)
 - Step 0 (confirm plan SHA-256 unchanged from ceafdcd): COMPLETE
 - Part A (Study B interval method by simulated coverage, v2-6.1): COMPLETE
 - Part B (outcome validation, v2-6.3): COMPLETE
-- Part C (detectable-effect audit, v2-7.1): NOT RUN
+- Part C (detectable-effect audit, v2-7.1): COMPLETE
 - Hard rules (no changed definitions, full tables, no interpretation for
   the paper, no memory writes, JOURNAL.md untouched): COMPLETE for the
   work done so far.
 
 ## 1. Headline
-[Placeholder — finalized once Part C is run. Part A: the previously-used
-cluster-bootstrap interval method severely undercovers (10% of 100
-simulations contained the true S), confirming Amendment v2-6.1's
-diagnosis that it was invalid. Parametric bootstrap and profile-likelihood
-both reached 93% coverage — below the 95% target — and tied exactly, a
-tie the code resolved by list order rather than a specified rule
-(Section 6). Under either candidate, Study B's Tier 1 verdict changes
-from NOT ALLOWED (Task 08, invalid interval) to ALLOWED; Tier 2 remains
-NOT ALLOWED under both.
-Part B: **mean per-pass Decision is significantly NEGATIVELY associated
-with both team xG and team goals in the same match**, in both H-O1 and
-H-O2 specifications (n=583 of 598 team-matches; all four coefficients
-p<0.001) — the opposite sign from what H-O1/H-O2 hypothesized. Taken at
-face value this contradicts the premise that higher mean Decision (as
-currently defined) reflects choices that help a team score more within
-that match; see Section 5/6.]
+**Part A**: the previously-used cluster-bootstrap interval method
+severely undercovers (10% of 100 simulations contained the true S),
+confirming Amendment v2-6.1's diagnosis that it was invalid. Parametric
+bootstrap and profile-likelihood both reached 93% coverage — below the
+95% target — and tied exactly, a tie the code resolved by list order
+rather than a specified rule (Section 6). Under either candidate, Study
+B's Tier 1 verdict changes from NOT ALLOWED (Task 08, invalid interval)
+to ALLOWED; Tier 2 remains NOT ALLOWED under both.
+**Part B**: mean per-pass Decision is **significantly NEGATIVELY**
+associated with both team xG and team goals in the same match, in both
+H-O1 and H-O2 specifications (n=583 of 598 team-matches; all four
+coefficients p<0.001) — the opposite sign from what H-O1/H-O2
+hypothesized. Taken at face value this contradicts the premise that
+higher mean Decision (as currently defined) reflects choices that help
+a team score more within that match; see Section 5/6.
+**Part C**: across all 107 analyzable pairs (not just the 10 candidates),
+median minimum detectable effect on the confirmation half is **0.365 L**
+— under the preregistered 0.5 practical floor for a "trivial-but-real"
+effect. 91.6% of pairs (98/107) could detect a 1.0 L effect at 80% power;
+65.4% (70/107) could detect a 0.5 L effect. The 9 pairs with MDE above
+1.0 L are all `under_pressure=no` and mostly `backward_*` option types
+(Section 3 full table); this is a descriptive pattern in the data, not
+an interpretation of why.
 
 ## 2. What I did
 
@@ -98,7 +105,29 @@ Reproduce with: `.venv/bin/python src/decision_engine/task10_partB_outcome.py`.
   `src/market_join/fit_model.py` already uses.
 
 ### Part C
-Not yet run.
+Reproduce with: `.venv/bin/python src/decision_engine/task10_partC_mde_audit.py`.
+
+- Independently rebuilt the discovery-half analyzable-pairs list (Task
+  05's own `build_available_types_table`/`analyzable_pairs`, >=100-chosen
+  rule) as a consistency check: got 107, matching Task 05 exactly.
+- Loaded the confirmation half (Task 06's `confirmation_match_ids`/
+  `load_and_prepare`) and built the g_table (`g = ev_star - ev_star_j`)
+  for **all 107** pairs, not just the 10 candidates Task 06's own hard
+  rule scoped it to — the brief explicitly supersedes that scope for this
+  one audit.
+- Wrote `bootstrap_g_stats_se`, a local variant of Task 06's
+  `bootstrap_g_stats` that additionally returns the match-level bootstrap
+  draws' own standard deviation (SE of G) — same resampling, one extra
+  return value, not a change to the shared function.
+- MDE in G units: `2.802 * SE` (two-sided alpha=0.05, 80% power). MDE in
+  L units: MDE_G x (that pair's own qualifying-passes-per-team-match) x
+  38, the same conversion Amendment v2-1 already defines for G itself.
+- **Hit and fixed a bug before trusting the output**: `bootstrap_g_stats_se`
+  needs a `team` column, but the confirmation-half `cell_info` I built
+  only carried zone/pressure/game_state, so the first run crashed with
+  `KeyError: "['team'] not in index"`. Fixed by adding `team` to
+  `cell_info_c` (matching how Task 06's own `cell_info` is built) and
+  reran cleanly.
 
 ## 3. Numbers
 
@@ -202,6 +231,136 @@ negative** — the opposite sign from H-O1/H-O2's hypothesized direction
 progressive/xA controls (H-O2), so the sign is not an artifact of
 omitting those controls.
 
+### Part C — join diagnostics
+Discovery-half rebuild: 616,038/616,038 typed rows matched (100.0%),
+2 key collisions (matches Task 05's own finding exactly). Confirmation
+half: 621,573/621,573 matched (100.0%), 16 key collisions, 0 group-size
+mismatches. 107/107 analyzable pairs had at least one confirmation-half
+pass (0 pairs with zero passes).
+
+### Part C — summary statistics (n=107 pairs)
+Median MDE in L units: **0.3651**. Share with MDE <= 1.0 L: **0.9159**
+(98/107). Share with MDE <= 0.5 L: **0.6542** (70/107).
+
+### Part C — full 107-row table (sorted by zone, pressure, game state, type — NOT by effect size)
+G, SE(G), and MDE(G) are per-pass EV-gap units; L and MDE(L) are the
+Amendment v2-1 goal-equivalent-per-season units (G x qualifying-passes-
+per-team-match x 38).
+
+| zone | pressure | state | type | G | SE(G) | MDE(G) | L | MDE(L) | n_passes | n_matches |
+|---|---|---|---|---|---|---|---|---|---|---|
+| defensive | no | leading | backward_medium | -0.010082 | 0.002474 | 0.006933 | -2.0054 | 1.3791 | 670 | 120 |
+| defensive | no | leading | backward_short | -0.007810 | 0.001392 | 0.003902 | -2.7931 | 1.3954 | 1280 | 129 |
+| defensive | no | leading | forward_medium | -0.003469 | 0.000375 | 0.001050 | -1.6832 | 0.5094 | 1724 | 126 |
+| defensive | no | leading | forward_short | -0.002170 | 0.000539 | 0.001511 | -0.9142 | 0.6367 | 1497 | 127 |
+| defensive | no | leading | lateral_long | -0.001953 | 0.000217 | 0.000607 | -1.3243 | 0.4119 | 2552 | 136 |
+| defensive | no | leading | lateral_medium | -0.000564 | 0.000327 | 0.000917 | -0.4083 | 0.6645 | 2764 | 136 |
+| defensive | no | leading | lateral_short | 0.000203 | 0.000346 | 0.000970 | 0.1095 | 0.5235 | 2088 | 137 |
+| defensive | no | level | backward_medium | -0.013999 | 0.001138 | 0.003188 | -2.3858 | 0.5433 | 1036 | 134 |
+| defensive | no | level | backward_short | -0.008770 | 0.000562 | 0.001574 | -2.5232 | 0.4529 | 2014 | 145 |
+| defensive | no | level | forward_long | -0.003902 | 0.000192 | 0.000537 | -1.0117 | 0.1393 | 1153 | 133 |
+| defensive | no | level | forward_medium | -0.002829 | 0.000260 | 0.000730 | -1.2034 | 0.3104 | 2955 | 145 |
+| defensive | no | level | forward_short | -0.001675 | 0.000287 | 0.000804 | -0.5780 | 0.2775 | 2507 | 148 |
+| defensive | no | level | lateral_long | -0.002381 | 0.000196 | 0.000550 | -1.4031 | 0.3243 | 4389 | 147 |
+| defensive | no | level | lateral_medium | -0.000659 | 0.000216 | 0.000605 | -0.3977 | 0.3651 | 4530 | 148 |
+| defensive | no | level | lateral_short | 0.000181 | 0.000239 | 0.000670 | 0.0840 | 0.3106 | 3441 | 148 |
+| defensive | no | trailing | backward_medium | -0.027050 | 0.002975 | 0.008335 | -5.2315 | 1.6120 | 682 | 126 |
+| defensive | no | trailing | backward_short | -0.016075 | 0.001270 | 0.003558 | -5.2868 | 1.1702 | 1229 | 129 |
+| defensive | no | trailing | forward_medium | -0.002290 | 0.000682 | 0.001911 | -0.8709 | 0.7265 | 1411 | 128 |
+| defensive | no | trailing | forward_short | -0.000792 | 0.000857 | 0.002401 | -0.2652 | 0.8038 | 1286 | 134 |
+| defensive | no | trailing | lateral_long | -0.002521 | 0.000439 | 0.001231 | -1.5647 | 0.7640 | 2434 | 135 |
+| defensive | no | trailing | lateral_medium | -0.001728 | 0.000556 | 0.001558 | -1.0773 | 0.9716 | 2494 | 137 |
+| defensive | no | trailing | lateral_short | 0.000689 | 0.000413 | 0.001159 | 0.3276 | 0.5512 | 1903 | 138 |
+| defensive | yes | leading | forward_short | -0.001761 | 0.001137 | 0.003185 | -0.1903 | 0.3442 | 273 | 93 |
+| defensive | yes | leading | lateral_medium | -0.000246 | 0.000627 | 0.001757 | -0.0370 | 0.2638 | 498 | 119 |
+| defensive | yes | leading | lateral_short | 0.000416 | 0.000730 | 0.002045 | 0.0478 | 0.2352 | 342 | 108 |
+| defensive | yes | level | backward_short | -0.009578 | 0.001260 | 0.003529 | -0.7966 | 0.2935 | 383 | 118 |
+| defensive | yes | level | forward_medium | -0.001492 | 0.000495 | 0.001387 | -0.1396 | 0.1298 | 458 | 121 |
+| defensive | yes | level | forward_short | -0.001559 | 0.000629 | 0.001763 | -0.1513 | 0.1710 | 503 | 127 |
+| defensive | yes | level | lateral_medium | 0.000041 | 0.000400 | 0.001121 | 0.0057 | 0.1549 | 858 | 135 |
+| defensive | yes | level | lateral_short | -0.000274 | 0.000519 | 0.001453 | -0.0325 | 0.1721 | 676 | 130 |
+| defensive | yes | trailing | forward_short | -0.001354 | 0.001424 | 0.003989 | -0.1187 | 0.3498 | 240 | 98 |
+| defensive | yes | trailing | lateral_medium | -0.001011 | 0.001175 | 0.003292 | -0.1377 | 0.4487 | 434 | 115 |
+| defensive | yes | trailing | lateral_short | 0.001057 | 0.001148 | 0.003216 | 0.1163 | 0.3538 | 304 | 100 |
+| final | no | leading | backward_medium | -0.009462 | 0.000810 | 0.002271 | -4.1456 | 0.9948 | 1545 | 125 |
+| final | no | leading | backward_short | -0.006217 | 0.000770 | 0.002157 | -2.6746 | 0.9281 | 1517 | 126 |
+| final | no | leading | forward_short | -0.001377 | 0.000802 | 0.002246 | -0.5125 | 0.8358 | 1322 | 126 |
+| final | no | leading | lateral_long | -0.003091 | 0.000349 | 0.000979 | -2.1919 | 0.6943 | 2650 | 131 |
+| final | no | leading | lateral_medium | 0.002508 | 0.000471 | 0.001319 | 1.9691 | 1.0358 | 2913 | 131 |
+| final | no | leading | lateral_short | 0.001592 | 0.000442 | 0.001240 | 0.8827 | 0.6874 | 2087 | 131 |
+| final | no | level | backward_long | -0.007457 | 0.000294 | 0.000825 | -2.1480 | 0.2375 | 1228 | 123 |
+| final | no | level | backward_medium | -0.006682 | 0.000295 | 0.000825 | -2.7587 | 0.3408 | 2977 | 147 |
+| final | no | level | backward_short | -0.004366 | 0.000305 | 0.000855 | -1.6125 | 0.3156 | 2624 | 146 |
+| final | no | level | forward_medium | -0.004255 | 0.000889 | 0.002491 | -0.7862 | 0.4603 | 1128 | 136 |
+| final | no | level | forward_short | -0.003041 | 0.000474 | 0.001327 | -0.9938 | 0.4338 | 2279 | 140 |
+| final | no | level | lateral_long | -0.002524 | 0.000187 | 0.000524 | -1.6482 | 0.3421 | 4794 | 147 |
+| final | no | level | lateral_medium | 0.000807 | 0.000209 | 0.000587 | 0.5241 | 0.3809 | 4801 | 145 |
+| final | no | level | lateral_short | 0.000828 | 0.000225 | 0.000630 | 0.4051 | 0.3080 | 3605 | 145 |
+| final | no | trailing | backward_medium | -0.008069 | 0.000618 | 0.001731 | -3.5063 | 0.7522 | 1681 | 133 |
+| final | no | trailing | backward_short | -0.005853 | 0.000691 | 0.001937 | -2.1359 | 0.7067 | 1402 | 134 |
+| final | no | trailing | forward_medium | -0.005483 | 0.001742 | 0.004881 | -1.0919 | 0.9720 | 697 | 125 |
+| final | no | trailing | forward_short | -0.004100 | 0.000789 | 0.002212 | -1.3072 | 0.7053 | 1225 | 134 |
+| final | no | trailing | lateral_long | -0.002050 | 0.000358 | 0.001002 | -1.3187 | 0.6445 | 2590 | 140 |
+| final | no | trailing | lateral_medium | 0.001126 | 0.000366 | 0.001025 | 0.7329 | 0.6670 | 2603 | 137 |
+| final | no | trailing | lateral_short | 0.000908 | 0.000337 | 0.000945 | 0.4458 | 0.4638 | 2003 | 139 |
+| final | yes | leading | backward_short | -0.007310 | 0.001324 | 0.003710 | -0.8308 | 0.4217 | 329 | 104 |
+| final | yes | leading | lateral_medium | 0.002570 | 0.000832 | 0.002332 | 0.4148 | 0.3764 | 531 | 120 |
+| final | yes | leading | lateral_short | 0.000782 | 0.000890 | 0.002493 | 0.0995 | 0.3175 | 392 | 112 |
+| final | yes | level | backward_medium | -0.004817 | 0.000642 | 0.001799 | -0.4747 | 0.1772 | 516 | 123 |
+| final | yes | level | backward_short | -0.002931 | 0.000702 | 0.001966 | -0.3110 | 0.2086 | 564 | 128 |
+| final | yes | level | forward_short | -0.004343 | 0.000659 | 0.001845 | -0.4185 | 0.1778 | 464 | 118 |
+| final | yes | level | lateral_medium | 0.001156 | 0.000423 | 0.001184 | 0.1754 | 0.1796 | 926 | 131 |
+| final | yes | level | lateral_short | 0.000594 | 0.000469 | 0.001314 | 0.0730 | 0.1616 | 715 | 131 |
+| final | yes | trailing | backward_short | -0.005684 | 0.001396 | 0.003913 | -0.5896 | 0.4059 | 303 | 106 |
+| final | yes | trailing | lateral_medium | 0.001563 | 0.000721 | 0.002020 | 0.2344 | 0.3029 | 509 | 123 |
+| final | yes | trailing | lateral_short | 0.001244 | 0.000809 | 0.002267 | 0.1475 | 0.2687 | 365 | 113 |
+| middle | no | leading | backward_medium | -0.006139 | 0.000406 | 0.001139 | -6.2107 | 1.1519 | 3727 | 130 |
+| middle | no | leading | backward_short | -0.003287 | 0.000238 | 0.000668 | -3.7223 | 0.7565 | 4292 | 134 |
+| middle | no | leading | forward_medium | -0.002280 | 0.000218 | 0.000611 | -2.7688 | 0.7415 | 4633 | 134 |
+| middle | no | leading | forward_short | -0.002377 | 0.000231 | 0.000649 | -2.8212 | 0.7697 | 4685 | 137 |
+| middle | no | leading | lateral_long | -0.000293 | 0.000068 | 0.000190 | -0.6295 | 0.4093 | 8431 | 137 |
+| middle | no | leading | lateral_medium | 0.000678 | 0.000056 | 0.000157 | 1.3454 | 0.3124 | 7941 | 137 |
+| middle | no | leading | lateral_short | -0.000158 | 0.000085 | 0.000238 | -0.2600 | 0.3920 | 6453 | 136 |
+| middle | no | level | backward_long | -0.008879 | 0.000358 | 0.001002 | -2.6622 | 0.3004 | 1515 | 132 |
+| middle | no | level | backward_medium | -0.007414 | 0.000191 | 0.000535 | -6.7525 | 0.4869 | 6879 | 148 |
+| middle | no | level | backward_short | -0.003739 | 0.000144 | 0.000402 | -3.4831 | 0.3746 | 7109 | 148 |
+| middle | no | level | forward_long | -0.003615 | 0.000223 | 0.000625 | -1.1584 | 0.2004 | 1712 | 134 |
+| middle | no | level | forward_medium | -0.003513 | 0.000124 | 0.000348 | -3.2582 | 0.3231 | 6835 | 146 |
+| middle | no | level | forward_short | -0.002400 | 0.000127 | 0.000355 | -2.2463 | 0.3321 | 7043 | 147 |
+| middle | no | level | lateral_long | -0.000269 | 0.000046 | 0.000128 | -0.4741 | 0.2246 | 13620 | 148 |
+| middle | no | level | lateral_medium | 0.000788 | 0.000048 | 0.000134 | 1.2498 | 0.2125 | 12320 | 148 |
+| middle | no | level | lateral_short | 0.000136 | 0.000062 | 0.000172 | 0.1768 | 0.2234 | 10098 | 148 |
+| middle | no | trailing | backward_medium | -0.012964 | 0.000709 | 0.001987 | -12.4795 | 1.9124 | 3876 | 136 |
+| middle | no | trailing | backward_short | -0.006453 | 0.000521 | 0.001459 | -6.0353 | 1.3642 | 3864 | 140 |
+| middle | no | trailing | forward_medium | -0.005713 | 0.000374 | 0.001047 | -5.2001 | 0.9529 | 3617 | 137 |
+| middle | no | trailing | forward_short | -0.003394 | 0.000433 | 0.001212 | -3.1302 | 1.1176 | 3786 | 139 |
+| middle | no | trailing | lateral_long | -0.000014 | 0.000113 | 0.000317 | -0.0237 | 0.5488 | 7285 | 141 |
+| middle | no | trailing | lateral_medium | 0.001232 | 0.000133 | 0.000374 | 1.9328 | 0.5863 | 6608 | 141 |
+| middle | no | trailing | lateral_short | 0.000467 | 0.000146 | 0.000408 | 0.5970 | 0.5220 | 5348 | 140 |
+| middle | yes | leading | backward_medium | -0.005194 | 0.000591 | 0.001655 | -0.9014 | 0.2872 | 548 | 115 |
+| middle | yes | leading | backward_short | -0.002959 | 0.000383 | 0.001074 | -0.5699 | 0.2069 | 664 | 126 |
+| middle | yes | leading | forward_short | -0.002272 | 0.000314 | 0.000880 | -0.4678 | 0.1811 | 688 | 122 |
+| middle | yes | leading | lateral_long | -0.000209 | 0.000141 | 0.000394 | -0.0620 | 0.1168 | 1060 | 129 |
+| middle | yes | leading | lateral_medium | 0.000760 | 0.000132 | 0.000371 | 0.2489 | 0.1216 | 1181 | 129 |
+| middle | yes | leading | lateral_short | -0.000184 | 0.000160 | 0.000448 | -0.0454 | 0.1107 | 903 | 131 |
+| middle | yes | level | backward_medium | -0.006227 | 0.000387 | 0.001085 | -0.9394 | 0.1638 | 933 | 139 |
+| middle | yes | level | backward_short | -0.003171 | 0.000270 | 0.000756 | -0.5683 | 0.1354 | 1198 | 144 |
+| middle | yes | level | forward_medium | -0.002483 | 0.000280 | 0.000783 | -0.3646 | 0.1150 | 966 | 144 |
+| middle | yes | level | forward_short | -0.001808 | 0.000275 | 0.000769 | -0.3086 | 0.1313 | 1181 | 139 |
+| middle | yes | level | lateral_long | 0.000071 | 0.000137 | 0.000383 | 0.0181 | 0.0982 | 1820 | 145 |
+| middle | yes | level | lateral_medium | 0.000931 | 0.000135 | 0.000378 | 0.2581 | 0.1049 | 2029 | 146 |
+| middle | yes | level | lateral_short | 0.000379 | 0.000185 | 0.000517 | 0.0830 | 0.1132 | 1548 | 145 |
+| middle | yes | trailing | backward_medium | -0.011322 | 0.001127 | 0.003159 | -1.6329 | 0.4555 | 482 | 120 |
+| middle | yes | trailing | backward_short | -0.005891 | 0.000887 | 0.002484 | -0.9850 | 0.4153 | 594 | 127 |
+| middle | yes | trailing | forward_short | -0.001698 | 0.000559 | 0.001565 | -0.2893 | 0.2667 | 574 | 121 |
+| middle | yes | trailing | lateral_long | 0.000338 | 0.000274 | 0.000767 | 0.0766 | 0.1736 | 864 | 134 |
+| middle | yes | trailing | lateral_medium | 0.001582 | 0.000295 | 0.000828 | 0.3975 | 0.2080 | 992 | 136 |
+| middle | yes | trailing | lateral_short | -0.000046 | 0.000439 | 0.001229 | -0.0097 | 0.2610 | 771 | 129 |
+
+Full table also saved to `data/processed/task10_partC_mde_table.csv`
+(not committed, per the project rule that nothing under `data/` is ever
+committed — the table above is the full, authoritative copy).
+
 ## 4. Deviations from the brief
 - **None in method or scope for Part A.** All three candidate methods,
   the 100-simulation coverage test with the brief's own checkpoint-and-
@@ -228,6 +387,11 @@ omitting those controls.
   possession_share/completion/progressive/xA, since those come from the
   same team-name join). Not a choice I made to shrink the sample — see
   Section 5 for exactly which rows and why.
+- **None for Part C.** Ran on all 107 analyzable pairs as the brief
+  explicitly authorizes (superseding Task 06's own confirmation-half
+  scope restriction for this one audit), same bootstrap seed/draw count
+  as every prior task's G/CI computation, same MDE formula and L
+  conversion the brief specifies.
 
 ## 5. Problems and surprises
 - Neither method that reached the >=0.90 coverage floor actually reached
@@ -285,6 +449,15 @@ omitting those controls.
   to explain the sign (that is a modeling/interpretation decision, not
   mine to make) — flagging it as the single most consequential finding
   in this task and asking about it directly in Section 6.
+- Part C: no zero-pass pairs (all 107 had confirmation-half data), so
+  nothing needed to be dropped or flagged as unmeasurable. The 9 pairs
+  with MDE above the 1.0 L threshold are all `under_pressure=no` and
+  mostly (7/9) `backward_*` types, spanning both small (n_passes=670)
+  and large (n_passes=3,876) samples — high MDE isn't simply a small-n
+  artifact here, since some of the largest-n pairs in the whole table
+  (e.g. `middle|no|trailing|backward_medium`, n=3,876) are also among
+  the least powered in L units. Reported as a pattern in the data, with
+  no attempt to explain the mechanism.
 
 ## 6. Questions for the research lead
 1. **Tie-break rule for PRIMARY selection.** Methods (ii) and (iii) tied
@@ -342,13 +515,21 @@ omitting those controls.
   match unit construction, 4 clustered-OLS regressions).
 - `data/task10_partB_outcome.json` — full Part B run summary, all 4
   regressions' coefficients. Gitignored.
-- Git commits made so far this task: `746ac3c` (docs/JOURNAL.md,
-  research lead's own Task 09b entry, committed separately per the
-  established pattern); `4116455` (Part A: `reml_crossed.py`,
+- `src/decision_engine/task10_partC_mde_audit.py` — Part C's script
+  (rebuilds all 107 analyzable pairs on the confirmation half, computes
+  SE/MDE for each).
+- `data/task10_partC_mde_audit.json` — Part C run summary (join
+  diagnostics, median/share statistics). Gitignored.
+- `data/processed/task10_partC_mde_table.csv` — the full 107-row table
+  (also reproduced in full in Section 3 above). Gitignored.
+- Git commits made this task: `746ac3c` (docs/JOURNAL.md, research
+  lead's own Task 09b entry, committed separately per the established
+  pattern); `4116455` (Part A: `reml_crossed.py`,
   `task10_partA_interval.py`, `task10_partA_tiebreak.py`, this results
   page, and `docs/specs/task-10-validation.md`); `229565e` (Part A hash-
   recording follow-up); `9167a4d` (Part B: `task10_partB_outcome.py` and
-  this results page).
+  this results page); `[Part C's own commit hash, to be recorded below
+  once made]`.
 
 ## 8. Confidence
 Part A: moderate-high. The coverage test ran to completion at the full
@@ -372,4 +553,16 @@ link is construct validity: this is a team-match-level, same-match
 association, not a causal test, and the direction is exactly opposite
 what was hypothesized, which is important enough that it should not be
 read past this results page without the research lead's input (Section
-6, item 3). Part C not yet assessed.
+6, item 3).
+
+Part C: high confidence. The analyzable-pairs count (107) and the
+discovery-half join statistics reproduced Task 05's own numbers exactly
+as an internal consistency check, the confirmation-half join matched
+100.0%, and the one candidate pair cross-checked against Task 09b's
+independently-computed frozen-horizon numbers (`middle|no|trailing|
+lateral_medium`: G=0.001232, n_passes=6,608, both match exactly) landed
+within expected sampling variation on SE/CI. The bug hit during
+development (missing `team` column) was caught by the script crashing
+immediately, not by a silently wrong number, and the fix was a one-line,
+mechanical addition matching an existing pattern (Task 06's own
+`cell_info`) rather than a judgment call.
