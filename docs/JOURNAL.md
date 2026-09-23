@@ -708,3 +708,54 @@ Next (Task 10): the Study B interval method chosen by simulated
 coverage; outcome validation at team-match level; and the
 detectable-effect audit that decides whether the calibration framing
 can be used.
+
+---
+
+## 2026-09-22 — Task 10: interval validity, outcome validation, MDE audit
+
+Full results: `docs/results/10-validation.md`
+
+**Part A — Study B's claim is restored, by a method chosen on coverage.**
+The cluster bootstrap covered the truth in 10 of 100 simulations: not a
+marginal flaw, a broken method. Parametric bootstrap and profile
+likelihood both reached 93%. They tied exactly; Claude Code disclosed
+that the code broke the tie by list order rather than a stated rule, and
+computed the verdicts under BOTH. Identical either way. On the real
+data the primary interval is S = 0.654 [0.566, 0.755], with position
+fixed effects [0.547, 0.743]. **Tier 1 ALLOWED**: within the systems
+observed, most systematic variation in decision quality sits with the
+player. Tier 2 still NOT ALLOWED — the mover correlation is 0.10
+[-0.25, 0.53] and the multi-context-only fit's lower bound is 0.466.
+Note the Task 08 verdict was reversed by fixing an invalid interval, not
+by changing a rule.
+
+**Part C — the calibration framing is honest.** Median minimum
+detectable effect across the 107 pairs is 0.365 L, below the 0.5
+practical floor. 92% of pairs could have detected a 1.0 L effect, 65% a
+0.5 L effect. So "we looked and found almost nothing" is a real
+statement about football, not about our power, for the large majority of
+situations. The 9 underpowered pairs are all unpressured and mostly
+backward types.
+
+**Part B — the hardest result of the project. Team mean Decision is
+significantly NEGATIVELY associated with team xG and team goals**, in
+all four preregistered regressions (xG: -0.138 per SD, p=0.0002; goals:
+-0.403 per SD, p<1e-12), and it survives adding completion rate,
+progressive-pass rate and xA per pass. Meanwhile progressive-pass rate
+and xA predict xG positively. On the preregistered test, the public
+metrics predict chance creation and ours predicts it backwards.
+
+This is the strongest attack available on the whole project and it came
+from our own preregistered test. **Amendment v2-8** fixes how it is
+handled: the negative result stands as the primary outcome-validation
+finding and goes in the paper regardless. One mechanism is worth testing
+because it has a concrete signature — Decision is highest in midfield
+and lowest in the final third, so a team that attacks more mechanically
+lowers its own mean Decision while raising its xG, and H-O1 controlled
+possession share but not zone mix. Task 11 tests that with zone
+controls, team fixed effects, and a possession-level test at the level
+the metric is actually defined. The rule is fixed in advance: unless
+both the within-team and the possession-level tests come back positive,
+the paper states that the metric does not predict real chance creation
+and treats that as a principal limitation of possession-value-based
+decision metrics generally, ours included.
