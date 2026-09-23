@@ -624,3 +624,47 @@ midfield finding, with the rule for surviving fixed in advance), and
 outcome validation at team-match level (598 units), which fills the
 paper's biggest hole: nothing so far links decision quality to real
 results.
+
+---
+
+## 2026-09-22 — Task 09 Part 1: cross-fitting
+
+Full results: `docs/results/09-crossfit-horizon.md`
+
+**The finding survived, narrowed by one cell.** Under models that never
+saw the match they score, 2 of the 3 ROBUST candidates stay ROBUST:
+middle third, not under pressure, lateral_medium, when LEVEL and when
+TRAILING. The leading-state cell fails the count-matched check by a
+hair (CI lower bound -0.0000006). Under the fixed rule, FAIL is FAIL;
+it is reported as failing, and the razor-thin margin is reported too.
+
+Cross-fitting was a real test, not a formality: possession-value AUC
+dropped 0.799 to 0.743 out-of-fold — the largest in-sample flattery of
+the three models, exactly where v2-4.1 expected it. Pass-success and
+policy were unchanged out-of-fold. Under that stiffer scoring the two
+surviving cells cleared every check with room, and G moved barely
+(0.000604 to 0.000669; 0.001140 to 0.001026).
+
+Note on a candidate that improved: final third / leading / lateral_medium
+looks stronger under cross-fitting (G 0.00269, Gate D PASS, PH-2 CI
+excluding zero). Under v2-4.3 cross-fitting can demote but never
+promote, so it stays NOT ROBUST. That rule was written before these
+numbers existed and it is being honoured.
+
+Secondary cross-fitted estimates: Study B S = 0.641 (vs 0.654);
+Study C corrected choice share 0.549 (vs 0.498). Both stable.
+
+**Part 2 (horizon sensitivity) did not run.** Not a bug: the machine hit
+2.6 GB of swap on 16 GB, and per-match time degraded 14x on matches that
+had just processed quickly. Stopped under the brief's own 4-hour rule
+with 197 of 299 matches cached and resumable. Retried as Task 09b, with
+a swap check before starting. **Amendment v2-7.2** states that if it
+cannot complete, the paper must say the 10-action horizon is an
+unvalidated assumption — it may not be quietly dropped.
+
+**Amendment v2-7.1** adds the detectable-effect audit: for all 107
+pairs, the smallest gap we had 80% power to find. The paper may only
+call collective decision-making "close to optimal" for pairs where a
+1.0 goal-equivalent effect would have been detected, and must report
+what share of pairs that is. This is what makes the calibration framing
+honest rather than rhetorical.
