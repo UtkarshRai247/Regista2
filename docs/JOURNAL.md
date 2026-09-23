@@ -759,3 +759,51 @@ both the within-team and the possession-level tests come back positive,
 the paper states that the metric does not predict real chance creation
 and treats that as a principal limitation of possession-value-based
 decision metrics generally, ours included.
+
+---
+
+## 2026-09-23 — Task 11: outcome diagnostics
+
+Full results: `docs/results/11-outcome-diagnostics.md`
+
+**The compositional explanation is dead.** Adding zone mix (PH-O1) and
+then team-context fixed effects (PH-O2) does not shrink or flip the
+negative association — it grows slightly (xG: -0.138 preregistered,
+-0.153 with zone mix, -0.176 within teams). No zone-share coefficient is
+significant anywhere. My hypothesis in v2-8.2 was wrong, and the
+diagnostics say so plainly.
+
+**At possession level the sign splits.** Across 20,030 possessions,
+higher mean Decision raises the probability a possession ends in a shot
+(+0.012 points per SD, p=0.0003) but has no association with the
+possession's xG (p=0.236). Better choices by our metric produce more
+shots, not better ones.
+
+**v2-8.4 verdict: NOT ALLOWED.** The paper states that the metric does
+not predict chance creation, as a principal limitation of
+possession-value-based decision metrics including ours.
+
+**The correlation matrix contains the key to interpreting all of it, and
+it indicts my own specification.** Mean Decision correlates with xG at
+r = +0.021 — nothing. It correlates +0.341 with possession share, which
+correlates +0.384 with xG. The negative coefficient exists ONLY after
+conditioning on possession share. So the preregistered spec estimates a
+DIRECT effect with possession held fixed, and if good decisions create
+value partly BY winning more of the ball, that control removes the very
+pathway the test was meant to find. Possession share is plausibly a
+mediator, not a confounder. I wrote that specification, and the flaw is
+mine, not the builder's.
+
+**Amendment v2-9** fixes how this is reported rather than re-running it
+until it behaves: the preregistered results stand; the mediator flaw is
+disclosed as an author error; a total-effect specification without the
+possession control is added as descriptive only and explicitly cannot
+reopen the closed verdict; and the three layers must always be reported
+together — unconditionally unrelated, negative holding possession fixed,
+more shots but not better shots at possession level. The fixed summary
+sentence: a possession-value-based decision metric can be reliable,
+orthogonal to public metrics, and still fail to predict chance creation.
+
+Also in v2-9: the leaderboard and the worked example, both with fixed
+selection rules (shrinkage at the measured reliability; the MEDIAN-gap
+pass, not the largest) so neither can be cherry-picked.
