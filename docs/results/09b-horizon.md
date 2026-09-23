@@ -116,12 +116,11 @@ do not start the rebuild under pressure.
   future rerun on a clear machine).
 - No changes to `data/processed/possession_value_parts_h5/` or
   `possession_value_parts_h15/` — both left exactly as Task 09 left them.
-- Git commits made this task: `ceafdcd` (Amendment v2-7). Per CLAUDE.md
-  item 9, the new script, this results page, and `docs/JOURNAL.md`
-  (which changed on disk independently of this task, same pattern as
-  Tasks 05-09) are committed immediately after this page is written;
-  those hashes are reported to the user directly, per their explicit
-  instruction not to paste this page's contents in the reply.
+- Git commits made this task: `ceafdcd` (Amendment v2-7), `950932f`
+  (`docs/JOURNAL.md`, research lead's edit, same pattern as Tasks 05-09),
+  `6023da9` (the new script and this results page, per CLAUDE.md item 9;
+  this line was added in a follow-up edit since a commit cannot record
+  its own hash — see Tasks 05-09's results pages for the same pattern).
 
 ## 8. Confidence
 High. The only substantive action this task took was a machine-health
