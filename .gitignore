@@ -9,6 +9,7 @@ data/processed/*
 !data/splits/
 data/splits/*
 !data/splits/match_split.csv
+!data/splits/cv_folds.csv
 *.ckpt
 *.pt
 *.pth
