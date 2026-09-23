@@ -347,8 +347,8 @@ omitting those controls.
   established pattern); `4116455` (Part A: `reml_crossed.py`,
   `task10_partA_interval.py`, `task10_partA_tiebreak.py`, this results
   page, and `docs/specs/task-10-validation.md`); `229565e` (Part A hash-
-  recording follow-up) [Part B's own commit hash to be recorded below
-  once made].
+  recording follow-up); `9167a4d` (Part B: `task10_partB_outcome.py` and
+  this results page).
 
 ## 8. Confidence
 Part A: moderate-high. The coverage test ran to completion at the full
