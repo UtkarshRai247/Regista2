@@ -576,3 +576,51 @@ tiers fixed in advance. Tier 1 — "most systematic variation sits with
 players, within the systems observed" — needs S's corrected lower bound
 above 0.5 with and without position controls. Tier 2 — "it travels" —
 additionally needs the corrected mover correlation to exclude zero.
+
+---
+
+## 2026-09-22 — Task 08: Study B corrections, Study C, reliability audit
+
+Full results: `docs/results/08-studies-b-c.md`
+
+**Study B's claim fails.** With the bootstrap bug fixed, S's interval
+moves from [0.626, 0.785] to [0.363, 0.573]. Tier 1 is NOT ALLOWED: the
+data cannot rule out team context mattering as much as the player. The
+point estimate is unchanged and sits above 0.5 in every variant (0.579
+to 0.654) — this is a precision failure, not a sign reversal. Tier 2
+also fails: the noise-corrected mover correlation is 0.10 [-0.25, 0.53].
+The design calculation says a decisive test needs about 314 movers at
+current reliability; this sample has 132.
+
+**But the new interval is also invalid, and the numbers say so.** The
+corrected CI [0.363, 0.573] does not contain the point estimate 0.654.
+In a crossed design, resampling one factor damages the other: with
+original ids, duplicated players looked like one player replicating
+himself (var_player up, S up); with fresh ids, those duplicated
+identical units sit in the same team context and look like team-level
+replication (var_team up, S down). Both biased, in opposite directions.
+**Amendment v2-6.1** replaces the method and — importantly — selects
+among cluster bootstrap, parametric bootstrap and profile likelihood by
+SIMULATED COVERAGE on the real design, not by which gives a nicer
+answer. If no method reaches 90% coverage, Study B reports a point
+estimate with no interval.
+
+**Study C:** choice share 0.498, median across splits, 95% CI [0.362,
+0.688]; raw uncorrected share 0.393. So what a player chooses and how
+well he executes contribute about equally to the real spread between
+players — and the naive calculation understates choice, because
+execution is measured far less reliably.
+
+**Reliability audit** (median split-half, unit = player-competition-
+season): completion and progressive-pass rate reach 0.70 at 100 passes;
+xA per pass and Decision at 200; **Execution never reaches 0.70 at any
+threshold up to 500** (best 0.646 at 300). This is the appendix table
+that makes the measurement argument concrete.
+
+**Two additions preregistered in v2-6 before Task 09:** horizon
+sensitivity for Study A (a 10-action value horizon may itself reward
+retention over progression — the sharpest technical objection to the
+midfield finding, with the rule for surviving fixed in advance), and
+outcome validation at team-match level (598 units), which fills the
+paper's biggest hole: nothing so far links decision quality to real
+results.
