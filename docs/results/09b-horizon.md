@@ -164,11 +164,12 @@ definition needed adjusting.
   build_match_rows_horizon` was never touched).
 - Git commits made this task: no new commit for Amendment v2-7 (already
   committed at `ceafdcd` from the first attempt, confirmed unchanged).
-  Per CLAUDE.md item 9, the updated script, this results page, and any
-  research-lead edits to `docs/JOURNAL.md` found this session are
-  committed immediately after this page is written; those hashes are
-  reported to the user directly, per their explicit instruction not to
-  paste this page's contents in the reply.
+  `805d7e3` covers the updated script, the updated brief
+  (`docs/specs/task-09b-horizon.md`), and this results page, per
+  CLAUDE.md item 9; this line was added in a follow-up edit since a
+  commit cannot record its own hash — see Tasks 05-09's results pages
+  for the same pattern. No `docs/JOURNAL.md` change was found this
+  session.
 
 ## 8. Confidence
 High. The corrected gate behaved exactly as intended (proceeded on
