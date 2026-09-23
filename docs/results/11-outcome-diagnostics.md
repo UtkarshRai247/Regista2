@@ -279,8 +279,8 @@ association in the opposite direction from the team-match-level one.
   under `data/` is ever committed).
 - Git commits made this task: `3232e28` (Amendment v2-8 alone, Step 0);
   `5b31b5a` (docs/JOURNAL.md, research lead's own Task 10 entry,
-  committed separately per the established pattern); `[this task's own
-  commit hash, to be recorded below once made]`.
+  committed separately per the established pattern); `9996c90` (this
+  task's own script, spec file, and results page).
 
 ## 8. Confidence
 Moderate-high on the numbers, low on what they mean (deliberately, since
