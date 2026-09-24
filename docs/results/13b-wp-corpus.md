@@ -84,9 +84,9 @@ Both `|t|` exceed the 1.96 critical value even after clustering by 62 matches �
 3. Task 13's own results page (`docs/results/13-objectives.md`) still reports the unclipped O1-vs-O2 correlation numbers, which are now superseded by this page's clipped numbers (a negligible difference, 0.8241->0.8243 pass level, but a real one). Should Task 13's page be left as the historical record it was at the time (as I've done here), or does the paper's own accounting need a note explicitly pointing from one to the other?
 
 ## 7. Files produced
-- `src/decision_engine/task13b_wp_corpus.py` — this task's full implementation. Committed together with the results page, commit `<recorded below>`.
+- `src/decision_engine/task13b_wp_corpus.py` — this task's full implementation. Committed together with the results page, commit `f45faae`.
 - `docs/specs/analysis-plan-v3.md` (Amendment v3-2), `docs/specs/task-13b-wp-corpus.md` (revised) — committed at Step 0, commit `addb407`.
-- `docs/results/13b-wp-corpus.md` — this page. Committed with the script.
+- `docs/results/13b-wp-corpus.md` — this page. Committed with the script, commit `f45faae`.
 - `data/processed/wp_corpus_goals.parquet` — compact per-goal corpus extract (6,074 rows: 5,923 goals + sentinel rows for zero-goal matches, across 2,131 matches). Not committed (data/).
 - `data/processed/options_o2.parquet` — **rewritten** with clipped v_success/v_turnover/ev (Task 13's own version is overwritten; the pre-clipping version is not separately retained). Not committed.
 - `data/processed/options_o3.parquet` — **not written** (neither WP function passed either gate).
