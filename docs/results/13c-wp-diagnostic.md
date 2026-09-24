@@ -84,10 +84,10 @@ Argmax-EV disagreement: O1 vs O2 = 28.85%, O1 vs O3 = 27.32%, O2 vs O3 = 39.10%.
 3. O3 is now built and passes calibration under exactly one strength-conditioned construction, tried once, as instructed. Task 14's Referee 1/2 tests will be the real test of whether this O3 is *useful*, not just calibrated — I'm not making any claim here about whether the strength-conditioning approach "should" generalize beyond this one gate check.
 
 ## 7. Files produced
-- `src/decision_engine/task13c_wp_diagnostic.py` — this task's full implementation. Committed together with the results page.
+- `src/decision_engine/task13c_wp_diagnostic.py` — this task's full implementation. Committed together with the results page, commit `4141083`.
 - `docs/specs/analysis-plan-v3.md` (Amendment v3-3) — committed at Step 0, commit `5582d6d`.
-- `docs/specs/task-13c-wp-diagnostic.md` — committed with the script and results page.
-- `docs/results/13c-wp-diagnostic.md` — this page. Committed with the script.
+- `docs/specs/task-13c-wp-diagnostic.md` — committed with the script and results page, commit `4141083`.
+- `docs/results/13c-wp-diagnostic.md` — this page. Committed with the script, commit `4141083`.
 - `data/processed/options_o3.parquet` — **written for the first time** (1,232,769 of 1,237,611 options; strength-conditioned EV_O3/v_success/v_turnover). Not committed (data/).
 - `data/task13c_wp_diagnostic.json` — full machine-readable summary. Not committed.
 
