@@ -216,3 +216,62 @@ NOT that the objective does not matter — it is that both objectives are
 dominated by completion probability, which is the deeper cause of the
 conservatism. That possibility is recorded here, before the leaderboards
 exist, so it cannot be presented later as a prediction made in hindsight.
+
+---
+
+## AMENDMENT v3-3 — 2026-09-24
+
+Made after Task 13b. No leaderboard or referee result exists yet.
+
+### v3-3.1 The v3-2.2 diagnosis was wrong
+I attributed WP-299's failure to the study sample's composition. A
+corpus seven times larger, spanning 35 different competition-seasons,
+produces near-identical rates (leading 0.0187 vs 0.0192, level 0.0133 vs
+0.0137, trailing 0.0133 vs 0.0132) and the SAME bucket fails by the same
+margin. The explanation is refuted and is reported as refuted.
+
+### v3-3.2 Diagnostic BEFORE any further fix
+Two competing explanations remain, and they are distinguishable:
+  (i) the construction is too coarse — a memoryless three-state
+      (leading/level/trailing) Markov model cannot represent an early
+      one-goal lead;
+  (ii) the failing bucket is dominated by cases where the WEAKER side
+      leads early against a possession-dominant focal team and does not
+      hold on, so observed WP is low for reasons of team strength, not
+      of game state.
+Required diagnostic, run first: within the failing bucket (d=+-1,
+m_bin=85, 62 matches), split by whether the leading team is the
+stronger side, using each team's goals-scored-minus-conceded per match
+across the corpus and study data as the strength proxy. Report n,
+predicted and observed WP for each half, with match-clustered errors.
+Also report the same split at m_bin=80 and 60 for context.
+If the two halves differ sharply, explanation (ii) is supported and a
+strength-conditioned WP is warranted. If they do not, explanation (i)
+stands and no further WP work is done.
+
+### v3-3.3 One time-boxed attempt, and only if the diagnostic supports it
+If and only if (ii) is supported: estimate scoring rates as a function
+of game state AND relative team strength, rebuild WP, and revalidate
+under the ORIGINAL gate. One attempt. No further iterations.
+If it passes, O3 is built as specified in plan v3 section 1.
+If it fails, or if the diagnostic supports (i), O3 is ABANDONED for this
+submission and the paper reports plainly: a win-probability objective
+could not be validated on open data under a tractable construction, and
+the comparison runs on O1 and O2 alone. That is a reportable result
+about what open data supports, not a gap to be papered over.
+Either way, Task 14 (leaderboards and both referees) proceeds on
+schedule with whatever objectives are validated.
+
+### v3-3.4 Standing team-rename mapping
+The following are documented 1:1 renames or short forms, and are mapped
+rather than excluded in any future corpus work:
+  Marseille -> Olympique de Marseille; Caen -> Stade Malherbe Caen;
+  Hyderabad -> Hyderabad FC; ATK Mohun Bagan -> Mohun Bagan Super Giant.
+Any name not on this list is excluded, never guessed. The 41 matches
+excluded in Task 13b are recovered only if a WP rebuild happens under
+v3-3.3; otherwise the exclusion stands and is reported.
+
+### v3-3.5 Superseded numbers
+docs/results/13-objectives.md keeps its unclipped O1/O2 correlations as
+the historical record. The clipped figures in 13b supersede them. The
+journal carries the pointer; results pages are never retro-edited.
