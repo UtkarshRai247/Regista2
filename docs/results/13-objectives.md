@@ -196,7 +196,7 @@ Full table of all 186 buckets (including n<100) saved to `data/processed/task13_
 - `src/decision_engine/task13_objectives.py` — this task's full implementation (row-builder, O2 regressor, concede classifier, WP-299 construction/validation, EV/Decision/Execution recomputation, sanity checks). Committed.
 - `docs/specs/analysis-plan-v3.md` — plan v3 + Amendment v3-1. Committed separately at Step 0, commit `194ecd6`.
 - `docs/specs/task-13-objectives.md`, `docs/specs/task-13b-wp-corpus.md` — this task's own spec, and a different future task's spec already sitting in the repo (Section 4.7). Committed.
-- `docs/results/13-objectives.md` — this page. Committed.
+- `docs/results/13-objectives.md` — this page. Committed together with `task13_objectives.py` and both spec files, commit `158ff9b`.
 - `data/processed/task13_o2_concede_parts/*.parquet` (299 files) — cached per-match action-state rows with both new labels. Not committed (data/).
 - `data/processed/o2_value_model.json` — trained O2 XGBRegressor. Not committed.
 - `data/processed/concede_model.json` — trained concede XGBClassifier. Not committed.
