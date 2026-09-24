@@ -275,3 +275,36 @@ v3-3.3; otherwise the exclusion stands and is reported.
 docs/results/13-objectives.md keeps its unclipped O1/O2 correlations as
 the historical record. The clipped figures in 13b supersede them. The
 journal carries the pointer; results pages are never retro-edited.
+
+---
+
+## AMENDMENT v3-4 — 2026-09-24
+
+Made after Task 13c (O3 built and validated), before any leaderboard or
+referee result exists.
+
+### v3-4.1 Task 14 is split
+Referee 1 (plan v3 section 3) requires no leaderboard, no player names
+and no expert lists. It runs first, as Task 14a.
+Referee 2 (section 4) and the leaderboards run afterwards as Task 14b,
+and only after the expert lists are committed, per section 4. The
+constraint that lists precede leaderboards is unchanged.
+
+### v3-4.2 Referee 2 is expected to be underpowered; power is reported
+Each Team of the Tournament or Season is 11 players, many of them
+goalkeepers and forwards who never reach the 200-pass floor. The
+expected number of selected players among the 138 qualifying units is
+roughly 15-25.
+Task 14b must therefore report, BEFORE its AUC comparison: the number
+of qualifying units, the number selected, and the minimum AUC
+improvement detectable at 80% power given those counts. If that
+minimum exceeds 0.10 AUC, Referee 2 is declared UNDERPOWERED and its
+result is reported as indicative only — it cannot decide between
+objectives in either direction, including in O1's favour.
+
+### v3-4.3 Coverage rule for the lists
+A competition-season is included in Referee 2 only if a published,
+dated, externally authored selection exists for it. Competitions
+without one are excluded and named. The lists are committed as a CSV
+with a source URL per row before Task 14b runs, and are never edited
+afterwards.
