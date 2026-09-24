@@ -86,10 +86,10 @@ None. Every predictor set, clustering choice, fixed-effect structure, and thresh
 None. The comparison rule was fixed in advance and applied mechanically; nothing here required a judgment call.
 
 ## 7. Files produced
-- `src/decision_engine/task14a_referee1.py` — this task's full implementation. Committed together with the results page.
+- `src/decision_engine/task14a_referee1.py` — this task's full implementation. Committed together with the results page, commit `4ae6a0b`.
 - `docs/specs/analysis-plan-v3.md` (Amendment v3-4) — committed at Step 0, commit `8a696bd`.
-- `docs/specs/task-14a-referee1.md` — committed with the script and results page.
-- `docs/results/14a-referee1.md` — this page. Committed with the script.
+- `docs/specs/task-14a-referee1.md` — committed with the script and results page, commit `4ae6a0b`.
+- `docs/results/14a-referee1.md` — this page. Committed with the script, commit `4ae6a0b`.
 - `data/task14a_referee1.json` — full machine-readable summary (every number in this page traces back to it). Not committed (data/).
 
 ## 8. Confidence
