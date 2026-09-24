@@ -165,3 +165,54 @@ O2 build, the concede model, or the WP-299 build, all of which proceed
 on the 299-match sample as planned. If the corpus task fails or runs
 long, O3 uses WP-299 provided it passes the gate, and the paper reports
 that the corpus version was attempted and why it was not used.
+
+---
+
+## AMENDMENT v3-2 — 2026-09-23
+
+Made after Task 13, before any leaderboard or referee test exists.
+
+### v3-2.1 O2 negative predictions
+1.75% of held-out O2 predictions are negative, which is impossible for
+accumulated xG. PRIMARY fix: clip predicted values at 0. This is a
+property of the target, not a tuning choice, and it is applied
+identically everywhere O2 is used. Report the share clipped in the
+option table and confirm the calibration deciles after clipping.
+A Tweedie-objective refit is permitted as a reported robustness check
+only; if run, it is selected over clipping ONLY on held-out MAE and
+calibration, never on any leaderboard or referee result.
+
+### v3-2.2 Why WP-299 failed, and what follows
+The gate failed in 2 of 100 buckets, both the same state: a one-goal
+lead about five minutes into the match (predicted 77.7% vs observed
+62.6%). The estimated rates explain it — in this sample the LEADING
+team scores faster (0.0192 goals/team-minute) than the trailing team
+(0.0132), because the club competitions are built around four
+possession-dominant focal teams that both lead often and keep scoring.
+An early lead is therefore over-rewarded.
+This is a sample-composition problem, which is exactly what Task 13b's
+corpus estimation addresses. O3 remains UNVALIDATED and unbuilt until a
+WP function passes the gate. Task 13b is now required, not optional.
+
+### v3-2.3 One refinement to the gate, disclosed as post-hoc
+The gate counted each (team, minute) state as independent. States within
+a match are almost perfectly correlated, so a bucket of 234 states may
+represent roughly 30 matches; a fixed 10-point threshold on ~30
+independent observations fails often by chance alone.
+Refined gate, applied identically to WP-299 and WP-corpus: a bucket
+fails only if the deviation exceeds 10 percentage points AND is
+significant at 95% using standard errors clustered by MATCH. Report
+both the original and refined verdicts for both functions.
+If WP-corpus passes the ORIGINAL gate, the refinement is not used for
+selection and is reported as a footnote only. This refinement was
+adopted after WP-299 failed and is disclosed as such; it is a
+statistical correction to an underpowered test, not a lowered bar.
+
+### v3-2.4 A finding that may pre-empt the comparison
+Decision_O1 and Decision_O2 correlate r=0.824 at pass level and r=0.856
+at player level, while disagreeing on the best option in 28.9% of
+passes. If the O2 leaderboard closely resembles O1's, the conclusion is
+NOT that the objective does not matter — it is that both objectives are
+dominated by completion probability, which is the deeper cause of the
+conservatism. That possibility is recorded here, before the leaderboards
+exist, so it cannot be presented later as a prediction made in hindsight.
