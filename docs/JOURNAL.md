@@ -807,3 +807,53 @@ orthogonal to public metrics, and still fail to predict chance creation.
 Also in v2-9: the leaderboard and the worked example, both with fixed
 selection rules (shrinkage at the measured reliability; the MEDIAN-gap
 pass, not the largest) so neither can be cherry-picked.
+
+---
+
+## 2026-09-24 — Tasks 13b, 13c, 14a
+
+**13b — the corpus refuted my diagnosis.** 2,090 extra matches across 35
+competition-seasons produced rates nearly identical to the 299-match
+sample (leading 0.0187 vs 0.0192) and the SAME calibration bucket failed
+by the same margin. Amendment v3-2.2's sample-composition explanation is
+reported as refuted, not quietly dropped.
+
+**13c — the real cause, and O3 built.** The diagnostic split the failing
+bucket by which side was stronger. When the STRONGER team leads early,
+the model is fine (predicted 77.7%, observed 82.6%, t=1.41). When the
+WEAKER team leads early, it is catastrophically overconfident (77.7% vs
+42.2%, t=-4.34), and the same split holds at two further buckets.
+Conditioning scoring rates on team strength fixed it: zero violating
+buckets under the ORIGINAL gate, Brier 0.0893 against 0.1093 for both
+earlier versions. Stronger teams score about twice as fast as weaker
+ones in every game state. O3 built for 99.6% of options.
+O3 is a genuinely different metric: player-level correlation with O1 is
+0.468 (O2's is 0.856), with argmax disagreement of 39%.
+
+**14a — Referee 1: no objective wins.** The preregistered rule required
+both a positive possession-level xG coefficient and a positive
+team-match xG coefficient without possession share. None of the three
+managed both.
+
+But the pattern across objectives is the finding:
+  - Team-match xG without possession share: O1 +0.027 (CI spans zero),
+    O2 +0.128, O3 +0.224 [0.137, 0.305].
+  - Team-match xG WITH possession share: O1 -0.138, O2 -0.103,
+    O3 -0.015 (null). O3 removes the perverse negative almost entirely.
+  - Team-match goals without possession share: O1 -0.209 (significantly
+    negative), O2 and O3 both null.
+  - Possession level: O1 and O3 both raise the chance a possession ends
+    in a shot (+0.012, +0.009); NONE improves possession xG, and O2's is
+    significantly negative.
+
+So the ordering O3 > O2 > O1 is consistent across every team-level test,
+while the possession-level story is identical for all three: these
+metrics get you to shots, not to better shots. Under plan v3 section 5
+no objective may be called better without winning Referee 1, so none is.
+The reportable finding is the one section 5 anticipated: the choice of
+value function changes the sign and size of the team-level relationship
+and reshuffles who counts as a good decision-maker, while none of them
+predicts chance quality.
+
+Next: Task 14b-prep compiles the expert selection lists for verification
+before any leaderboard is computed.
