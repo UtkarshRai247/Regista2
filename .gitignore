@@ -11,6 +11,9 @@ data/processed/*
 data/splits/*
 !data/splits/match_split.csv
 !data/splits/cv_folds.csv
+!data/expert_lists/
+data/expert_lists/*
+!data/expert_lists/selections.csv
 *.ckpt
 *.pt
 *.pth
