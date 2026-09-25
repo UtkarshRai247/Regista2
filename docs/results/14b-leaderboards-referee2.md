@@ -242,10 +242,10 @@ All six CIs include zero. No objective passes Referee 2 under either variant.
 2. The four nickname aliases (Section 5.1) were found by manually inspecting every unmatched name's full candidate pool once. Should this alias table be extended pre-emptively for other known footballing nicknames not yet encountered (e.g., for a future task using more of the corpus), or is the current "verify what's actually unmatched" approach sufficient?
 
 ## 7. Files produced
-- `src/decision_engine/task14b_leaderboards_referee2.py` — this task's full implementation. Committed together with the results page.
+- `src/decision_engine/task14b_leaderboards_referee2.py` — this task's full implementation. Committed together with the results page, commit `690a5ee`.
 - `docs/specs/analysis-plan-v3.md` (Amendment v3-5) and the corrected `data/expert_lists/selections.csv` — committed together at Step 0, commit `a4f62a7`.
-- `docs/specs/task-14b-leaderboards-referee2.md` — committed with the script and results page.
-- `docs/results/14b-leaderboards-referee2.md` — this page.
+- `docs/specs/task-14b-leaderboards-referee2.md` — committed with the script and results page, commit `690a5ee`.
+- `docs/results/14b-leaderboards-referee2.md` — this page. Committed, commit `690a5ee`.
 - `data/processed/leaderboards_o1_o2_o3.parquet` — full ranked leaderboards for all three objectives (480 rows = 160 x 3). Not committed (data/).
 - `data/task14b_leaderboards_referee2.json` — full machine-readable summary. Not committed.
 
