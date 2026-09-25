@@ -86,18 +86,18 @@ None from `task-16-tempo.md` as executed. Three construction choices were left u
 None. `task-16-tempo.md` and Amendment T-1 were unambiguous for every decision this task made; the three items in Section 4 are disclosed constructions, not open questions.
 
 ## 7. Files produced
-- `src/tempo/__init__.py` — empty package marker.
-- `src/tempo/time_on_ball.py` — Step 1: time-on-ball construction, coverage/sanity/distribution reporting, repair-pass logic (unused this run).
-- `src/tempo/possessions.py` — independent reimplementation of Task 11's possession-sequence definition, used by Steps 2 and 3.
-- `src/tempo/metrics.py` — Step 2: per-player-season quantities (median_time_on_ball, IQR, one_touch_share, pressure_delta+CI, pace_delta+CI, tempo_variation).
-- `src/tempo/reliability.py` — Step 3: the gate (7-threshold split-half Spearman-Brown reliability sweep, classification).
-- `src/tempo/relationships.py` — Step 4: correlation matrix, public-metric correlations, top/bottom-20 leaderboards for qualifying metrics only.
-- `data/processed/tempo_time_on_ball.parquet` — per-pass time_on_ball table (209,775 rows after bounds).
-- `data/processed/tempo_metrics.parquet` — per-player-season metrics table (2,997 rows).
-- `data/tempo_step1_time_on_ball.json`, `data/tempo_step2_metrics.json`, `data/tempo_step3_reliability.json`, `data/tempo_step4_relationships.json` — step summaries (all four numbers in Section 3 come from these files).
-- `docs/specs/analysis-plan-tempo.md` — preregistration (committed separately, `aba4050`, prior to this task's execution).
-- `docs/specs/task-16-tempo.md` — the executed task spec.
-- `docs/results/16-tempo.md` — this file.
+- `src/tempo/__init__.py` — empty package marker. Committed, commit `ddb8da3`.
+- `src/tempo/time_on_ball.py` — Step 1: time-on-ball construction, coverage/sanity/distribution reporting, repair-pass logic (unused this run). Committed, commit `ddb8da3`.
+- `src/tempo/possessions.py` — independent reimplementation of Task 11's possession-sequence definition, used by Steps 2 and 3. Committed, commit `ddb8da3`.
+- `src/tempo/metrics.py` — Step 2: per-player-season quantities (median_time_on_ball, IQR, one_touch_share, pressure_delta+CI, pace_delta+CI, tempo_variation). Committed, commit `ddb8da3`.
+- `src/tempo/reliability.py` — Step 3: the gate (7-threshold split-half Spearman-Brown reliability sweep, classification). Committed, commit `ddb8da3`.
+- `src/tempo/relationships.py` — Step 4: correlation matrix, public-metric correlations, top/bottom-20 leaderboards for qualifying metrics only. Committed, commit `ddb8da3`.
+- `data/processed/tempo_time_on_ball.parquet` — per-pass time_on_ball table (209,775 rows after bounds). Not committed (data/).
+- `data/processed/tempo_metrics.parquet` — per-player-season metrics table (2,997 rows). Not committed (data/).
+- `data/tempo_step1_time_on_ball.json`, `data/tempo_step2_metrics.json`, `data/tempo_step3_reliability.json`, `data/tempo_step4_relationships.json` — step summaries (all four numbers in Section 3 come from these files). Not committed (data/).
+- `docs/specs/analysis-plan-tempo.md` — preregistration, committed separately at Step 0, commit `aba4050`, prior to this task's execution.
+- `docs/specs/task-16-tempo.md` — the executed task spec. Committed, commit `ddb8da3`.
+- `docs/results/16-tempo.md` — this page. Committed, commit `ddb8da3`.
 
 ## 8. Confidence
 High for Step 1 (deterministic construction, sanity check passed, coverage figure stated plainly) and for the two USABLE metrics (median_time_on_ball, one_touch_share — reliability >0.93 at the gate threshold and rising monotonically with more data, the expected pattern). Lower for pressure_delta (PROVISIONAL only) — treat any single-player pressure_delta value as noisy at n=200 involvements. The weakest link is tempo_variation and pace_delta, which are NOT MEASURABLE and are not used anywhere past Step 3; their unreliability may reflect a genuine absence of a stable within-player "rhythm" signal at this sample size, or a construction problem (e.g., possession-sequence pace being dominated by teammates' contributions rather than the focal player's own tempo) that this task's one-repair-pass, no-further-diagnosis rule (T-1.1) does not permit investigating further.
