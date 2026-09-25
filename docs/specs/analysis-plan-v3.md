@@ -308,3 +308,48 @@ dated, externally authored selection exists for it. Competitions
 without one are excluded and named. The lists are committed as a CSV
 with a source URL per row before Task 14b runs, and are never edited
 afterwards.
+
+---
+
+## AMENDMENT v3-5 — 2026-09-25
+
+Made after Task 14b-prep compiled the expert lists, before any
+leaderboard or Referee 2 computation.
+
+### v3-5.1 Verification of the compiled lists
+Euro 2024 was verified independently by the research lead against the
+UEFA source before the task ran, and matches exactly. Euro 2020, MLS
+2023 and both Ligue 1 XIs also check out.
+
+### v3-5.2 Bundesliga 2023/24 source rejected and replaced
+The compiled source (bundesliga.com "Team of the Season presented by
+EA FC 24") weights FAN votes at 40%, clubs 30% and experts 30%. The
+brief excluded fan-voted XIs, so it is disqualified.
+Replacement: the VDV (Vereinigung der Vertragsfußballspieler, the
+German players' union) Bundesliga Team of the Season 2023/24 — the
+direct counterpart of UNFP, and preference level 2 in the brief.
+The eleven: Gregor Kobel (GK); Jeremie Frimpong, Jonathan Tah,
+Waldemar Anton, Alejandro Grimaldo (DF); Granit Xhaka, Florian Wirtz,
+Jamal Musiala, Xavi Simons (MF); Serhou Guirassy, Harry Kane (FW).
+Source: https://fcbayern.com/en/news/2024/09/bundesliga-team-of-the-season-2023-24-kane-and-musiala-receive-vdv-awards
+Noted: this URL is a secondary report of the union's selection, the
+same situation as the Ligue 1 rows, where UNFP's selections are cited
+via culturepsg.com and footmercato.net. Recorded, not hidden.
+
+### v3-5.3 Benchmark heterogeneity is a stated limitation
+The selections come from four different kinds of body: UEFA technical
+observers (Euro 2020, Euro 2024), players' unions (Ligue 1 x2,
+Bundesliga), a league office (MLS 2023) and a single newspaper's
+journalist XI (World Cup 2022, Sky Sports — FIFA publishes no official
+team of the tournament). La Liga 2020/21 has no qualifying selection
+and is excluded.
+Coverage: 7 of 8 competition-seasons, 77 selected players.
+This heterogeneity is reported in the paper as a limitation of
+Referee 2. It is not corrected for, since any weighting would be our
+judgement substituted for the sources'.
+
+### v3-5.4 World Cup 2022's weaker provenance is reported inline
+Wherever the Referee 2 result is stated, the World Cup row must be
+identifiable, and a sensitivity excluding it must be reported, since a
+journalist XI is the weakest source in the set and the World Cup
+contributes the largest share of qualifying units.
