@@ -109,16 +109,16 @@ None from `task-15-engine-v2.md`'s Steps 0-7 or hard rules. Six implementation c
 3. Section 7 of the rebuild spec (what runs afterward: reliability/separation gates, outcome validation, then Study A/B/leaderboards, Study C only if Execution survives) is not part of this task. Should T6 (deferred here) be folded into whichever task runs that reliability/separation gate step next, since it needs per-player Decision anyway?
 
 ## 7. Files produced
-- `src/engine_v2/__init__.py`, `geometry.py`, `common.py` — package scaffold and shared infra. Committed, commit `<pending>`.
-- `src/engine_v2/grid.py`, `features.py`, `test_lane_congestion.py` — Steps 2-3. Committed, commit `<pending>`.
-- `src/engine_v2/pass_success_v2.py` — Step 4. Committed, commit `<pending>`.
-- `src/engine_v2/value_models.py` — Step 5. Committed, commit `<pending>`.
-- `src/engine_v2/ev_policy.py` — Step 6. Committed, commit `<pending>`.
-- `src/engine_v2/test_t4_synthetic.py`, `falsification.py` — Step 7. Committed, commit `<pending>`.
+- `src/engine_v2/__init__.py`, `geometry.py`, `common.py` — package scaffold and shared infra. Committed, commit `4511d9f`.
+- `src/engine_v2/grid.py`, `features.py`, `test_lane_congestion.py` — Steps 2-3. Committed, commit `4511d9f`.
+- `src/engine_v2/pass_success_v2.py` — Step 4. Committed, commit `4511d9f`.
+- `src/engine_v2/value_models.py` — Step 5. Committed, commit `4511d9f`.
+- `src/engine_v2/ev_policy.py` — Step 6. Committed, commit `4511d9f`.
+- `src/engine_v2/test_t4_synthetic.py`, `falsification.py` — Step 7. Committed, commit `4511d9f`.
 - `docs/ENGINE_AUDIT.md`, `docs/specs/engine-v2-rebuild.md` — committed alone at Step 0, commit `281b3c7`, SHA-256 `8351717f41bd3678620678cc0bfa9b76c673159ad8bd12dfa36eca282484c876` and `6dffc689c1746ca481fd9d35399b0758ca031e57ac8711b261a4b8ce5e1dd837` respectively.
 - `docs/DECISIONS.md` (D-015 appended) — committed together with the above at Step 0, commit `281b3c7`.
-- `docs/specs/task-15-engine-v2.md` — the executed task spec. Committed, commit `<pending>`.
-- `docs/results/15-engine-v2-build.md` — this page. Committed, commit `<pending>`.
+- `docs/specs/task-15-engine-v2.md` — the executed task spec. Committed, commit `4511d9f`.
+- `docs/results/15-engine-v2-build.md` — this page. Committed, commit `4511d9f`.
 - Data (not committed, `data/`): `data/processed/engine_v2/options_parts/*.parquet` (2.0GB), `options_scored/*.parquet` (2.6GB), `options_ev/*.parquet` (4.2GB), `pass_success_model.json`, `value_model_for.json`, `value_model_against.json`, `policy_model.json`, `value_model_rows.parquet`; `data/engine_v2_step{2,4,5,6,7}_*.json` — step summaries (all numbers in Section 3 come from these).
 
 ## 8. Confidence
