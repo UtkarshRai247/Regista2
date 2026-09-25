@@ -164,16 +164,16 @@ None from `task-17-engine-v2-validation.md`'s Steps 0-5 or hard rules. Construct
 3. Step 1's x=30 disagreement (Section 5) — worth a dedicated defensive-third diagnostic in a future task, or is one weak, non-monotonic disagreement out of five locations sufficient grounds to close this out as "the model is right, with one unresolved zone"?
 
 ## 7. Files produced
-- `src/engine_v2/validation_common.py` — ported shared infra (spearman_brown, fit_ols, per_pass_reference_flags, load_matches_meta, zone_of). Committed, commit `<pending>`.
-- `src/engine_v2/t2_direction_check.py` — Step 1. Committed, commit `<pending>`.
-- `src/engine_v2/policy_score.py` — Step 2. Committed, commit `<pending>`.
-- `src/engine_v2/decision_execution_risk.py` — Step 3. Committed, commit `<pending>`.
-- `src/engine_v2/reliability_t6.py` — Step 4. Committed, commit `<pending>`.
-- `src/engine_v2/outcome_validation.py` — Step 5. Committed, commit `<pending>`.
+- `src/engine_v2/validation_common.py` — ported shared infra (spearman_brown, fit_ols, per_pass_reference_flags, load_matches_meta, zone_of, match_competition_lookup). Committed, commit `ac1e87c`.
+- `src/engine_v2/t2_direction_check.py` — Step 1. Committed, commit `ac1e87c`.
+- `src/engine_v2/policy_score.py` — Step 2. Committed, commit `ac1e87c`.
+- `src/engine_v2/decision_execution_risk.py` — Step 3. Committed, commit `ac1e87c`.
+- `src/engine_v2/reliability_t6.py` — Step 4. Committed, commit `ac1e87c`.
+- `src/engine_v2/outcome_validation.py` — Step 5. Committed, commit `ac1e87c`.
 - `data/engine_v2_step{1,2,3,4,5}_*.json` — step summaries (all numbers in Section 3 come from these). Not committed (data/).
 - `data/processed/engine_v2/pass_policy_summary.parquet`, `pass_der.parquet`, `player_season_der.parquet` — per-pass and per-player-season Decision/Execution/Risk tables. Not committed (data/); the per-player-season table carries `player_id` but is never displayed with names or ranked anywhere in this task's output.
 - `docs/specs/task-17-engine-v2-validation.md` — the executed task spec, committed alone, commit `f576247`.
-- `docs/results/17-engine-v2-validation.md` — this page. Committed, commit `<pending>`.
+- `docs/results/17-engine-v2-validation.md` — this page. Committed, commit `ac1e87c`.
 
 ## 8. Confidence
 High for Steps 1, 3, 4 (deterministic construction, T6 clears its threshold with a wide margin, the reliability curve is clean and monotonic). Moderate-to-low for Step 5's headline reversal specifically: the regressions themselves are mechanically sound (same specifications, same clustering, same standardization as v1, verified against v1's published numbers spec-by-spec), but Step 2's diffuseness finding is a genuine, severe, pre-specified caveat on what Decision is actually measuring, and this task's hard rules forbid investigating how much of Section 3's reversal is attributable to the EV fix versus the diffuse baseline. The weakest link is exactly this: a positive, highly significant outcome-validation result riding on a Decision metric this task's own Step 2 flagged as possibly not behavioral.
