@@ -167,3 +167,15 @@ Date: 2026-09-20
 Decision: Study A is run on a match-level 50/50 split, seed 20260920,
 committed before any Study A statistic exists.
 Reversible? No.
+
+## D-015 — Engine v1 superseded
+Date: 2026-09-25
+Decision: The engine built in Task 01 is superseded. All option-level
+and player-level results under plans v2 and v3 are withdrawn as
+measurements, per docs/ENGINE_AUDIT.md (five defects). Results pages
+remain as the historical record and are not edited.
+Reason: EV was algebraically a risk score; the value model could not see
+defenders; Execution was a completion residual; the scored destination
+was often not the pass played; several feature and option-space defects.
+Alternatives rejected: patching the identification bug alone.
+Reversible? No.
