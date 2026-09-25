@@ -153,3 +153,89 @@ in section 2-4 are the module.
 If the task exceeds 3 hours of wall clock, it stops and reports whatever
 is complete. The engine rebuild takes precedence over module
 completeness.
+
+---
+
+## AMENDMENT T-2 — 2026-09-26
+
+The author has lifted T-1.3's no-diagnosis rule for this one pass. Scope
+is fixed here: ONE diagnostic task and ONE redesign, decided by the
+existing gate. After that the module ships as-is, whatever the verdicts.
+
+### T-2.1 What is wrong with pace_delta and tempo_variation
+Found by reading src/tempo/possessions.py and src/tempo/metrics.py.
+
+(a) CONTAMINATION BY THE WITHDRAWN ENGINE. possessions.py builds
+sequences from passes_situation.parquet — the 171,618 angle-MATCHED
+passes, not the 289,001 open-play passes. So the rhythm metrics inherit
+engine v1's matcher, which dropped 32% of passes non-randomly (incomplete
+passes at 1.6x the rate, congested-area passes via the ambiguity rule).
+The module is therefore NOT independent of the audited engine, contrary
+to what the tempo plan asserts. time_on_ball is unaffected — it was
+built from raw events.
+
+(b) A RATIO WITH A TINY DENOMINATOR. pace = n_passes / (time from first
+to last pass in the sequence). For a 3-pass sequence the denominator can
+be under a second, so pace has a heavy right tail and a handful of
+sequences dominate every average built on it. It should also be
+intervals, not passes, over duration: (n-1)/duration.
+
+(c) NO ON-PITCH FILTER. The "without him" comparison set includes
+sequences played while the player was substituted off or not yet on.
+For a 60-minute player, a third of the match's sequences enter the
+comparison as if he had chosen not to be involved.
+
+(d) SPLIT GRANULARITY vs SAMPLE. pace reliability splits at MATCH level.
+Tournament units have 3-7 matches, so each half is 2-3 matches. Much of
+the measured unreliability may be the split, not the metric.
+tempo_variation compounds everything above: it is the standard deviation
+OF the ratio in (b), a second moment of a heavy-tailed quantity.
+
+### T-2.2 Diagnostic, run once, four checks
+  D1 Contamination: rebuild sequences from ALL open-play passes and
+     report how pace and n_passes change against the current version.
+  D2 Ratio noise: distribution of pace; share of sequences under 3
+     seconds; the same figures using (n-1)/duration.
+  D3 On-pitch: share of "without" sequences occurring while the player
+     was off the pitch, from substitution events.
+  D4 Split granularity: recompute pace_delta reliability splitting at
+     SEQUENCE level, everything else unchanged, to isolate (d).
+No interpretation, no further branching. These four, then stop.
+
+### T-2.3 Redesign, one attempt, pre-specified now
+pace_delta and tempo_variation are replaced, not patched:
+
+  MOVE-ON SPEED. For each of the player's open-play passes, the interval
+  to his team's NEXT open-play pass in the same possession. Model
+  log(interval) with fixed effects for match x team, passer zone,
+  under_pressure and pass distance; take the player's mean residual.
+  Negative means the ball moves on faster after him than context
+  predicts. Unit of observation is a PASS, not a match, so a tournament
+  player contributes hundreds of observations instead of four.
+
+  HOLD VARIATION. Standard deviation of the player's residual
+  time_on_ball, residualised on the same fixed effects. Replaces
+  tempo_variation's second moment of a noisy ratio with a second moment
+  of a quantity already shown reliable at 0.94.
+
+Both are built from ALL open-play passes, never the matched subset.
+Both are split at PASS level, consistent with the usable metrics.
+
+### T-2.4 The gate is unchanged and final
+Section 5's thresholds apply as written: USABLE >= 0.70 at 200,
+PROVISIONAL 0.50-0.70, NOT MEASURABLE below 0.50. If the redesigned
+metrics fail, the module ships with median_time_on_ball, one_touch_share
+and pressure_delta, plus one paragraph stating that rhythm effects were
+not measurable at these sample sizes. No third attempt.
+
+### T-2.5 Role confound in the usable metrics
+The ten longest holders are all centre-backs and the fastest releasers
+are all forwards, so the usable metrics substantially encode position.
+Every tempo metric is therefore ALSO reported as a within-position-group
+z-score, alongside the raw value. This is presentation, not a new metric.
+
+### T-2.6 pressure_delta is described honestly, not fixed
+It correlates -0.858 with median_time_on_ball, close to arithmetic: a
+player who holds the ball longer has more room to drop, and nobody drops
+below zero. It stays PROVISIONAL and is described as a restatement of
+baseline hold time rather than as composure. No attempt to repair it.
