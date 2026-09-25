@@ -106,15 +106,15 @@ None from `task-16b-tempo-redesign.md`'s Steps 0-4 or hard rules. Three implemen
 None. Amendment T-2 and `task-16b-tempo-redesign.md` fully specified every step; the three items in Section 4 are disclosed implementation choices, not open questions.
 
 ## 7. Files produced
-- `src/tempo/redesign_diagnostic.py` — Step 1: D1-D4. Committed, commit `<pending>`.
-- `src/tempo/redesign_metrics.py` — Step 2: MOVE_ON_SPEED/HOLD_VARIATION construction and regression. Committed, commit `<pending>`.
-- `src/tempo/redesign_reliability.py` — Step 3: the gate, reusing `reliability.reliability_sweep_pass_level` unmodified. Committed, commit `<pending>`.
-- `src/tempo/redesign_final.py` — Step 4: final five-metric table, correlations, leaderboards. Committed, commit `<pending>`.
+- `src/tempo/redesign_diagnostic.py` — Step 1: D1-D4. Committed, commit `9a1df7b`.
+- `src/tempo/redesign_metrics.py` — Step 2: MOVE_ON_SPEED/HOLD_VARIATION construction and regression. Committed, commit `9a1df7b`.
+- `src/tempo/redesign_reliability.py` — Step 3: the gate, reusing `reliability.reliability_sweep_pass_level` unmodified. Committed, commit `9a1df7b`.
+- `src/tempo/redesign_final.py` — Step 4: final five-metric table, correlations, leaderboards. Committed, commit `9a1df7b`.
 - `data/tempo_step1b_diagnostic.json`, `data/tempo_step2b_redesign.json`, `data/tempo_step3b_reliability.json`, `data/tempo_step4b_final.json` — step summaries (all numbers in Section 3 come from these). Not committed (data/).
 - `data/processed/tempo_redesign_metrics.parquet`, `tempo_redesign_move_residuals.parquet`, `tempo_redesign_hold_residuals.parquet` — per-player and per-pass redesigned-metric tables. Not committed (data/).
 - `docs/specs/analysis-plan-tempo.md` (Amendment T-2) — committed alone at Step 0, commit `b210ce5`, SHA-256 `49734efdc88e9772bce41286f9640caeb5be1c1b2ad5403317ca20bf5e2ccc58`.
-- `docs/specs/task-16b-tempo-redesign.md` — the executed task spec. Committed, commit `<pending>`.
-- `docs/results/16b-tempo-redesign.md` — this page. Committed, commit `<pending>`.
+- `docs/specs/task-16b-tempo-redesign.md` — the executed task spec. Committed, commit `9a1df7b`.
+- `docs/results/16b-tempo-redesign.md` — this page. Committed, commit `9a1df7b`.
 
 ## 8. Confidence
 High for D1-D4 (deterministic recomputation, all four confirm the amendment's stated hypotheses without needing any judgment call) and for the two redesigned metrics' gate verdicts (both clear 0.70 well within margin and rise monotonically with more data, the same pattern the two Task-16 USABLE metrics showed). Lower confidence on interpretation: the redesign's low within-R² means the "controls" are weak, so move_on_speed/hold_variation are reliable in the split-half sense but still reflect a lot of unmodeled context; and D4's dramatic reliability jump from a mere split-granularity change is a reminder that reliability numbers in this module are sensitive to construction choices in ways not fully explored even now (T-1.4/T-2.4 both bar further exploration, so this is disclosed as a limitation, not investigated further).
