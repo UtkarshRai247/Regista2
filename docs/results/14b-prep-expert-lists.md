@@ -43,10 +43,10 @@ Recorded as NO LIST rather than using any of the above.
 3. Section 4.3's diacritic-loss issue means this CSV should be checked character-by-character against the live pages, not just for the right players — some names as recorded may not exactly match the source's own spelling.
 
 ## 7. Files produced
-- `data/expert_lists/selections.csv` — the compiled list, printed in full in this task's chat reply. Committed (a new `.gitignore` allowlist exception was needed and added).
-- `.gitignore` — one new allowlist exception for `data/expert_lists/selections.csv`, following the existing pattern.
-- `docs/specs/task-14b-prep-expert-lists.md` — committed with this results page.
-- `docs/results/14b-prep-expert-lists.md` — this page.
+- `data/expert_lists/selections.csv` — the compiled list, printed in full in this task's chat reply. Committed together with the rest of this batch, commit `3fe3a77`.
+- `.gitignore` — one new allowlist exception for `data/expert_lists/selections.csv`, following the existing pattern. Committed, commit `3fe3a77`.
+- `docs/specs/task-14b-prep-expert-lists.md` — committed with this results page, commit `3fe3a77`.
+- `docs/results/14b-prep-expert-lists.md` — this page. Committed, commit `3fe3a77`.
 
 ## 8. Confidence
 Moderate. The rosters themselves for the 7 covered competition-seasons are corroborated by at least a second independent mention in every case (visible in the search results even where only one page was fetched per the "one source per competition-season" rule), so the player *sets* are very likely correct. The two weakest points are exactly the ones flagged above: the diacritic fidelity of individual name spellings (Section 4.3), and whether La Liga 2020/21's NO LIST verdict should instead fall back to the Football365 outlet (Section 6.1) — both are handed to the research lead's verification pass by design, which is what this task exists to support.
