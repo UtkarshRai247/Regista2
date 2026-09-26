@@ -164,13 +164,13 @@ None from `task-19-offside-fix.md`'s Steps 0-4 or hard rules. One disclosed refi
 3. Section 3's finding that dropping offside filtering INCREASED outcome-validation effect sizes, despite lowering Decision's own reliability, is counter to a naive expectation that a more reliable metric would show a cleaner outcome relationship. Is this worth flagging for the paper as its own finding, or treated purely as incidental to the calibration work in this task?
 
 ## 7. Files produced
-- `src/engine_v2/offside_diagnostic.py` — Steps 1-2. Committed, commit `<pending>`.
-- `src/engine_v2/policy_baseline_fix_v2.py`, `policy_score_v4.py`, `step4_regate.py` — Step 3. Committed, commit `<pending>`.
-- `src/engine_v2/crossfit_v2.py`, `outcome_validation_crossfit_v2.py` — Step 4. Committed, commit `<pending>`.
+- `src/engine_v2/offside_diagnostic.py` — Steps 1-2. Committed, commit `9974140`.
+- `src/engine_v2/policy_baseline_fix_v2.py`, `policy_score_v4.py`, `step4_regate.py` — Step 3. Committed, commit `9974140`.
+- `src/engine_v2/crossfit_v2.py`, `outcome_validation_crossfit_v2.py` — Step 4. Committed, commit `9974140`.
 - `data/engine_v2_step1_offside_diagnostic.json`, `engine_v2_step2_offside_calibration.json`, `engine_v2_step3_policy_baseline_fix_v2.json`, `engine_v2_step3_recompute.json`, `engine_v2_step3_regate.json`, `engine_v2_step4_crossfit.json`, `engine_v2_step4_outcome_validation_crossfit.json` — step summaries (all numbers in Section 3 come from these). Not committed (data/).
 - `data/processed/engine_v2/offside_diagnostic_table.parquet`, `pass_policy_summary_v4.parquet`, `pass_der_v4.parquet`, `pass_der_crossfit_v2.parquet` — intermediate/final per-pass tables for this task's re-run. Not committed (data/).
 - `docs/specs/task-19-offside-fix.md` — the executed task spec, committed alone, commit `8641c5e`.
-- `docs/results/19-offside-fix.md` — this page. Committed, commit `<pending>`.
+- `docs/results/19-offside-fix.md` — this page. Committed, commit `9974140`.
 
 ## 8. Confidence
 High for Step 1/2 (deterministic ground-truth comparison, the degenerate-K refinement is disclosed and verified not to change the ultimate outcome, the attacking-half/own-half split is a clean and unambiguous confirmation of the diagnosed cause). High for Step 3's mechanical execution (coverage rose exactly as predicted; T6 still clears its gate). Moderate for what this means going forward: T6's margin over the 0.60 gate is now much thinner than in Task 17 (0.780→0.623), and median effective options (95.1) is close enough to the 100 "behavioral" cutoff that a small change in a future task could flip the diffuseness verdict. The outcome-validation battery's continued positive, mostly-significant result across three independent robustness checks (Task 18's restriction fix, this task's offside fix, both under cross-fitting) is the strongest evidence yet that engine v2's reversal of engine v1's finding is not an artifact of any single construction choice — but the reliability trend (Section 5, question 2) is a real, unresolved risk for whatever comes after this "last engine fix."
