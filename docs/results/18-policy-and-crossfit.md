@@ -137,13 +137,13 @@ None from `task-18-policy-crossfit.md`'s Steps 0-3 or hard rules. Disclosed cons
 3. **The one specification that loses significance under cross-fitting (xG, H-O2, p=0.251)** is also the one with the most controls (public metrics + fixed effects). Is this a meaningful signal that the effect is partly explained by those controls once in-sample flattery is removed, or is it more simply explained by reduced power (the richest specification has the most parameters relative to n=583)? Not adjudicated here, per the hard rule against interpretation.
 
 ## 7. Files produced
-- `src/engine_v2/policy_baseline_fix.py` — Step 1. Committed, commit `<pending>`.
-- `src/engine_v2/policy_score_v2.py`, `src/engine_v2/step2_regate.py` — Step 2. Committed, commit `<pending>`.
-- `src/engine_v2/crossfit.py`, `src/engine_v2/outcome_validation_crossfit.py` — Step 3. Committed, commit `<pending>`.
+- `src/engine_v2/policy_baseline_fix.py` — Step 1. Committed, commit `833e568`.
+- `src/engine_v2/policy_score_v2.py`, `src/engine_v2/step2_regate.py` — Step 2. Committed, commit `833e568`.
+- `src/engine_v2/crossfit.py`, `src/engine_v2/outcome_validation_crossfit.py` — Step 3. Committed, commit `833e568`.
 - `data/engine_v2_step1_policy_baseline_fix.json`, `engine_v2_step2_recompute.json`, `engine_v2_step2b_regate.json`, `engine_v2_step3_crossfit.json`, `engine_v2_step3_outcome_validation_crossfit.json` — step summaries (all numbers in Section 3 come from these). Not committed (data/).
 - `data/processed/engine_v2/pass_policy_summary_v2.parquet`, `pass_der_v2.parquet`, `pass_der_crossfit.parquet` — per-pass tables for the calibrated-policy and cross-fitted Decision/Execution/Risk. Not committed (data/).
 - `docs/specs/task-18-policy-crossfit.md` — the executed task spec, committed alone, commit `d5404eb`.
-- `docs/results/18-policy-and-crossfit.md` — this page. Committed, commit `<pending>`.
+- `docs/results/18-policy-and-crossfit.md` — this page. Committed, commit `833e568`.
 
 ## 8. Confidence
 High for Step 1 (deterministic, judged only on held-out policy metrics as instructed, both pre-specified criteria clearly met) and for Step 2's T6 re-gate (clean margin over the 0.60 threshold). High for Step 3's mechanical execution (out-of-fold AUCs are sane and in the expected direction/magnitude versus Task 09's own precedent; every regression specification matches Task 17's exactly, verified coefficient-by-coefficient). Moderate for what Step 3 means substantively: the reversal from engine v1 survives cross-fitting in sign and (mostly) in significance, which is a real, positive finding for engine v2 — but the ~30-45% attenuation is large enough that a reader should not treat Task 17's original magnitudes as the honest estimate. The weakest link in the whole task is the offside-flag anomaly (Section 5/6): it caps the restricted policy's real-world applicability at 54.5% coverage and was outside this task's authority to fix.
