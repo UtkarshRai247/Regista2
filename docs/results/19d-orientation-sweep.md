@@ -189,14 +189,14 @@ None from `task-19d-orientation-sweep.md`'s Steps 0-5 or hard rules. Disclosed c
 3. T6's five-task decline (0.780→0.704→0.623→0.658→0.615, Section 9) — each individual fix has been independently justified and gate-passing, but is the CUMULATIVE trend itself worth a dedicated diagnostic before any further engine changes are made, given how thin the current margin is?
 
 ## 11. Files produced
-- `src/engine_v2/features.py`, `value_models.py` — the two authorized one-token fixes. Committed, commit `<pending>`.
-- `src/engine_v2/value_models_v2.py`, `ev_recompute_v2.py`, `policy_score_v6.py`, `step6_regate.py` — Step 3. Committed, commit `<pending>`.
-- `src/engine_v2/falsification_v2.py` — Step 4. Committed, commit `<pending>`.
-- `src/engine_v2/crossfit_v4.py`, `outcome_validation_crossfit_v4.py` — Step 5. Committed, commit `<pending>`.
+- `src/engine_v2/features.py`, `value_models.py` — the two authorized one-token fixes. Committed, commit `20ec298`.
+- `src/engine_v2/value_models_v2.py`, `ev_recompute_v2.py`, `policy_score_v6.py`, `step6_regate.py` — Step 3. Committed, commit `20ec298`.
+- `src/engine_v2/falsification_v2.py` — Step 4. Committed, commit `20ec298`.
+- `src/engine_v2/crossfit_v4.py`, `outcome_validation_crossfit_v4.py` — Step 5. Committed, commit `20ec298`.
 - `data/engine_v2_step3_value_models_v2.json`, `engine_v2_step3_recompute_v4.json`, `engine_v2_step3_regate_v4.json`, `engine_v2_step4_falsification_v2.json`, `engine_v2_step4_crossfit_v4.json`, `engine_v2_step5_outcome_validation_crossfit_v4.json` — step summaries (all numbers in Sections 5-7 come from these). Not committed (data/).
 - `data/processed/engine_v2/value_model_for_v2.json`, `value_model_against_v2.json`, `value_model_rows_v2.parquet`, `options_ev_v2/*.parquet`, `pass_policy_summary_v6.parquet`, `pass_der_v6.parquet`, `pass_der_crossfit_v4.parquet` — new-path model/data artifacts. Not committed (data/).
 - `docs/specs/task-19d-orientation-sweep.md` — the executed task spec, committed alone, commit `362cda3`.
-- `docs/results/19d-orientation-sweep.md` — this page. Committed, commit `<pending>`.
+- `docs/results/19d-orientation-sweep.md` — this page. Committed, commit `20ec298`.
 
 ## 12. Confidence
 High for Step 1 (a mechanical, exhaustive grep-and-read sweep with every hit resolved to a verdict; the direction-inference primitive itself was independently re-verified against its geometric definition, not just assumed correct). High for Step 2/3's mechanical execution (exactly two lines changed repo-wide; retraining is deterministic and AUC/calibration barely moved, as expected for a fix that corrects one feature among many). Moderate-to-low for what Steps 4-5 mean substantively: T2/T3/T6 all still pass, but T4's first-ever failure and two outcome-validation specifications' first-ever loss of significance are real, not artifacts — and they arrive on top of a five-task reliability decline that is now uncomfortably close to its gate. The weakest link in the whole six-task chain is no longer any single known bug (both now-found instances of this exact bug are fixed, and the sweep found no further occurrences) but the cumulative erosion pattern itself, which this task's hard rules correctly forbid investigating further here.
