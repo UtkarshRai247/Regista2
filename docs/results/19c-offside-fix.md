@@ -180,15 +180,15 @@ None from `task-19c-offside-fix.md`'s Steps 0-4 or hard rules. `features.py` was
 3. Goals-H-O2's loss of significance (Section 5) — worth flagging as a specific number to watch if a future task investigates the `defensive_line_x` bug's own downstream effects, since H-O2's specification is exactly the one most likely to be sensitive to any change in the value models' feature construction.
 
 ## 7. Files produced
-- `src/engine_v2/features.py` — the one authorized line change (`opp_nx_sorted[1]` → `opp_nx_sorted[-2]` in `compute_candidate_features`). Committed, commit `<pending>`.
-- `src/engine_v2/offside_diagnostic_v2.py` — Step 2. Committed, commit `<pending>`.
-- `src/engine_v2/offside_v2.py` — shared corpus-wide rule computation, Step 3-4. Committed, commit `<pending>`.
-- `src/engine_v2/policy_baseline_fix_v3.py`, `policy_score_v5.py`, `step5_regate.py` — Step 3. Committed, commit `<pending>`.
-- `src/engine_v2/crossfit_v3.py`, `outcome_validation_crossfit_v3.py` — Step 4. Committed, commit `<pending>`.
+- `src/engine_v2/features.py` — the one authorized line change (`opp_nx_sorted[1]` → `opp_nx_sorted[-2]` in `compute_candidate_features`). Committed, commit `02f6089`.
+- `src/engine_v2/offside_diagnostic_v2.py` — Step 2. Committed, commit `02f6089`.
+- `src/engine_v2/offside_v2.py` — shared corpus-wide rule computation, Step 3-4. Committed, commit `02f6089`.
+- `src/engine_v2/policy_baseline_fix_v3.py`, `policy_score_v5.py`, `step5_regate.py` — Step 3. Committed, commit `02f6089`.
+- `src/engine_v2/crossfit_v3.py`, `outcome_validation_crossfit_v3.py` — Step 4. Committed, commit `02f6089`.
 - `data/engine_v2_step1_offside_diagnostic_v2.json`, `engine_v2_step2_offside_calibration_v2.json`, `engine_v2_step3_policy_baseline_fix_v3.json`, `engine_v2_step3_recompute_v3.json`, `engine_v2_step3_regate_v3.json`, `engine_v2_step4_crossfit_v3.json`, `engine_v2_step4_outcome_validation_crossfit_v3.json` — step summaries (all numbers in Section 3 come from these). Not committed (data/).
 - `data/processed/engine_v2/offside_diagnostic_table_v2.parquet`, `pass_policy_summary_v5.parquet`, `pass_der_v5.parquet`, `pass_der_crossfit_v3.parquet` — intermediate/final per-pass tables. Not committed (data/).
 - `docs/specs/task-19c-offside-fix.md` — the executed task spec, committed alone, commit `f8b9bbc`.
-- `docs/results/19c-offside-fix.md` — this page. Committed, commit `<pending>`.
+- `docs/results/19c-offside-fix.md` — this page. Committed, commit `02f6089`.
 
 ## 8. Confidence
 High for Steps 1-2 (the worked example makes the bug and fix mechanically unambiguous; the ground-truth re-test is deterministic and directly comparable to Task 19's own numbers). High for Step 3's mechanical execution (T6 clears its gate, coverage/reliability trade-offs land exactly where a "moderate, targeted rule" should relative to the two prior tasks' extremes). Moderate for Step 4's substantive meaning, for the same reason as Task 19: the outcome-validation reversal continues to survive across four independent conditions now (Task 18's restricted, Task 19's unrestricted, Task 19c's corrected-restricted, all cross-fitted), which is meaningfully strong evidence the reversal is not an artifact of any single offside-handling choice — but Section 5's newly-found second bug (`defensive_line_x`) is now the single largest unresolved question mark over every value-model-dependent number in this entire line of work, and this task's hard rules correctly forbade investigating it further here.
