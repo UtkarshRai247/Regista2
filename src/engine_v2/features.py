@@ -101,8 +101,8 @@ def state_features_batch(ball_raw: np.ndarray, passer_raw: np.ndarray, direction
         opponents_ahead_of_ball = (opp_n[:, 0][None, :] > ball_n[:, 0][:, None]).sum(axis=1)
         opp_nx_sorted = np.sort(opp_n[:, 0])
         if N >= 2:
-            defensive_line_x = np.full(K, opp_nx_sorted[1])
-            ball_beyond_defensive_line = ball_n[:, 0] > opp_nx_sorted[1]
+            defensive_line_x = np.full(K, opp_nx_sorted[-2])
+            ball_beyond_defensive_line = ball_n[:, 0] > opp_nx_sorted[-2]
         else:
             defensive_line_x = np.full(K, np.nan)
             ball_beyond_defensive_line = np.zeros(K, dtype=bool)

@@ -91,7 +91,7 @@ def frame_ahead_features(frame: pd.DataFrame, ball_raw: np.ndarray, direction: i
         opponents_within_10u = int((d_opp <= 10.0).sum())
         opp_nx_sorted = np.sort(opp_n[:, 0])
         if len(opp_nx_sorted) >= 2:
-            defensive_line_x = float(opp_nx_sorted[1])
+            defensive_line_x = float(opp_nx_sorted[-2])
             ball_beyond_defensive_line = bool(ball_n[0] > defensive_line_x)
         else:
             defensive_line_x, ball_beyond_defensive_line = np.nan, None
