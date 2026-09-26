@@ -167,7 +167,7 @@ def compute_candidate_features(passer_raw: np.ndarray, candidates_raw: np.ndarra
         opponents_between_ball_and_destination = ((opp_n[:, 0][None, :] > lo) & (opp_n[:, 0][None, :] < hi)).sum(axis=1)
         opp_nx_sorted = np.sort(opp_n[:, 0])
         if N >= 2:
-            second_rearmost_nx = opp_nx_sorted[1]
+            second_rearmost_nx = opp_nx_sorted[-2]
             offside_destination = (cand_n[:, 0] > second_rearmost_nx) & (cand_n[:, 0] > passer_n[0])
             offside_indeterminate = np.zeros(K, dtype=bool)
         else:
