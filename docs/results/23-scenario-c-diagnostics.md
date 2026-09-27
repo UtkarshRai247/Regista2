@@ -292,9 +292,8 @@ corpus."
   committed (`data/` is never committed), never written into
   `data/raw/`.
 - `docs/results/23-scenario-c-diagnostics.md` — this file.
-- Commit hashes: `2ce6e5d` (brief alone, Step 0), `<pending>` (this
-  results page + Steps 1–3 scripts + Step 4's holdout-pull script) — to
-  be filled in a follow-up commit per CLAUDE.md rule 9.
+- Commit hashes: `2ce6e5d` (brief alone, Step 0), `f6769bd` (this
+  results page + Steps 1–3 scripts + Step 4's holdout-pull script).
 
 ## 8. Confidence
 High confidence in every number reported: D1/D2/D3 are direct
