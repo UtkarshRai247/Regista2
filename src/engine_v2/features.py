@@ -118,8 +118,16 @@ def state_features_batch(ball_raw: np.ndarray, passer_raw: np.ndarray, direction
     if M > 0:
         team_n = normalize_xy_arr(teammate_src_raw, direction)
         teammates_ahead_of_ball = (team_n[:, 0][None, :] > ball_n[:, 0][:, None]).sum(axis=1)
+        d_team = np.hypot(ball_raw[:, 0][:, None] - teammate_src_raw[:, 0][None, :],
+                           ball_raw[:, 1][:, None] - teammate_src_raw[:, 1][None, :])
+        distance_to_nearest_teammate_u = d_team.min(axis=1)
+        teammates_within_5u = (d_team <= 5.0).sum(axis=1)
+        teammates_within_10u = (d_team <= 10.0).sum(axis=1)
     else:
         teammates_ahead_of_ball = np.zeros(K, dtype=int)
+        distance_to_nearest_teammate_u = np.full(K, np.nan)
+        teammates_within_5u = np.zeros(K, dtype=int)
+        teammates_within_10u = np.zeros(K, dtype=int)
 
     numerical_advantage_ahead = teammates_ahead_of_ball - opponents_ahead_of_ball
 
@@ -132,6 +140,8 @@ def state_features_batch(ball_raw: np.ndarray, passer_raw: np.ndarray, direction
         "opponents_within_5u": opponents_within_5u, "opponents_within_10u": opponents_within_10u,
         "defensive_line_x": defensive_line_x, "ball_beyond_defensive_line": ball_beyond_defensive_line,
         "n_visible_players": np.full(K, n_visible),
+        "distance_to_nearest_teammate_u": distance_to_nearest_teammate_u,
+        "teammates_within_5u": teammates_within_5u, "teammates_within_10u": teammates_within_10u,
     }
 
 

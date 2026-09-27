@@ -69,6 +69,7 @@ STATE_FEATURES = [
     "opponents_ahead_of_ball", "teammates_ahead_of_ball", "numerical_advantage_ahead",
     "distance_to_nearest_opponent_u", "opponents_within_5u", "opponents_within_10u",
     "defensive_line_x", "ball_beyond_defensive_line", "n_visible_players",
+    "distance_to_nearest_teammate_u", "teammates_within_5u", "teammates_within_10u",
 ]
 
 XGB_KWARGS = dict(n_estimators=300, max_depth=5, learning_rate=0.05,
@@ -104,8 +105,14 @@ def frame_ahead_features(frame: pd.DataFrame, ball_raw: np.ndarray, direction: i
     if len(team_raw):
         team_n = normalize_xy_arr(team_raw, direction)
         teammates_ahead = int((team_n[:, 0] > ball_n[0]).sum())
+        d_team = np.hypot(team_raw[:, 0] - ball_raw[0], team_raw[:, 1] - ball_raw[1])
+        distance_to_nearest_teammate_u = float(d_team.min())
+        teammates_within_5u = int((d_team <= 5.0).sum())
+        teammates_within_10u = int((d_team <= 10.0).sum())
     else:
         teammates_ahead = 0
+        distance_to_nearest_teammate_u = np.nan
+        teammates_within_5u = teammates_within_10u = 0
 
     return {
         "opponents_ahead_of_ball": opponents_ahead, "teammates_ahead_of_ball": teammates_ahead,
@@ -114,6 +121,8 @@ def frame_ahead_features(frame: pd.DataFrame, ball_raw: np.ndarray, direction: i
         "opponents_within_5u": opponents_within_5u, "opponents_within_10u": opponents_within_10u,
         "defensive_line_x": defensive_line_x, "ball_beyond_defensive_line": ball_beyond_defensive_line,
         "n_visible_players": len(frame),
+        "distance_to_nearest_teammate_u": distance_to_nearest_teammate_u,
+        "teammates_within_5u": teammates_within_5u, "teammates_within_10u": teammates_within_10u,
     }
 
 
