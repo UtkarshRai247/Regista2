@@ -298,9 +298,8 @@ assumed silently.
   and new summary JSONs under `data/` — not committed, `data/` is never
   committed.
 - `docs/results/25-engine-rebuild-v5.md` — this file.
-- Commit hashes: `5b57c5a` (brief alone, Step 0), `<pending>` (this
-  results page + all Step 1/2 code) — to be filled in a follow-up
-  commit per CLAUDE.md rule 9.
+- Commit hashes: `5b57c5a` (brief alone, Step 0), `40333e6` (this
+  results page + all Step 1/2 code).
 
 ## 8. Confidence
 High confidence in every number reported: each stage reuses an
