@@ -279,9 +279,8 @@ run.**
   `engine_v2_task24_step3_checkpoint.json` — new summary JSONs backing
   Sections 3 and 5 (also under `data/`, not committed).
 - `docs/results/24-direction-fix.md` — this file.
-- Commit hashes: `34aebc3` (brief alone, Step 0), `<pending>` (this
-  results page + Steps 1-3 code) — to be filled in a follow-up commit
-  per CLAUDE.md rule 9.
+- Commit hashes: `34aebc3` (brief alone, Step 0), `10a4f72` (this
+  results page + Steps 1-3 code).
 
 ## 10. Confidence
 High confidence in the evidence (Step 1) and checkpoint (Step 3)
