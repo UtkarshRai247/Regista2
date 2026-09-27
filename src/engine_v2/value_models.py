@@ -69,7 +69,6 @@ STATE_FEATURES = [
     "opponents_ahead_of_ball", "teammates_ahead_of_ball", "numerical_advantage_ahead",
     "distance_to_nearest_opponent_u", "opponents_within_5u", "opponents_within_10u",
     "defensive_line_x", "ball_beyond_defensive_line", "n_visible_players",
-    "distance_to_nearest_teammate_u", "teammates_within_5u", "teammates_within_10u",
 ]
 
 XGB_KWARGS = dict(n_estimators=300, max_depth=5, learning_rate=0.05,
