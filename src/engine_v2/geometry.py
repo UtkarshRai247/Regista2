@@ -26,48 +26,27 @@ GRID_STEP = 4.0
 
 
 def team_period_directions(events: pd.DataFrame) -> dict:
-    """{(team, period): +1 or -1}, +1 = attacks toward increasing x in
-    that period. Inferred per period from where that team's shots
-    concentrate; falls back to the opponent's shots, then to the
-    period-1-to-period-2 switch rule. Ported unchanged from
-    pitch_direction.team_period_directions (drops that function's
-    fallback-count/period-count return values, unused here)."""
+    """{(team, period): +1} for every (team, period) actually present in
+    `events`. FIXED in Task 24: this function used to infer +1/-1 per
+    period by sorting the two teams' mean shot x and assigning -1 to
+    the lower one, on the assumption that StatsBomb event/360
+    coordinates are PITCH-FIXED (teams attacking opposite ends). Direct
+    coordinate evidence (reproduced corpus-wide in
+    `task24_evidence.py`: 99.84% of team-periods have mean shot x > 60,
+    the opponent goalkeeper in shot freeze frames sits at median
+    x=117.5, 99.93% beyond x=100) shows the opposite: StatsBomb
+    coordinates are already TEAM-RELATIVE -- every team attacks toward
+    x=120 in its own events. Under that convention there is nothing to
+    infer: every (team, period) attacks toward increasing x already, so
+    this function now returns +1 for all of them. The old sort-by-mean-
+    shot-x logic was really just noise (it split 646/646, a coin flip)
+    that rotated roughly half of all events 180 degrees for their own
+    team-period. Kept as a dict keyed by (team, period), not a bare
+    constant, so every existing call site (`directions.get((team,
+    period), 1)`) needs no change."""
     teams = [t for t in events["team"].dropna().unique().tolist()]
     periods = sorted(events["period"].dropna().unique().tolist())
-    shots = events[events["type"] == "Shot"]
-    directions = {}
-    period1_dir = None
-    for period in periods:
-        pshots = shots[shots["period"] == period]
-        means = {}
-        for t in teams:
-            tshots = pshots[pshots["team"] == t]
-            locs = [loc[0] for loc in tshots["location"] if loc is not None
-                    and not (isinstance(loc, float) and pd.isna(loc))]
-            if locs:
-                means[t] = sum(locs) / len(locs)
-        if len(means) >= 2:
-            ordered = sorted(means, key=means.get)
-            directions[(ordered[0], period)] = -1
-            directions[(ordered[1], period)] = 1
-        elif len(means) == 1:
-            known_team = next(iter(means))
-            other = [t for t in teams if t != known_team]
-            directions[(known_team, period)] = 1 if means[known_team] > PITCH_X / 2 else -1
-            if other:
-                directions[(other[0], period)] = -directions[(known_team, period)]
-        else:
-            if period1_dir is not None and len(teams) == 2:
-                flip = -1 if period % 2 == 0 else 1
-                directions[(teams[0], period)] = period1_dir[teams[0]] * flip
-                directions[(teams[1], period)] = period1_dir[teams[1]] * flip
-            else:
-                directions[(teams[0], period)] = 1
-                if len(teams) > 1:
-                    directions[(teams[1], period)] = -1
-        if period == 1:
-            period1_dir = {t: directions.get((t, 1), 1) for t in teams}
-    return directions
+    return {(t, p): 1 for t in teams for p in periods}
 
 
 def normalize_xy(x: float, y: float, direction: int) -> tuple:
