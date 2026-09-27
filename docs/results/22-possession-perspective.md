@@ -218,9 +218,8 @@ for existing files shows only the 1-line `STATE_FEATURES` removal in
   Step 0.
 - `docs/results/22-possession-perspective.md` — this file.
 - Commit hashes: `2fd7517` (brief alone, Step 0a), `16b8bcf`
-  (CHAT-HANDOFF.md + task-20 spec, Step 0b), `<pending>` (this results
-  page + Steps 1–2 code) — to be filled in a follow-up commit per
-  CLAUDE.md rule 9.
+  (CHAT-HANDOFF.md + task-20 spec, Step 0b), `f94b9c9` (this results
+  page + Steps 1–2 code).
 
 ## 8. Confidence
 High confidence in the numbers themselves: T-a/T-b/T-c come directly
