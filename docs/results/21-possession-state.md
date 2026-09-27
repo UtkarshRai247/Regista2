@@ -217,9 +217,8 @@ predict.
   committed).
 - `docs/specs/task-21-possession-state.md` — committed alone at Step 0.
 - `docs/results/21-possession-state.md` — this file.
-- Commit hashes: `<pending>` (brief-alone commit, Step 0) / `<pending>`
-  (this results page + Steps 1–2 code) — to be filled in a follow-up commit
-  per CLAUDE.md rule 9.
+- Commit hashes: `6140eeb` (brief-alone commit, Step 0) / `14c6387`
+  (this results page + Steps 1–2 code).
 
 ## 8. Confidence
 High confidence in the Step 3 numbers themselves — they come directly from
