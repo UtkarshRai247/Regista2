@@ -370,9 +370,8 @@ one.
   committed, `data/` is never committed).
 - New summary JSONs under `data/` -- not committed.
 - `docs/results/27-player-results-hardened.md` -- this file.
-- Commit hashes: `b5949ed` (Step 0, brief alone), `<pending>` (this
-  results page + Steps 1-4 code) -- to be filled in a follow-up commit
-  per CLAUDE.md rule 9.
+- Commit hashes: `b5949ed` (Step 0, brief alone), `6be3c2c` (this
+  results page + Steps 1-4 code).
 
 ## 12. Confidence
 High confidence in Steps 1 and 2: both are direct, disclosed
