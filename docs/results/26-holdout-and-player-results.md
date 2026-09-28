@@ -540,10 +540,9 @@ silent:
   and new summary JSONs under `data/` -- not committed, `data/` is
   never committed. `data/raw_holdout/` itself was never modified.
 - `docs/results/26-holdout-and-player-results.md` -- this file.
-- Commit hashes: `<pending>` (Step 0, brief alone), `<pending>` (this
-  results page + Steps 1-5 code) -- to be filled in a follow-up commit
-  per CLAUDE.md rule 9. Step 6 will be committed separately per the
-  brief's own instruction.
+- Commit hashes: `110a620` (Step 0, brief alone), `bc43c81` (this
+  results page + Steps 1-5 code). Step 6 will be committed separately
+  per the brief's own instruction.
 
 ## 12. Confidence
 High confidence in Step 1's gate: it is a genuine out-of-sample test
