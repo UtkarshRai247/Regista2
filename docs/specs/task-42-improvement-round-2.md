@@ -97,3 +97,21 @@ Task 38; praised-list check as Task 41 Step 7.
 
 ## Output
 docs/results/42-improvement-round-2.md (template). Commit per rule 9.
+
+## Correction (gap in the brief, marked as such; 2026-09-28)
+The claim rule requires a positive control on the same rows, but pass
+completion does not exist when the unit is a reception (Step 1's RQ_rel
+tests, Step 2 R2, Step 3 R2). For every reception-unit test, the
+positive control is RETENTION:
+  Y = 1 if the receiver's next on-ball action keeps the ball for the
+      team (PR_keep's definition), else 0;
+  S = the receiver's raw retention rate over ALL his receptions in his
+      OTHER matches (not pressured-only, not context-adjusted),
+      >= 100 receptions elsewhere;
+  g refit on the same reception features with Task 35's function.
+For the press-resistance tests, note on the page that this control
+overlaps in content with PR_keep; it still shows whether the design can
+detect a known reception-level skill on those rows. For PFF receptions
+(Step 3), compute retention from PFF's next possession event by the
+receiver. Pass-unit tests keep the completion control. Record this in
+the deviations section.
