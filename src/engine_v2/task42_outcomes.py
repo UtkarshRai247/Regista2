@@ -86,7 +86,7 @@ def match_outcomes(mid: int) -> tuple:
                     end_x = np.nan
                 fwd = int(keep == 1 and end_x - x[i] >= FWD_MIN)
                 break
-        rows.append({"match_id": mid, "event_id": ev.at[i, "id"], "action": action, "keep": keep, "fwd": fwd})
+        rows.append({"match_id": mid, "event_id": ev.at[i, "id"], "player_id": pl[i], "action": action, "keep": keep, "fwd": fwd})
     return per_event, pd.DataFrame(rows)
 
 

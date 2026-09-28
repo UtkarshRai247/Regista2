@@ -11,6 +11,14 @@ with availability.fit_oof (Task 38's settings); R1 and R2 via
 availability_tests; praised list via Task 41's perm_test (>= 300 moments,
 Task 32 roles via the player map).
 
+Retention control for the R2 reception units (brief correction 4d6405a),
+from PFF's own events: the receiver's next possession event after the
+reception (skipping his initial touch, IT) is his action; an opposing
+possession event first -> keep 0; keep = the action did not fail (PA/CR
+not 'C', or any SH) AND the next possession event after it is by the same
+team. S = the receiver's raw retention over ALL his receptions in his
+other matches (>= 100 elsewhere); g refit on Task 38's reception features.
+
 Run: python src/pff/task42_av_prog.py
 """
 import json
@@ -29,6 +37,8 @@ from task33_step3_f_state import XGB_REGRESSOR_KWARGS  # noqa: E402
 from task32_step4 import assign_roles  # noqa: E402
 from task27_step1_deep_midfield import name_matches  # noqa: E402
 from task41_lists_availability import perm_test, LIST_L, MIN_PFF_MOMENTS  # noqa: E402
+from task32_step5 import leave_one_match_out  # noqa: E402
+from task35_ptest import fe_fit  # noqa: E402
 
 DATA_DIR = Path(__file__).parent.parent.parent / "data"
 LEADERBOARD_V5C_PATH = DATA_DIR / "processed" / "leaderboard_v5c.parquet"
@@ -53,6 +63,28 @@ def attacking_x(mom: pd.DataFrame) -> pd.DataFrame:
                 mx, my = pos[int(pid)]
                 rows.append((gid, idx, pid, sign * mx, sign * ball["x"], float(np.hypot(mx - ball["x"], my - ball["y"]))))
     return pd.DataFrame(rows, columns=["pff_game_id", "event_idx", "pff_player_id", "mate_x_att", "ball_x_att", "d_ball_chk"])
+
+
+def pff_keep(rec: pd.DataFrame) -> pd.Series:
+    out = np.full(len(rec), np.nan)
+    for gid, g in rec.groupby("pff_game_id"):
+        events = json.loads((av.EVENTS_DIR / f"{gid}.json").read_text())
+        poss = [k for k, e in enumerate(events) if (e.get("possessionEvents") or {}).get("possessionEventType")]
+        for row_i, r in zip(g.index, g.itertuples()):
+            later = [k for k in poss if k > r.event_idx][:15]
+            for j, k in enumerate(later):
+                pe, ge = events[k]["possessionEvents"], events[k]["gameEvents"] or {}
+                if ge.get("teamId") != r.team_id:
+                    out[row_i] = 0
+                    break
+                if ge.get("playerId") == r.pff_player_id and pe.get("possessionEventType") != "IT":
+                    t = pe.get("possessionEventType")
+                    failed = (t in ("PA", "CR") and pe.get("passOutcomeType") != "C") or t == "SH"
+                    nxt = later[j + 1] if j + 1 < len(later) else None
+                    same = nxt is not None and (events[nxt].get("gameEvents") or {}).get("teamId") == r.team_id
+                    out[row_i] = int((not failed) and same)
+                    break
+    return pd.Series(out, index=rec.index)
 
 
 def main():
@@ -91,6 +123,32 @@ def main():
         oof[te] = mdl.predict(rec.loc[te, avt.G_FEATURES].astype(float))
     rec["g_oof"] = oof
     r2 = avt.r2(rec, mom, "av_prog", dm_ids)
+    rec["keep"] = pff_keep(rec)
+    sub = rec[rec["keep"].notna()]
+    oofk = np.full(len(rec), np.nan)
+    for k in range(av.N_FOLDS):
+        tr, te = (sub["fold"] != k).values, (rec["fold"] == k).values
+        mdl = xgb.XGBRegressor(**XGB_REGRESSOR_KWARGS).fit(sub.loc[tr, avt.G_FEATURES].astype(float), sub.loc[tr, "keep"])
+        oofk[te] = mdl.predict(rec.loc[te, avt.G_FEATURES].astype(float))
+    rec["g_keep"] = oofk
+    kk = rec.dropna(subset=["keep"])
+    vals = leave_one_match_out(kk[["pff_game_id", "pff_player_id", "keep"]].rename(
+        columns={"pff_game_id": "match_id", "pff_player_id": "player_id", "keep": "decision"}), "player_id", 100)
+    ctrl = rec.rename(columns={"pff_player_id": "player_id", "pff_game_id": "match_id", "team_id": "team"}).merge(
+        vals[["match_id", "player_id", "complement_mean"]], on=["match_id", "player_id"], how="left").rename(
+        columns={"complement_mean": "S_raw"})
+    ctrl["role"] = ctrl["role"].fillna("NONE")
+    ctrl = ctrl[ctrl["role"] != "GK"]
+    test_rows = rec.merge(avt.loo_match_mean(mom, "av_prog"), on=["pff_player_id", "pff_game_id"], how="left")
+    test_ids = test_rows[test_rows["S_raw"].notna() & (test_rows["role"].fillna("NONE") != "GK")][["pff_game_id", "event_idx"]]
+    ctrl = ctrl.merge(test_ids.rename(columns={"pff_game_id": "match_id"}), on=["match_id", "event_idx"], how="inner")
+    r2["control_all_outfield"] = fe_fit(ctrl, "keep", "g_keep")
+    r2["control_DM"] = fe_fit(ctrl[ctrl["player_id"].isin(dm_ids)], "keep", "g_keep")
+    r2["keep_rate"] = float(rec["keep"].mean())
+    r2["n_keep_defined"] = int(rec["keep"].notna().sum())
+    for k in ("control_all_outfield", "control_DM"):
+        c = r2[k]
+        print(f"  {k}: n={c['n_rows']} players={c['n_players']} coef100={c['coef_per_sd_per100']:+.3f} p={c['p']:.3g}")
     for k in ("PRIMARY_all_outfield", "DM_report"):
         r = r2[k]
         print(f"  R2 {k}: n={r['n_rows']} players={r['n_players']} coef100={r['coef_per_sd_per100']:+.4f} "

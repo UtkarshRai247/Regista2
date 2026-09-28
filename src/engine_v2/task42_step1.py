@@ -8,9 +8,10 @@ Units and S:
     by the Task 26 Step 2 re-run, asserted identical to the stored v2 files);
   receptions (Task 34 rows with Task 35 (d)'s origin features): S = RQ_rel.
 g refit per outcome with task35_ptest.crossfit_g. Model task35_ptest.fe_fit.
-Controls on the same rows: pass completion (passes) or, by the author's
-decision, retention (receptions): Y = keep of the receiver's next action,
-S = his other-match retention rate (>= 100 elsewhere), g refit.
+Controls on the same rows: pass completion (passes) or retention
+(receptions; the brief's correction 4d6405a): Y = keep of the receiver's
+next action, S = his raw retention rate over ALL his completed receptions
+in his OTHER matches (>= 100 elsewhere), g refit on the reception features.
 Y_F3 uses only units starting at x < 80.
 
 Run: python src/engine_v2/task42_step1.py
@@ -28,6 +29,7 @@ from task32_step4 import assign_roles
 from crossfit import FOLDS_PATH
 from task39_tempo_ptest import s_for_rows, V2_MOVE, V2_HOLD, rm
 from task42_outcomes import match_outcomes
+from task32_step5 import leave_one_match_out
 
 warnings.filterwarnings("ignore")
 
@@ -52,6 +54,15 @@ def tempo_move_with_ids() -> pd.DataFrame:
         assert len(new) == len(old) and (new["player_id"].values == old["player_id"].values).all()
         assert np.allclose(new["residual"].values, old["residual"].values, rtol=0, atol=1e-12)
     return move_df[["match_id", "event_id", "player_id", "residual"]]
+
+
+def retention_s(rows: pd.DataFrame, rc_act: pd.DataFrame) -> pd.DataFrame:
+    """Brief correction 4d6405a: receiver's raw retention rate over ALL his completed receptions in his
+    OTHER matches (not pressured-only, not context-adjusted), >= 100 elsewhere."""
+    a = rc_act.dropna(subset=["keep", "player_id"])
+    vals = leave_one_match_out(a[["match_id", "player_id", "keep"]].rename(columns={"keep": "decision"}), "player_id", 100)
+    out = rows.merge(vals[["match_id", "player_id", "complement_mean"]], on=["match_id", "player_id"], how="left")
+    return out.rename(columns={"complement_mean": "S_raw"})
 
 
 def run(d: pd.DataFrame, y: str, g: str, ctrl: pd.DataFrame, cy: str, cg: str) -> dict:
@@ -119,7 +130,7 @@ def main():
         print(f"  receptions g({y}) OOF R^2={r2:.4f}")
     rec["role"] = rec["player_id"].map(roles).fillna("NONE")
     rec_S = tp.add_s(rec, "rq_rel")
-    rec_ctrl = tp.add_s(rec, "keep")
+    rec_ctrl = retention_s(rec, rc_act)
 
     # ---- base rates ----
     def rates(df, dm):

@@ -14,17 +14,19 @@ Status: COMPLETE (every section run; interim page after Step 1 committed in 99a4
 | Commits after Step 1 and at the end | COMPLETE |
 
 ## 1. Headline
-Study sample only. **No within-deep-midfielder results claim is allowed under the fixed rule.** Across the 11 within-DM tests, the smallest Holm p is 0.19 (Step 2, PR_keep → Y_F3, raw p = 0.017, 22 players), and that test's positive control on the same rows is not significant (p = 0.36).
+Study sample only. **No within-deep-midfielder results claim is allowed under the fixed rule.** Across the 11 within-DM tests, the smallest Holm p is 0.19 (Step 2, PR_keep → Y_F3, raw p = 0.017, 22 players), and that test's positive control on the same rows is not positive (−0.54 pp, p = 0.67).
 - **Stability:** press resistance fails R1 within deep midfielders (median 0.25 at 100 pressured receptions, only 7 player-seasons). Progressive availability passes R1 (0.67, 28 players).
 - **Across all players:** PR_keep predicts Y_F3 (+1.50 pp per 100 pressured receptions per SD, p = 0.0014, 150 players, control positive).
 - **Praised list:** on PR_keep, T = +0.69 with two-sided p = 0.014, in the pre-declared direction (higher), from 11 of the 13 players present.
 
 ## 2. What I did
 - Step 0: the brief was committed alone by the research lead in 107bed0.
-- Asked before running: which positive control should reception-unit tests use? The author chose a **retention control**:
-  - Y = the receiver's next action keeps the ball (PR_keep's definition);
-  - S = his other-match retention rate (same ≥100 floor);
-  - g refit on the same reception features.
+- **Reception-unit control:** before running, I asked which positive control reception-unit tests should use. The author chose a retention control. The research lead then fixed it in a correction to the brief (4d6405a, 15:59 PDT):
+  - Y = the receiver's next on-ball action keeps the ball (PR_keep's definition);
+  - S = his raw retention rate over ALL his completed receptions in his OTHER matches, ≥100 elsewhere;
+  - g refit on the same reception features;
+  - for PFF (Step 3), retention comes from PFF's next possession event by the receiver.
+- **Superseded control run:** the correction landed before the Step 1 run (16:01), but I did not re-read the brief. The first run of Steps 1-2 used S = retention over Task 34's frame-present receptions (Step 1) and over pressured receptions only with a ≥50 floor (Step 2), and had no PFF control. That version is in the interim commit 99a4b82 and the first final commit c8ec94d. All three steps were then re-run with the corrected control (16:07 PDT; memory gate 56% / 4.94 GB). The numbers on this page are from that re-run. The test coefficients did not change; only the control columns did.
 - `.venv/bin/python src/engine_v2/task42_step1.py`:
   1. Builds Y_F3 / Y_SHOT and receipt next-action outcomes per match (`src/engine_v2/task42_outcomes.py`).
   2. Rebuilds Task 35's pass table and asserts Task 35 (a) reproduces exactly.
@@ -65,16 +67,16 @@ Study sample only. **No within-deep-midfielder results claim is allowed under th
 |---|---|---|---|---|---|---|---|---|---|
 | all | v5 Decision (passes) | Y_F3 | 126,936 | 440 | +0.232 | [−0.208, 0.672] | 0.30 | 0.628 | completion +1.768 [1.434, 2.102], 3e-25 |
 | all | MOVE_ON_SPEED (passes) | Y_F3 | 116,536 | 327 | −0.174 | [−0.479, 0.131] | 0.26 | 0.436 | completion +1.766 [1.425, 2.107], 3e-24 |
-| all | RQ_rel (receptions) | Y_F3 | 124,095 | 445 | +0.500 | [−0.269, 1.269] | 0.20 | 1.098 | retention +0.783 [0.531, 1.035], 1e-9 |
+| all | RQ_rel (receptions) | Y_F3 | 124,095 | 445 | +0.500 | [−0.269, 1.269] | 0.20 | 1.098 | retention +0.792 [0.539, 1.045], 9e-10 |
 | all | v5 Decision (passes) | Y_SHOT | 168,855 | 440 | +0.014 | [−0.317, 0.345] | 0.93 | 0.473 | completion +2.201 [1.798, 2.604], 9e-27 |
 | all | MOVE_ON_SPEED (passes) | Y_SHOT | 154,116 | 328 | −0.011 | [−0.231, 0.210] | 0.93 | 0.315 | completion +2.190 [1.740, 2.640], 1e-21 |
-| all | RQ_rel (receptions) | Y_SHOT | 166,087 | 446 | +0.390 | [−0.145, 0.925] | 0.15 | 0.764 | retention +0.466 [0.251, 0.681], 2e-5 |
+| all | RQ_rel (receptions) | Y_SHOT | 166,087 | 446 | +0.390 | [−0.145, 0.925] | 0.15 | 0.764 | retention +0.496 [0.285, 0.707], 4e-6 |
 | DM | v5 Decision (passes) | Y_F3 | 27,388 | 88 | +0.454 | [−0.407, 1.315] | 0.30 | 1.230 | completion +0.760 [0.375, 1.145], 1e-4 |
 | DM | MOVE_ON_SPEED (passes) | Y_F3 | 24,711 | 60 | +0.455 | [−0.553, 1.462] | 0.38 | 1.440 | completion +0.796 [0.504, 1.088], 9e-8 |
-| DM | RQ_rel (receptions) | Y_F3 | 24,360 | 78 | −0.108 | [−0.601, 0.385] | 0.67 | 0.704 | retention −0.155 [−0.372, 0.063], 0.16 |
+| DM | RQ_rel (receptions) | Y_F3 | 24,360 | 78 | −0.108 | [−0.601, 0.385] | 0.67 | 0.704 | retention −0.035 [−0.244, 0.175], 0.75 |
 | DM | v5 Decision (passes) | Y_SHOT | 33,889 | 88 | −0.393 | [−0.970, 0.184] | 0.18 | 0.825 | completion +0.626 [0.115, 1.137], 0.016 |
 | DM | MOVE_ON_SPEED (passes) | Y_SHOT | 30,680 | 61 | +0.110 | [−0.417, 0.638] | 0.68 | 0.754 | completion +0.545 [0.105, 0.985], 0.015 |
-| DM | RQ_rel (receptions) | Y_SHOT | 29,940 | 79 | +0.264 | [−0.214, 0.742] | 0.28 | 0.683 | retention −0.403 [−0.769, −0.036], 0.031 |
+| DM | RQ_rel (receptions) | Y_SHOT | 29,940 | 79 | +0.264 | [−0.214, 0.742] | 0.28 | 0.683 | retention −0.259 [−0.600, 0.082], 0.14 |
 
 ### Step 2 (B) — press resistance: the measure
 - Completed receipts with frame and actor: 245,163.
@@ -96,14 +98,14 @@ Coefficients are in percentage points (Y_F3) or xG (net xG) per 100 pressured re
 
 | Group | S | Y | n | players | team-matches | coef | 95% CI | p | MDE | control coef [95% CI], p |
 |---|---|---|---|---|---|---|---|---|---|---|
-| all | PR_keep | Y_F3 | 11,110 | 150 | 406 | **+1.497** | [0.578, 2.415] | **0.0014** | 1.313 | +2.333 [1.251, 3.415], 2e-5 |
-| all | PR_keep | net xG | 19,833 | 150 | 409 | +0.095 | [−0.023, 0.213] | 0.115 | 0.169 | +1.484 [0.666, 2.301], 4e-4 |
-| all | PR_fwd | Y_F3 | 11,110 | 150 | 406 | −0.038 | [−0.967, 0.890] | 0.94 | 1.326 | +2.333 [1.251, 3.415], 2e-5 |
-| all | PR_fwd | net xG | 19,833 | 150 | 409 | −0.011 | [−0.116, 0.094] | 0.84 | 0.150 | +1.484 [0.666, 2.301], 4e-4 |
-| DM | PR_keep | Y_F3 | 2,440 | 22 | 250 | +2.911 | [0.517, 5.306] | 0.017 | 3.421 | +0.592 [−0.664, 1.849], 0.36 |
-| DM | PR_keep | net xG | 3,160 | 22 | 254 | +0.032 | [−0.043, 0.107] | 0.40 | 0.107 | +1.260 [0.113, 2.407], 0.031 |
-| DM | PR_fwd | Y_F3 | 2,440 | 22 | 250 | +1.124 | [−3.146, 5.395] | 0.61 | 6.101 | +0.592 [−0.664, 1.849], 0.36 |
-| DM | PR_fwd | net xG | 3,160 | 22 | 254 | −0.119 | [−0.395, 0.157] | 0.40 | 0.394 | +1.260 [0.113, 2.407], 0.031 |
+| all | PR_keep | Y_F3 | 11,110 | 150 | 406 | **+1.497** | [0.578, 2.415] | **0.0014** | 1.313 | +2.835 [1.799, 3.871], 8e-8 |
+| all | PR_keep | net xG | 19,833 | 150 | 409 | +0.095 | [−0.023, 0.213] | 0.115 | 0.169 | +0.960 [0.118, 1.803], 0.026 |
+| all | PR_fwd | Y_F3 | 11,110 | 150 | 406 | −0.038 | [−0.967, 0.890] | 0.94 | 1.326 | +2.835 [1.799, 3.871], 8e-8 |
+| all | PR_fwd | net xG | 19,833 | 150 | 409 | −0.011 | [−0.116, 0.094] | 0.84 | 0.150 | +0.960 [0.118, 1.803], 0.026 |
+| DM | PR_keep | Y_F3 | 2,440 | 22 | 250 | +2.911 | [0.517, 5.306] | 0.017 | 3.421 | −0.538 [−2.969, 1.894], 0.67 |
+| DM | PR_keep | net xG | 3,160 | 22 | 254 | +0.032 | [−0.043, 0.107] | 0.40 | 0.107 | +0.004 [−2.766, 2.774], 1.00 |
+| DM | PR_fwd | Y_F3 | 2,440 | 22 | 250 | +1.124 | [−3.146, 5.395] | 0.61 | 6.101 | −0.538 [−2.969, 1.894], 0.67 |
+| DM | PR_fwd | net xG | 3,160 | 22 | 254 | −0.119 | [−0.395, 0.157] | 0.40 | 0.394 | +0.004 [−2.766, 2.774], 1.00 |
 
 ### Step 2 — R3 (praised list, Task 41's method; ≥50 pressured receptions; 147 qualifying players; 11 of 13 present)
 Kroos and Verratti are present, as are 9 of the other 11 names; Grillitsch and Shaparenko are absent.
@@ -376,15 +378,15 @@ Praised-list z-scores: Rodri −0.56, Gündoğan −0.21, De Bruyne +1.59, Xhaka
 |---|---|---|---|---|---|---|
 | Step 1 dm|v5_decision|y_f3 | +0.4538 | 0.3015 | 1 | 1 | +0.760, p=0.000109 | no |
 | Step 1 dm|move_on_speed|y_f3 | +0.4546 | 0.3766 | 1 | 1 | +0.796, p=9.47e-08 | no |
-| Step 1 dm|rq_rel|y_f3 | -0.1080 | 0.6675 | 1 | 1 | -0.155, p=0.163 | no |
+| Step 1 dm|rq_rel|y_f3 | -0.1080 | 0.6675 | 1 | 1 | -0.035, p=0.745 | no |
 | Step 1 dm|v5_decision|y_shot | -0.3931 | 0.182 | 1 | 1 | +0.626, p=0.0163 | no |
 | Step 1 dm|move_on_speed|y_shot | +0.1103 | 0.6821 | 1 | 1 | +0.545, p=0.0152 | no |
-| Step 1 dm|rq_rel|y_shot | +0.2643 | 0.2785 | 1 | 1 | -0.403, p=0.0313 | no |
-| Step 2 R2 dm|pr_keep|y_f3 | +2.9114 | 0.01716 | 0.189 | 0.378 | +0.592, p=0.356 | no |
-| Step 2 R2 dm|pr_keep|y_net_xg | +0.0320 | 0.4017 | 1 | 1 | +1.260, p=0.0313 | no |
-| Step 2 R2 dm|pr_fwd|y_f3 | +1.1243 | 0.6059 | 1 | 1 | +0.592, p=0.356 | no |
-| Step 2 R2 dm|pr_fwd|y_net_xg | -0.1186 | 0.3997 | 1 | 1 | +1.260, p=0.0313 | no |
-| Step 3 R2 dm|av_prog|y_net_xg | +0.0852 | 0.3349 | 1 | 1 | — | no |
+| Step 1 dm|rq_rel|y_shot | +0.2643 | 0.2785 | 1 | 1 | -0.259, p=0.137 | no |
+| Step 2 R2 dm|pr_keep|y_f3 | +2.9114 | 0.01716 | 0.189 | 0.378 | -0.538, p=0.665 | no |
+| Step 2 R2 dm|pr_keep|y_net_xg | +0.0320 | 0.4017 | 1 | 1 | +0.004, p=0.998 | no |
+| Step 2 R2 dm|pr_fwd|y_f3 | +1.1243 | 0.6059 | 1 | 1 | -0.538, p=0.665 | no |
+| Step 2 R2 dm|pr_fwd|y_net_xg | -0.1186 | 0.3997 | 1 | 1 | +0.004, p=0.998 | no |
+| Step 3 R2 dm|av_prog|y_net_xg | +0.0852 | 0.3349 | 1 | 1 | +1.856, p=0.00955 | no |
 
 ### Fixed claim rules, applied mechanically
 - **Within-DM results:** no test meets both conditions (Holm p < 0.05 and a positive control with p < 0.05). No within-deep-midfielder results claim is made.
@@ -406,20 +408,26 @@ Praised-list z-scores: Rodri −0.56, Gündoğan −0.21, De Bruyne +1.59, Xhaka
   - Receipts with no action found (660) are excluded.
   - Under this rule, a carry followed by the team keeping possession counts as keep = 1 even if the next pass fails. The receiver's own next action is the carry in 84% of receipts.
 - **PRESSURED distance:** the nearest visible opponent was recomputed from the frame without Task 34's 15-unit cap.
-- **R2 floor:** the retention control in Step 2 uses the same ≥50 floor, over pressured receptions.
 - **R3 floor:** qualifying players have ≥50 pressured receptions, the brief's R2 floor (the brief states none for R3).
 - **Step 2 R2 units:** 1,476 of 42,208 pressured receptions have no value-model origin row, so they have no g and were dropped from R2. R1 used all 42,208.
-- **Step 3 control:** no positive control is defined for PFF reception units, so the Step 3 deep-midfielder test cannot meet the claim rule. It is marked "—" in the family table.
+- **Step 3 control (PFF, per the correction):**
+  - The receiver's next PFF possession event after the reception (skipping his initial touch, IT) is his action. An opposing possession event first gives keep = 0.
+  - keep = the action did not fail (PA/CR not 'C', or any SH) AND the next possession event is by the same team.
+  - The PFF retention rate is 0.818 (n = 52,411 receptions).
+  - Control: all outfield +3.435 pp [2.606, 4.264], p = 5e-16 (22,425 receptions, 131 players). Deep midfielders +1.856 [0.452, 3.260], p = 0.0096 (4,671 receptions, 28 players).
+  - These control rows are the test rows whose receivers also have ≥100 PFF receptions elsewhere, so they are fewer than the test's.
+- **Overlap with PR_keep (as the correction asks to note):** in Step 2 the retention control overlaps in content with PR_keep. It still shows whether the design can detect a known reception-level skill on those rows.
 - **Claim rule:** "positive control ... p < 0.05" is applied as a control coefficient > 0 with p < 0.05.
 - **Tempo residuals** were regenerated with ids (as in Task 39) to new Task 42 files, asserted identical to the stored v2 files.
 
 ## 5. Problems and surprises
-- **The retention control fails on the deep-midfielder RQ_rel rows** (Y_F3 p = 0.16; Y_SHOT negative, p = 0.031). Under the brief's claim rule, those two deep-midfielder tests could not support a claim even if their Holm p were < 0.05.
+- **The retention control fails on the deep-midfielder RQ_rel rows** (Y_F3 −0.035, p = 0.75; Y_SHOT −0.259, p = 0.14). Under the brief's claim rule, those two deep-midfielder tests could not support a claim even if their Holm p were < 0.05.
 - **MDEs on Y_F3 / Y_SHOT for deep midfielders are 0.68-1.44 pp per SD per 100 units.** That is larger than any coefficient observed.
 - **keep's base rate is 0.94**, so the retention outcome varies little.
 
 - **R1 for press resistance rests on 7 player-seasons at 100** (15 at 50). With the ≥50-elsewhere floor, R2 covers only 150 players overall and 22 deep midfielders.
-- **The one within-DM test with raw p < 0.05** (PR_keep → Y_F3, p = 0.017) has a retention control that is not significant on the same rows (p = 0.36). Its MDE (3.4 pp) exceeds its estimate (2.9 pp).
+- **The one within-DM test with raw p < 0.05** (PR_keep → Y_F3, p = 0.017) has a retention control that is not positive on the same rows (−0.54 pp, p = 0.67). Its MDE (3.4 pp) exceeds its estimate (2.9 pp).
+- **On the 22-player press-resistance deep-midfielder rows, the retention control is not positive for either outcome** (p = 0.67 and 1.00). Taken at face value, those rows could not detect a known reception-level skill.
 - **The PR_fwd baseline AUC is 0.587.** The fwd outcome is rare (11%), and its DM table shows no heterogeneity (Q p = 0.41).
 - **The praised list scores higher on PR_keep** (p = 0.014, pre-declared direction), while PR_keep fails R1 within deep midfielders (0.25). Taken at face value, the list differs from random within-role draws on a measure whose player-level differences are not shown to be stable among deep midfielders.
 - **AV_prog passes R1** among deep midfielders, but its R2 is null for all players and for deep midfielders.
@@ -432,7 +440,7 @@ Praised-list z-scores: Rodri −0.56, Gündoğan −0.21, De Bruyne +1.59, Xhaka
 - `data/engine_v2_task42_step2.json`, `data/pff_task42_step3.json`, `data/engine_v2_task42_family.json`, and `data/processed/engine_v2/task42_pressured_receptions.parquet` (none committed).
 - `data/engine_v2_task42_step1.json`, `data/processed/engine_v2/task42_event_outcomes.parquet`, `task42_receipt_actions.parquet`, and the redirected tempo re-run outputs `data/processed/tempo_task42_*` and `data/tempo_task42_redesign_rerun.json` (none committed).
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched. Holdout untouched.
-- Commits: brief 107bed0; interim page after Step 1 99a4b82; final c8ec94d.
+- Commits: brief 107bed0; interim page after Step 1 99a4b82; first final c8ec94d (hash recorded in 3d97f4e); corrected-control version: recorded in a follow-up commit.
 
 ## 8. Confidence
 The estimator and inputs are the verified Task 35 pipeline.

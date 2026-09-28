@@ -19,7 +19,8 @@ SUMMARY_PATH = DATA_DIR / "engine_v2_task42_family.json"
 def main():
     s1 = json.loads((DATA_DIR / "engine_v2_task42_step1.json").read_text())["tests"]
     s2 = json.loads((DATA_DIR / "engine_v2_task42_step2.json").read_text())["r2"]
-    s3 = json.loads((DATA_DIR / "pff_task42_step3.json").read_text())["r2"]["DM_report"]
+    s3all = json.loads((DATA_DIR / "pff_task42_step3.json").read_text())["r2"]
+    s3, s3c = s3all["DM_report"], s3all["control_DM"]
     t41 = json.loads((DATA_DIR / "engine_v2_task41_steps7_10.json").read_text())["step10"]
 
     fam = []
@@ -32,7 +33,7 @@ def main():
             fam.append({"test": f"Step 2 R2 {k}", "coef_per100": r["coef_per_sd_per100"], "p": r["p"],
                         "control_coef_per100": r["control"]["coef_per_sd_per100"], "control_p": r["control"]["p"]})
     fam.append({"test": "Step 3 R2 dm|av_prog|y_net_xg", "coef_per100": s3["coef_per_sd_per100"], "p": s3["p"],
-                "control_coef_per100": None, "control_p": None})
+                "control_coef_per100": s3c["coef_per_sd_per100"], "control_p": s3c["p"]})
 
     holm = multipletests([f["p"] for f in fam], method="holm")[1]
     holm_ext = multipletests([f["p"] for f in fam] + [t["p_raw"] for t in t41], method="holm")[1][:len(fam)]

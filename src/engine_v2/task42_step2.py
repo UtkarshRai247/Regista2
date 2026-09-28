@@ -9,7 +9,9 @@ from task42_outcomes (receipts with no next action are excluded, counted).
 Baseline: cross-fitted XGBoost classifier on Task 35's folds from context
 only; PR = outcome - p_oof. R1 via step8_regate.reliability_sweep; R2 via
 task35_ptest.fe_fit (S = other-match mean PR, >= 50 pressured receptions
-elsewhere; retention control per the author's decision); R3 via Task 41's
+elsewhere; retention control per the brief's correction 4d6405a: S = raw
+retention over ALL the receiver's completed receptions in other matches,
+>= 100 elsewhere); R3 via Task 41's
 perm_test; table via Task 29's method.
 
 Run: python src/engine_v2/task42_step2.py   (after task42_step1.py)
@@ -34,6 +36,7 @@ from task28_step1_2 import estimate_sigma2w_rho
 from task29_step1_2 import dersimonian_laird, shrink
 from task27_step1_deep_midfield import name_matches
 from task41_lists_availability import perm_test, LIST_L
+from task42_step1 import retention_s
 
 warnings.filterwarnings("ignore")
 
@@ -161,7 +164,7 @@ def main():
         oof, _ = tp.crossfit_g(sub.reset_index(drop=True), y, fold_of)
         pr.loc[sub.index, f"g_{y}"] = oof
     pr.to_parquet(OUT_PATH)
-    ctrl = s_loo(pr, "keep")
+    ctrl = retention_s(pr, pd.read_parquet(RECEIPT_ACTIONS_PATH))
     r2 = {}
     for oc in ("keep", "fwd"):
         d = s_loo(pr, f"pr_{oc}")
