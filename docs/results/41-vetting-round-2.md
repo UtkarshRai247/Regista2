@@ -208,7 +208,7 @@ None is below 0.05 after Holm.
 - `src/engine_v2/task41_ptest_vetting.py`, `src/engine_v2/task41_lists_availability.py`.
 - `data/engine_v2_task41_steps1_6.json`, `data/engine_v2_task41_steps7_10.json` (not committed).
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched. Holdout untouched (the Task 37 summary JSON was only read).
-- Commits: brief 7c678c9; interim page after Step 6 64e3b4e; final: recorded in a follow-up commit.
+- Commits: brief 7c678c9; interim page after Step 6 64e3b4e; final aa1bb0b.
 
 ## 8. Confidence
 Steps 1-6 reuse Task 35's estimator, and its reproduction is asserted exactly. The weakest links:
