@@ -79,7 +79,7 @@ Code test on sample 3812 only (not a result):
 - Side effects:
   - gdown and its 5 dependencies installed in `.venv`.
   - Test outputs in the session scratchpad only.
-- Commits: brief 3535c71; this page and the scripts: recorded in a follow-up commit.
+- Commits: brief 3535c71; this page and the scripts 5ea026f.
 
 ## 8. Confidence
 There is no result yet. The scripts ran correctly end to end on one match, and the coordinate and clock logic behaved as expected there.
