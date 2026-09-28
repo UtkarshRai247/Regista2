@@ -109,3 +109,10 @@ same columns for AV_vis. Names are output, never a criterion.
 
 ## Output
 docs/results/38-availability.md (template). Commit per rule 9.
+
+## Correction (factual error, marked as such; 2026-09-28)
+Step 1 said "passer under pressure (PFF pressureType not null)". In the
+data pressureType is never null: every pass has N, P, L or A. The
+intended feature is binary pressure, so: under pressure =
+pressureType != 'N' (N = no pressure; P, L, A = pressure). Nothing else
+changes. Record this in the results page's deviations section.
