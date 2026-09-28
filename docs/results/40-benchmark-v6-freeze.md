@@ -71,7 +71,7 @@ Total: 36 files, 128 MB. MISSING: none.
 - Side effects:
   - The local annotated tag `benchmark-v6` (not pushed).
   - No memory writes; JOURNAL.md and AGENTS.md untouched; the Task 41 brief left untracked.
-- Commits: brief b603012; manifest and tag target 2b5e86f; this page: recorded in a follow-up commit.
+- Commits: brief b603012; manifest and tag target 2b5e86f; this page a0e3207.
 
 ## 8. Confidence
 - Every snapshot copy is checksum-verified against its source.
