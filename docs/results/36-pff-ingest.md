@@ -251,7 +251,7 @@ Distance (StatsBomb units) between the StatsBomb shot location and the converted
   - gdown and 5 dependencies installed in `.venv`.
   - The author's two download folders were moved from the repo root into `data/raw_pff/`.
   - Sample test outputs are in the session scratchpad.
-- Commits: brief 3535c71; blocked interim 5ea026f / 36ec6d8; this version: recorded in a follow-up commit.
+- Commits: brief 3535c71; blocked interim 5ea026f / 36ec6d8; this version 73be066.
 
 ## 8. Confidence
 - The ingest is complete and verified: every file was read, 64/64 matches were crosswalked, and 99.81% of players were mapped.
