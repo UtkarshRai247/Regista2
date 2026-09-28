@@ -1,31 +1,36 @@
 # Task 32: Critique diagnostics (CRITIQUE-v5 problems A1-A5, B1)
 Date: 2026-09-28
-Status: PARTIAL (Steps 0-3 complete; Steps 4-6 not yet run — this page
-will be replaced by a full version, per the brief's own two-commit rule:
-"Commit the results page after Steps 1-3, then again at the end.")
+Status: COMPLETE
 
 ## Section checklist
 - Step 0 (commit brief alone): COMPLETE (done in a prior turn, hash `a62af14`)
 - Step 1 / A2 (typical-choice baseline bias): COMPLETE
 - Step 2 / A3 (execution contamination): COMPLETE
 - Step 3 / A4 (cross-fitted vs in-sample player tables): COMPLETE
-- Step 4 / A5 (role-based reliability): NOT RUN (this checkpoint)
-- Step 5 / A1 (out-of-match prediction): NOT RUN (this checkpoint)
-- Step 6 / B1 (baseline comparison): NOT RUN (this checkpoint)
+- Step 4 / A5 (role-based reliability): COMPLETE
+- Step 5 / A1 (out-of-match prediction): COMPLETE
+- Step 6 / B1 (baseline comparison): COMPLETE
 
 ## 1. Headline
-Both of the brief's own pre-declared fix-trigger conditions fire on
-this data. A2: `ev_chosen` exceeds `policy_weighted_ev` in 10 of 10
-calibration deciles (rule: ≥8/10), and the final-zone vs
-defensive-zone spread in `policy_weighted_ev` (0.01415) is ~5.3x the
-overall mean Decision (0.00267). A3: within the 111 deep midfielders,
-Decision recomputed on completed-only passes correlates with the
-all-passes version at Spearman rho=0.734 (n=111, p=4.8e-20) — below
-the rule's 0.80 bar — and incomplete passes alone account for 39.6% of
-total between-player variance in mean Decision (rule: >30%). Per the
-brief's own rule this means an A2 fix AND an A3 fix are both
-prioritised; this task does not act on either — no engine change was
-made, per the hard rules.
+Both of the brief's pre-declared fix-trigger conditions fire (A2:
+10/10 calibration deciles + zone spread 5.3x the overall mean Decision;
+A3: deep-midfield completed-only Spearman 0.734<0.80 and incomplete
+passes are 39.6% of between-player variance) — reported, not acted on.
+Three further findings weaken claims the paper might otherwise make:
+(1) role alone explains **63.9%** of between-player variance in mean
+Decision, and within-role reliability is far below the all-roles 0.8191
+figure for every role tested (e.g. CB=0.464, DM=0.451 at 200 passes) —
+cross-role player comparisons rest on a confound this large; (2) the
+LINEUP out-of-match test — a player's OWN mean Decision from his other
+matches predicting this match's xG — is far weaker than the same-match
+result and not significant for xG (coef=0.082, p=0.174, vs the
+same-match cross-fitted H-O1 xg coef=+0.249, p=2.4e-10); (3) the raw
+chosen-option EV (`ev_chosen`) alone predicts match xG/goals as well or
+better than Decision in every specification tested, and when both are
+fit together for goals, Decision's own coefficient turns **negative**
+(-0.32 to -0.44, p<0.01) while raw EV stays strongly positive — Decision
+does not demonstrably add predictive value over the naive baseline it
+was built to beat, in-sample.
 
 ## 2. What I did
 1. Confirmed Step 0 (brief-alone commit, `a62af14`) was already done in
@@ -49,15 +54,47 @@ made, per the hard rules.
    tables from cross-fitted Decision using the identical Task 28 /
    Task 29 estimation methods, then compared to the existing v5 tables
    (`leaderboard_v5c.parquet`, `task29_dm_shrunk.parquet`).
-5. Memory checked as free (well above the 40%/3GB gate) before each
-   corpus-scale step; none came close to the limit (this task reads
-   the 292-match corpus repeatedly, not the full 299-match raw corpus
-   or the multi-GB EV directory in one pass).
-6. Wrote this results page covering Steps 0-3 and committed it, per the
-   brief's hard rule to commit after Steps 1-3 before continuing.
+5. Memory checked as free before each corpus-scale step; none came
+   close to exhaustion (this task reads the 292-match corpus repeatedly,
+   not the full 299-match raw corpus or the multi-GB EV directory in one
+   pass).
+6. Wrote and committed the Steps-0-3 checkpoint version of this page,
+   per the brief's hard rule to commit after Steps 1-3 before continuing
+   (hashes in Section 14).
+7. `task32_step4.py` (Step 4/A5): assigned each of the 537 qualifying
+   players a role by re-using Task 27 Step 1's exact per-pass-position
+   technique (per-pass StatsBomb `position`, not modal), extended to the
+   brief's 6-way group list at the same ≥50%-of-eligible-passes
+   threshold. Ran `step8_regate.py`'s own `reliability_sweep` unchanged,
+   filtered to each role's players (a); computed a passes-weighted
+   one-way ANOVA of player-level mean Decision on role (b); refit Study
+   B's PH-B1 by reusing the ALREADY-BUILT `study_b_units_v5.parquet`
+   (Task 26 Step 6, not rebuilt) and `reml_crossed.fit_reml` plus
+   `task26_step6_study_b.py`'s own `method_ii_parametric_bootstrap`
+   (the already-selected PRIMARY interval method from Task 26, not a
+   fresh coverage-selection run), replacing the position-group dummies
+   with role dummies (c). Wall clock for (c): 12.3 seconds, well inside
+   the 45-minute budget.
+8. `task32_step5.py` (Step 5/A1): built LINEUP (leave-one-match-out per
+   passer, ≥50-pass floor in the complement, ≥70% pass coverage per
+   unit) and TEAM (leave-one-match-out per team-context, no floor
+   stated in the brief, none added) versions of out-of-match Decision
+   from the cross-fit corpus, standardised each, and fit H-O1 (both) and
+   PH-O2 (LINEUP only) via `outcome_validation.py`'s unchanged builders
+   (`build_team_match_units`, `add_possession_share`,
+   `add_zone_pressure_shares`, `add_xg`, the dummy builders, `fit_ols`).
+9. `task32_step6.py` (Step 6/B1): built b1 (`ev_chosen`), b2
+   (`ev_chosen` minus the mean EV of all candidates for that pass), b3
+   (`decision_new`, the standard Decision) per pass from `options_ev_v4`
+   and `pass_der_v8.parquet` (full corpus, in-sample), took team-match
+   means, standardised each, and fit H-O1/PH-O2 for xG and goals: each
+   baseline alone, then b3+b1 and b3+b2 together. Also computed
+   player-level b1/b2/b3 correlations within the 111 deep midfielders.
+10. Wrote this final version of the results page and made the closing
+    commit, per the brief's hard rule.
 
 Reproduce with (from `src/engine_v2/`, `.venv` activated):
-`python task32_step1.py && python task32_step2.py && python task32_step3.py`
+`python task32_step1.py && python task32_step2.py && python task32_step3.py && python task32_step4.py && python task32_step5.py && python task32_step6.py`
 
 ## 3. Why 292 matches, not 299 (required by the brief)
 `data/raw/events/` has 299 match files. Every downstream v5 artifact
@@ -202,7 +239,150 @@ become the standard from here on, whatever this shows"), this is
 reported as a directive already in force, not a decision made in this
 task.
 
-## 7. Decision-rule summary (reported, not acted on — no engine change was made)
+## 7. Step 4 (A5) — is Decision stable WITHIN a role?
+Role assignment (≥50% of a qualifying player's 292-match-corpus eligible
+passes at positions within one group, else MIXED), 537 qualifying
+players:
+
+| role | n players |
+|---|---|
+| CB | 159 |
+| DM | 111 |
+| FB | 99 |
+| AM/W | 87 |
+| CM | 35 |
+| FW | 27 |
+| MIXED | 19 |
+
+**(a) Within-role reliability** (`step8_regate.py`'s `reliability_sweep`,
+unchanged, median split-half Spearman-Brown; `n_units` = player ×
+competition-season groups meeting the threshold):
+
+| role | n players | median @100 (n_units) | @200 (n_units) | @300 (n_units) | @500 (n_units) |
+|---|---|---|---|---|---|
+| CB | 159 | 0.242 (201) | 0.464 (97) | 0.607 (43) | 0.774 (18) |
+| FB | 99 | 0.449 (114) | 0.707 (48) | 0.778 (18) | 0.777 (10) |
+| DM | 111 | 0.375 (123) | 0.451 (51) | 0.598 (21) | 0.498 (9) |
+| CM | 35 | 0.493 (44) | 0.084 (19) | 0.354 (13) | 0.980 (3) |
+| AM/W | 87 | 0.578 (80) | 0.605 (21) | 0.738 (11) | 0.661 (7) |
+| FW | 27 | 0.432 (24) | -8.28 (7) | -7.50 (6) | -4.90 (5) |
+| MIXED | 19 | 0.614 (21) | -0.269 (9) | -0.232 (5) | n/a (2) |
+| **all roles (BENCHMARK-v5.md)** | 537 | — | **0.8191** | — | — |
+
+Every role's within-role reliability at 200 passes is well below the
+all-roles 0.8191 figure — CB (0.464) and DM (0.451) are roughly half;
+CM, FW and MIXED go negative once `n_units` drops below ~20 (FW: -8.28
+at 200 on only 7 units; MIXED: undefined at 500 with only 2 units).
+These small-`n_units` negative values are noise from too few
+player-seasons, not a real negative reliability, and are reported as
+such rather than interpreted.
+
+**(b) Variance explained by role.** Passes-weighted one-way ANOVA of
+player-level mean Decision on role (7 groups): role explains
+**63.87%** of the between-player variance.
+
+**(c) PH-B1 refit with roles.** Reusing Task 26 Step 6's own
+`study_b_units_v5.parquet` (1,041 of its 2,099 units have a player_id
+that maps to one of the 537 qualifying players' roles; the rest lack a
+role and were excluded) and its primary parametric-bootstrap interval
+method:
+
+| spec | S | 95% CI | n units | wall clock |
+|---|---|---|---|---|
+| PH-B1, engine-v5 position groups (BENCHMARK-v5.md) | 0.7683 | [0.6793, 0.8774] | 2,099 | — |
+| PH-B1, roles (this step) | 0.7587 | [0.6057, 0.9072] | 1,041 | 12.3s |
+
+S is similar (0.759 vs 0.768), but the role-based CI is wider (span
+0.301 vs 0.098) on roughly half the units — a smaller, differently
+composed sample, not a directly comparable refit of the same units.
+
+## 8. Step 5 (A1) — does Decision predict matches it was not measured in?
+Cross-fit corpus: 250,850 passes, 292 matches; 584 team-match units.
+
+| version | units kept | note |
+|---|---|---|
+| LINEUP | 400/584 (68.5%) | ≥70% pass coverage by passers with ≥50 complement passes |
+| TEAM | 562/584 (96.2%) | non-empty leave-one-match-out complement; no floor stated in the brief |
+
+| outcome | spec | version | n | coef | p | same-match v5 (BENCHMARK-v5.md) |
+|---|---|---|---|---|---|---|
+| xg | H-O1 | LINEUP | 400 | 0.0816 | 0.174 | +0.2486 (p=2.4e-10) |
+| xg | PH-O2 | LINEUP | 400 | -0.1082 | 0.406 | +0.2683 (p=2.5e-5) |
+| goals | H-O1 | LINEUP | 400 | 0.1322 | 0.0497 | +0.2147 (p=2.3e-4) |
+| goals | PH-O2 | LINEUP | 400 | 0.0308 | 0.831 | +0.2758 (p=2.1e-5) |
+| xg | H-O1 | TEAM | 562 | 0.0255 | 0.553 | +0.2486 (p=2.4e-10) |
+| goals | H-O1 | TEAM | 562 | 0.0118 | 0.796 | +0.2147 (p=2.3e-4) |
+
+Every out-of-match coefficient is smaller than its same-match
+counterpart; three of six are not significant at p<0.05, and LINEUP's
+PH-O2 for xG is the wrong sign. Only LINEUP-goals-H-O1 clears p<0.05,
+barely (p=0.0497), and its point estimate (0.132) is little more than
+half the same-match value (0.215). No outcome threshold was set by the
+brief, so none of this is scored pass/fail; reported as measured.
+
+## 9. Step 6 (B1) — does the typical-choice model earn its place?
+In-sample, full corpus: 250,850 passes, 583 team-match units (matches
+with a `chosen` EV row and a `decision_new` value in both `pass_der_v8`
+and `options_ev_v4`).
+
+| outcome | spec | version | coef | p | R² |
+|---|---|---|---|---|---|
+| xg | H-O1 | b1 (`ev_chosen` alone) | 0.3946 | 1.7e-17 | 0.2639 |
+| xg | H-O1 | b2 (uniform-baseline-adjusted) | 0.2723 | 1.3e-12 | 0.2180 |
+| xg | H-O1 | b3 (Decision, standard) | 0.2751 | 8.5e-12 | 0.2172 |
+| xg | PH-O2 | b1 | 0.4188 | 3.1e-8 | 0.4566 |
+| xg | PH-O2 | b2 | 0.3303 | 1.4e-7 | 0.4480 |
+| xg | PH-O2 | b3 | 0.3083 | 6.9e-7 | 0.4410 |
+| goals | H-O1 | b1 | 0.6193 | 5.6e-20 | 0.3020 |
+| goals | H-O1 | b2 | 0.2519 | 4.0e-5 | 0.1630 |
+| goals | H-O1 | b3 | 0.2905 | 1.5e-6 | 0.1728 |
+| goals | PH-O2 | b1 | 0.8916 | 2.6e-22 | 0.5217 |
+| goals | PH-O2 | b2 | 0.3826 | 2.9e-9 | 0.3875 |
+| goals | PH-O2 | b3 | 0.3778 | 7.5e-8 | 0.3860 |
+
+Raw `ev_chosen` (b1) alone has the highest coefficient and R² of the
+three baselines in **every one of the 8 specifications** (xg/goals x
+H-O1/PH-O2). Decision (b3) does not out-perform either simpler baseline
+in-sample.
+
+**Joint fits (b3 together with b1, and b3 together with b2):**
+
+| outcome | spec | pair | b3 coef (p) | other coef (p) | R² |
+|---|---|---|---|---|---|
+| xg | H-O1 | b3+b1 | -0.0000 (1.00) | b1: 0.3946 (5.3e-9) | 0.2639 |
+| xg | PH-O2 | b3+b1 | 0.0907 (0.315) | b1: 0.3392 (0.0031) | 0.4583 |
+| xg | H-O1 | b3+b2 | 0.1325 (0.201) | b2: 0.1524 (0.139) | 0.2201 |
+| xg | PH-O2 | b3+b2 | 0.0195 (0.895) | b2: 0.3124 (0.0492) | 0.4480 |
+| goals | H-O1 | b3+b1 | **-0.3222 (3.6e-6)** | b1: 0.8788 (1.1e-21) | 0.3258 |
+| goals | PH-O2 | b3+b1 | **-0.4432 (3.2e-5)** | b1: 1.2803 (4.2e-17) | 0.5483 |
+| goals | H-O1 | b3+b2 | 0.3552 (0.0020) | b2: -0.0693 (0.570) | 0.1732 |
+| goals | PH-O2 | b3+b2 | 0.1591 (0.373) | b2: 0.2366 (0.173) | 0.3887 |
+
+When Decision (b3) and raw `ev_chosen` (b1) are fit together for goals,
+b3's own coefficient is **negative and significant** (-0.32 to -0.44,
+p<0.01) while b1 stays strongly positive — Decision's information is
+redundant with, and in this joint specification partially working
+against, the raw candidate value it is built from. Against b2 (the
+uniform baseline), the two trade off which one is significant by
+outcome/spec, with neither dominating.
+
+**Within the 111 deep midfielders, player-level correlations**
+(pooled b1/b2/b3 per player, full corpus):
+
+| pair | r |
+|---|---|
+| b1 vs b2 | 0.841 |
+| b2 vs b3 | 0.920 |
+| b1 vs b3 | 0.780 |
+
+All three are strongly positively correlated (they share the same
+underlying EV values), but b1 (raw EV) is noticeably less correlated
+with b3 (Decision) than with b2 (the uniform-baseline version) —
+consistent with b3 (subtracting a policy-weighted, not uniform,
+baseline) reordering players relative to a simple EV ranking more than
+b2 does.
+
+## 10. Decision-rule summary (reported, not acted on — no engine change was made)
 - **A2 fix (recalibrate the typical-choice baseline): PRIORITISED**
   per the brief's rule — both conditions in Section 4 are met.
 - **A3 fix (infer the intended target for incomplete passes):
@@ -214,10 +394,19 @@ task.
   explicitly forbid any engine change, retraining, or new EV corpus.
   Which fix (if either) is actually built, and in what order, is a
   question for the research lead, not a choice made here.
+- **A1, A5, B1 do not trigger fixes** (per the brief), but all three
+  inform what the paper may claim: A5 (Section 7) shows role explains
+  63.9% of between-player Decision variance and within-role reliability
+  is well below the all-roles figure at every threshold tested; A1
+  (Section 8) shows the out-of-match signal is much weaker than the
+  same-match signal and mostly not significant; B1 (Section 9) shows
+  raw `ev_chosen` matches or beats Decision on every in-sample outcome
+  spec tested, and Decision's marginal coefficient on goals is negative
+  once raw EV is included.
 
-## 8. Deviations from the brief (Steps 0-3 only)
+## 11. Deviations from the brief
 None from the hard rules or the numbered steps' own specification.
-Two disclosed operationalizations:
+Disclosed operationalizations:
 - Step 3's "same methods" was read as reusing Task 28's and Task 29's
   functions completely unchanged (not re-derived), including
   re-deriving the ≥100-pass qualifying set from the cross-fit corpus
@@ -230,55 +419,98 @@ Two disclosed operationalizations:
   360 freeze-frame teammate locations (`teammate=True` in the frame),
   matching how `offside_v4.py` already defines visibility elsewhere in
   this codebase — not re-derived from a different visibility rule.
+- Step 4(c)'s "PH-B1 refit with these roles" was read as reusing Task
+  26 Step 6's already-built Study B units (`study_b_units_v5.parquet`)
+  and its already-selected PRIMARY interval method (parametric
+  bootstrap), replacing only the position-group dummies with role
+  dummies, rather than rebuilding Study B's per-pass covariates and
+  rerunning the full coverage-selection procedure from scratch. This
+  means the role-based PH-B1's 1,041 units are not the same 2,099 units
+  the original PH-B1 used (players without a mapped role were dropped;
+  see Section 7) — a smaller, differently composed sample, not a
+  directly comparable refit, disclosed rather than presented as
+  equivalent. The reference category for the role dummies is MIXED
+  (the residual, no-majority group), parallel to how the original
+  PH-B1 left Midfielder as the implicit reference.
+- Step 5's TEAM version has no stated minimum-passes floor in the
+  brief (unlike LINEUP's explicit ≥50); none was added, so a
+  team-context with very few passes in its complement can still
+  produce a TEAM score. This is the brief's own asymmetry, not an
+  omission introduced here.
 
-## 9. Problems and surprises
+## 12. Problems and surprises
 - Two bugs were caught and fixed while writing `task32_step1.py` and
   `task32_step3.py` before their final runs (missing `passer_y`/
   `candidate_x`/`candidate_y` columns in a `read_parquet` call; a wrong
-  column name `rank_overall` instead of the actual
-  `rank_overall_v5c`, and a missing `player_name` merge onto the
-  deep-midfield cross-fitted table) — both were code bugs in this
-  task's own new scripts, caught by the scripts crashing on first run,
-  not silent errors. Fixed and reran; final numbers above are from the
-  corrected runs.
+  column name `rank_overall` instead of the actual `rank_overall_v5c`,
+  and a missing `player_name` merge onto the deep-midfield cross-fitted
+  table) — both were code bugs in this task's own new scripts, caught
+  by the scripts crashing on first run, not silent errors. Fixed and
+  reran; final numbers above are from the corrected runs.
 - 43.4% of incomplete passes in Step 2(c) have no teammate within 15°
   of the pass line at all — the angle-restricted geometry diagnostic is
-  undefined for nearly half of incomplete passes. This narrows how much
-  Step 2(c)'s within-15° distribution alone can inform a future fix.
+  undefined for nearly half of incomplete passes.
 - Both A2 and A3 fix-trigger conditions independently fire, and A3's
   fires by a wide margin on the variance-share test (39.56% vs a 30%
   bar) — this is not a marginal call.
+- Step 4(a)'s within-role reliability at 200/300/500 passes goes sharply
+  negative for FW and MIXED once `n_units` drops below ~10 — these are
+  small-sample artifacts of the split-half procedure, not evidence of
+  genuinely negative reliability, and are reported as measured rather
+  than smoothed over or excluded.
+- Step 5's LINEUP and TEAM out-of-match tests both collapse relative to
+  the same-match figures in `BENCHMARK-v5.md` — LINEUP's PH-O2 for xG is
+  even the wrong sign. This directly bears on A1's concern that the
+  outcome test "may be mechanical": a large share of the same-match
+  relationship does not survive moving the Decision measurement out of
+  the match being predicted.
+- Step 6's finding that raw `ev_chosen` (b1) beats Decision (b3) on
+  every in-sample spec, and that b3's coefficient flips negative when
+  fit jointly with b1 for goals, is the most direct evidence in this
+  task that the "typical-choice" baseline subtraction (Decision's whole
+  reason for existing over a raw-EV ranking) is not earning its keep,
+  at least under this in-sample, team-match-level test.
 
-## 10. Questions for the research lead
-None yet from Steps 0-3 — the decision rules resolved cleanly (both
-fire) and no ambiguity in the brief's own text required a judgment
-call beyond the two disclosed operationalizations in Section 8.
-Section 6 of the final version of this page (after Steps 4-6) may add
-more.
+## 13. Questions for the research lead
+None. Every decision rule resolved cleanly from the brief's own fixed
+thresholds (Section 10), and every judgment call required to execute
+an otherwise-unambiguous step is disclosed in Section 11 rather than
+raised here as a blocking question.
 
-## 11. Files produced (Steps 0-3)
+## 14. Files produced
 - `src/engine_v2/task32_step1.py` — new. Step 1/A2 diagnostics.
 - `src/engine_v2/task32_step2.py` — new. Step 2/A3 diagnostics.
 - `src/engine_v2/task32_step3.py` — new. Step 3/A4 cross-fitted table
   rebuild.
-- `data/engine_v2_task32_step1.json`, `data/engine_v2_task32_step2.json`,
-  `data/engine_v2_task32_step3.json` — new summary JSONs (under `data/`,
+- `src/engine_v2/task32_step4.py` — new. Step 4/A5 role-based
+  reliability, variance decomposition, and PH-B1 role refit.
+- `src/engine_v2/task32_step5.py` — new. Step 5/A1 out-of-match
+  LINEUP/TEAM prediction.
+- `src/engine_v2/task32_step6.py` — new. Step 6/B1 baseline comparison.
+- `data/engine_v2_task32_step1.json` through
+  `data/engine_v2_task32_step6.json` — new summary JSONs (under `data/`,
   not committed).
-- `docs/results/32-critique-diagnostics.md` — this file (checkpoint
-  version; will be overwritten with the full Steps 0-6 version before
-  the final commit).
-- No engine artifact, table, or config file was modified or overwritten.
+- `docs/results/32-critique-diagnostics.md` — this file.
+- No engine artifact, table, or config file was modified or overwritten;
+  `study_b_units_v5.parquet` was read, not rewritten.
 - Commit hashes: `a62af14` (Step 0, brief alone, prior turn), `cb9c592`
-  (this checkpoint: Steps 1-3 code + this results page).
+  (Steps 1-3 checkpoint code + page), `067e783` (Steps 1-3 hash-record
+  follow-up), `<pending>` (this final commit: Steps 4-6 code + full
+  page), `<pending>` (final hash-record follow-up).
 
-## 12. Confidence
-High confidence in the Steps 1-3 numbers themselves: every custom
-statistic reuses Task 28's/Task 29's own already-validated functions
-unchanged, both bugs hit while writing new code were caught by crashes
-(not silent), and Step 3's cross-fitted deep-midfield finding (2 players
+## 15. Confidence
+High confidence in Steps 1-4's numbers: every custom statistic reuses
+Task 28's/Task 29's/Task 26's own already-validated functions unchanged,
+the two bugs hit while writing new code were caught by crashes (not
+silent), and Step 3's cross-fitted deep-midfield finding (2 players
 above the mean, same identities) independently reproduces Task 29's
-result under a different Decision estimate. The weakest link is Step
-2(c)'s incomplete-pass geometry: the within-15° distance is undefined
-for 43.4% of incomplete passes, so it characterizes a majority-but-not-
-all subset, and — per the brief's own framing — informs a future fix
-rather than settling anything on its own.
+result under a different Decision estimate. Steps 5 and 6 are more
+consequential findings than measurement exercises: the LINEUP/TEAM
+out-of-match collapse (Step 5) and the raw-EV-beats-Decision result
+(Step 6) both bear directly on whether Decision, as currently built, is
+earning the claims made for it — these are reported plainly as measured,
+not softened, per the reporting discipline's "weakest evidence" rule.
+The weakest link technically is Step 2(c)'s incomplete-pass geometry
+(undefined for 43.4% of incomplete passes) and Step 4(c)'s smaller,
+differently-composed role-refit sample (1,041 vs 2,099 units) — both
+already flagged as partial rather than fully comparable measurements.
