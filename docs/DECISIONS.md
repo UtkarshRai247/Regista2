@@ -179,3 +179,13 @@ defenders; Execution was a completion residual; the scored destination
 was often not the pass played; several feature and option-space defects.
 Alternatives rejected: patching the identification bug alone.
 Reversible? No.
+
+## D-016 — Task 38 PFF availability: told operational decisions
+Date: 2026-09-28
+Decision: (1) PFF "passer under pressure" = pressureType != 'N' (the
+brief's "not null" is always true; the field is coded N/P/L/A); chosen
+by the author when asked. (2) Morocco #1 PFF "Bono" is mapped to
+StatsBomb Yassine Bounou (unique team + shirt match), per the Task 38
+brief. (3) PFF events come from the top-level Event Data folder (v2.5
+spec), per the Task 38 brief.
+Reversible? Yes.
