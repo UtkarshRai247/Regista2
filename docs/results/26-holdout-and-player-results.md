@@ -688,5 +688,4 @@ alone shows (Section 13)?
 - `data/engine_v2_task26_step6_recovery.json`,
   `engine_v2_task26_step6_study_b.json` -- new summary JSONs backing
   Section 13 (also under `data/`, not committed).
-- Commit hashes: `<pending>` (this Step 6 section + code) -- to be
-  filled in a follow-up commit per CLAUDE.md rule 9.
+- Commit hashes: `851f590` (this Step 6 section + code).
