@@ -100,7 +100,7 @@ Step 2 Holm p is 0.601 for both metrics, so neither is < 0.05. For both: "a stab
 - `data/processed/tempo_task39_metrics.parquet`, `tempo_task39_move_residuals.parquet`, `tempo_task39_hold_residuals.parquet`, and `data/tempo_task39_redesign_rerun.json`. These are redirected re-run outputs; the stored v2 files are unchanged.
 - None of the data/ files are committed.
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched. Holdout untouched.
-- Commits: brief 9b2e49f (research lead); this task: recorded in a follow-up commit.
+- Commits: brief 9b2e49f (research lead); this task 689e5fe.
 
 ## 8. Confidence
 - Inputs are verified identical to the earlier artifacts, the test reproduces Task 35 exactly, and the control works on the same rows.
