@@ -210,6 +210,8 @@ the final version of this page (after Step 4) may add more.
   commit).
 - No frozen v5 artifact was modified. The women's holdout was not
   touched.
+- Commit hashes: `64fc8cf` (Step 0, brief alone), `52a0e8d` (this
+  checkpoint: Steps 1-3 code + page).
 
 ## 10. Confidence
 High confidence in the Steps 1-3 numbers: crossfit_v6.py's core
