@@ -97,3 +97,18 @@ and 12 inside the unzipped folder, and the events from
 `data/events/<match_id>.json`. Use only those 2015/16 matches; ignore
 every other file in the download. If the ZIP is incomplete or any listed
 match's events file is missing, stop and list what is missing.
+
+## Correction (gap in the brief, marked as such; 2026-09-28)
+2015/16 has no 360 frames, so the engine's "eligible pass" rule (which
+requires a freeze frame with >= 6 visible players) cannot apply. For
+2015/16 ONLY:
+- eligible pass = the engine's rule with the frame condition removed:
+  a Pass, not an excluded pass type (set pieces etc., as in the
+  engine), non-goalkeeper passer, with an end location. This defines
+  the role rule, the deep-midfield group, the P-test pass units and the
+  pass-count floors (>= 500; >= 100 elsewhere).
+- Tempo's S (MOVE_ON_SPEED, HOLD_VARIATION) keeps its own preregistered
+  eligibility (is_open_play_pass), unchanged, exactly as in the study
+  sample.
+Report on the page how many 2015/16 passes each rule admits. Record
+this in the deviations section.
