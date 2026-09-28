@@ -112,3 +112,13 @@ requires a freeze frame with >= 6 visible players) cannot apply. For
   sample.
 Report on the page how many 2015/16 passes each rule admits. Record
 this in the deviations section.
+
+## Correction (gap in the brief, marked as such; 2026-09-28)
+Task 35's situation control g uses 360-derived origin features, which
+2015/16 lacks. For 2015/16 ONLY, g (for pass and reception units, every
+outcome) = Task 35's feature set with every 360-derived feature
+removed: ball x, y; previous-event x, y; time remaining in the period;
+score difference; play pattern; under_pressure; period; minute. Same
+XGBoost settings as Task 35, 5 match folds, seed 20260928. List the
+exact features used and each g's out-of-fold R^2 on the page; record
+this in the deviations section.
