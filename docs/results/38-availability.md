@@ -292,7 +292,7 @@ AV_vis table (all 59 DMs):
 
 ## 4. Deviations from the brief
 - **Step 0:** not committed alone. The research lead committed it in 1601bcd with Task 37's brief.
-- **Passer under pressure = `pressureType != 'N'`.** The brief says "not null", but pressureType is never null (N/P/L/A). The author chose this when asked, and it is recorded as D-016.
+- **Passer under pressure = `pressureType != 'N'`.** The brief as first committed said "not null", but pressureType is never null (N/P/L/A). The author chose != 'N' when asked, recorded as D-016. The research lead then corrected the brief to the same definition in d552381, during this task. The run used != 'N' throughout, so this is no longer a deviation from the brief.
 - **Score difference comes from kickoff restarts, not PFF shot outcomes.** A first run counted PFF `shotOutcomeType == 'G'`. It disagreed with StatsBomb's final score in 24 of 64 matches, because 'G' includes disallowed goals and shoot-out kicks and misses own goals. The score is now reconstructed from kickoffs: every kickoff in periods 1-4 other than the first of its period is taken by the team that just conceded. That leaves 4 matches disagreeing with StatsBomb's final score:
   - 10504, France v Poland: 3-0 against 3-1;
   - 10505, England v Senegal: 2-0 against 3-0;
