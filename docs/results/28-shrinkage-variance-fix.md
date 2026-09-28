@@ -347,9 +347,8 @@ reused unchanged.
 - `data/engine_v2_task28_step1_2.json` -- new summary JSON backing this
   page (also under `data/`, not committed).
 - `docs/results/28-shrinkage-variance-fix.md` -- this file.
-- Commit hashes: `453f3e3` (Step 0, brief alone), `<pending>` (this
-  results page + code) -- to be filled in a follow-up commit per
-  CLAUDE.md rule 9.
+- Commit hashes: `453f3e3` (Step 0, brief alone), `ade53b9` (this
+  results page + code).
 
 ## 10. Confidence
 High confidence in Step 1's ANOVA-based sigma2_w/rho estimate and the
