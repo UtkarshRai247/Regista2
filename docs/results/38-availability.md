@@ -335,7 +335,7 @@ AV_vis table (all 59 DMs):
 - `data/pff_task38_step1.json`, `data/pff_task38_tests.json`.
 - None of the data/ files are committed.
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched.
-- Commits: brief 1601bcd (research lead); this task: recorded in a follow-up commit.
+- Commits: brief 1601bcd (research lead); this task a4ba86c.
 
 ## 8. Confidence
 - The measure and tests ran end to end with existing, reused inference code.
