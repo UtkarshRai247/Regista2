@@ -432,7 +432,7 @@ Praised-list z-scores: Rodri −0.56, Gündoğan −0.21, De Bruyne +1.59, Xhaka
 - `data/engine_v2_task42_step2.json`, `data/pff_task42_step3.json`, `data/engine_v2_task42_family.json`, and `data/processed/engine_v2/task42_pressured_receptions.parquet` (none committed).
 - `data/engine_v2_task42_step1.json`, `data/processed/engine_v2/task42_event_outcomes.parquet`, `task42_receipt_actions.parquet`, and the redirected tempo re-run outputs `data/processed/tempo_task42_*` and `data/tempo_task42_redesign_rerun.json` (none committed).
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched. Holdout untouched.
-- Commits: brief 107bed0; interim page after Step 1 99a4b82; final: recorded in a follow-up commit.
+- Commits: brief 107bed0; interim page after Step 1 99a4b82; final c8ec94d.
 
 ## 8. Confidence
 The estimator and inputs are the verified Task 35 pipeline.
