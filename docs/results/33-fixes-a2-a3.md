@@ -408,8 +408,7 @@ of it is reported above regardless of the GATE's outcome.
   The women's holdout was not touched.
 - Commit hashes: `64fc8cf` (Step 0, brief alone), `52a0e8d` (Steps 1-3
   checkpoint code + page), `0cc00d9` (Steps 1-3 hash-record follow-up),
-  `<pending>` (this final commit: Step 4 code + full page), `<pending>`
-  (final hash-record follow-up).
+  `2972835` (Step 4 code + full page).
 
 ## 15. Confidence
 High confidence in the pipeline mechanics: crossfit_v6.py's core
