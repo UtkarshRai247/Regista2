@@ -91,7 +91,7 @@ Within the 44 qualifying holdout deep midfielders (report only), the coefficient
 - `data/processed/engine_v2/value_model_rows_holdout.parquet` (holdout origin features; not committed).
 - `data/engine_v2_task37_holdout_ptest.json` (not committed).
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched and uncommitted. The holdout is now spent per BENCHMARK-v5 rule 3.
-- Commits: brief 1601bcd (research lead); this task: recorded in a follow-up commit.
+- Commits: brief 1601bcd (research lead); this task 3b451e2.
 
 ## 8. Confidence
 - The mechanics reuse Task 35 and Task 26 code unchanged, and the positive control works.
