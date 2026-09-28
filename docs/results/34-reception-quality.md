@@ -281,7 +281,7 @@ Full table (rank, name, n, raw, shrunken, 90% interval), all 111:
 - `data/engine_v2_task34_step1.json`, `data/engine_v2_task34_step2_3.json`: summaries (not committed).
 - `data/processed/engine_v2/task34_dm_shrunk.parquet`: Step 3 table (not committed).
 - This page.
-- Commits: brief 5ac7246 (research lead); Step 1 interim bcec9c8; final commit recorded in a follow-up commit.
+- Commits: brief 5ac7246 (research lead); Step 1 interim bcec9c8; final 5a7ff08.
 - Side effects: none beyond the files above. No memory writes. docs/JOURNAL.md and AGENTS.md had uncommitted changes before this task; they were left untouched and not committed.
 
 ## 8. Confidence
