@@ -268,6 +268,8 @@ more.
   version; will be overwritten with the full Steps 0-6 version before
   the final commit).
 - No engine artifact, table, or config file was modified or overwritten.
+- Commit hashes: `a62af14` (Step 0, brief alone, prior turn), `cb9c592`
+  (this checkpoint: Steps 1-3 code + this results page).
 
 ## 12. Confidence
 High confidence in the Steps 1-3 numbers themselves: every custom
