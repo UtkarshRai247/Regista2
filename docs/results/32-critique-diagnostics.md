@@ -495,8 +495,8 @@ raised here as a blocking question.
   `study_b_units_v5.parquet` was read, not rewritten.
 - Commit hashes: `a62af14` (Step 0, brief alone, prior turn), `cb9c592`
   (Steps 1-3 checkpoint code + page), `067e783` (Steps 1-3 hash-record
-  follow-up), `<pending>` (this final commit: Steps 4-6 code + full
-  page), `<pending>` (final hash-record follow-up).
+  follow-up), `33ec0cd` (Steps 4-6 code + full page), `<pending>` (this
+  final hash-record follow-up).
 
 ## 15. Confidence
 High confidence in Steps 1-4's numbers: every custom statistic reuses
