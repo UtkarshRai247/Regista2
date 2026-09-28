@@ -1,6 +1,6 @@
 # Task 26: Holdout replication, then the player results
 Date: 2026-09-28
-Status: COMPLETE (Steps 0-5; Step 6 to follow in a separate commit per the brief's own allowance)
+Status: COMPLETE (all steps)
 
 ## Section checklist
 - Step 0 (commit brief alone): COMPLETE
@@ -9,7 +9,7 @@ Status: COMPLETE (Steps 0-5; Step 6 to follow in a separate commit per the brief
 - Step 3 (player-level threshold): COMPLETE
 - Step 4 (leaderboard): COMPLETE
 - Step 5 (dimension correlations): COMPLETE
-- Step 6 (Study B rebuild): reported separately, see Section 12 / follow-up commit
+- Step 6 (Study B rebuild): COMPLETE -- Tier 1 ALLOWED, Tier 2 ALLOWED (see Section 13)
 
 ## 1. Headline
 The holdout gate passes: on 126 never-touched women's international
@@ -33,8 +33,12 @@ underlying construction, not a new empirical finding. Decision vs. xA
 per 90 is +0.57 overall in this task's fully-pooled construction, a
 different number from Task 25's own +0.71 (different threshold and
 pooling method, both disclosed in Section 7 -- not a contradiction).
-Study B (Step 6) is reported separately, per the brief's own
-allowance.
+Study B, rebuilt on engine v5 (Step 6, Section 13), finds BOTH Tier 1
+("most systematic variation sits with players") AND Tier 2 ("decision
+quality travels between systems") ALLOWED under the pre-registered
+v2-5.4 rules -- unlike engine v1's own standing verdict (Tier 1
+ALLOWED, Tier 2 NOT ALLOWED). Reported as computed; see Section 13 for
+the full battery and Section 14 for the one open question this raises.
 
 ## 2. What I did
 1. Committed `task-26-holdout-and-player-results.md` alone (Step 0).
@@ -559,5 +563,130 @@ Task 25's own correlation figure, not yet reconciled with the research
 lead (Section 10, Q1); (b) the holdout's PH-O2/PH-O3 gaps (Section 3),
 which mean this replication is weaker evidence for the
 team-context-sensitive specifications than for H-O1/H-O2/PH-O1/PH-O4;
-(c) Step 6 (Study B) is not yet in this page -- reported separately per
-the brief's own explicit allowance.
+(c) Step 6's Tier 2 ALLOWED verdict (Section 13) is a large swing from
+engine v1's own standing NOT ALLOWED finding, driven substantially by
+PH-B2's mover correlation moving from a CI straddling zero to one
+entirely above it -- reported as computed, but flagged in Section 14
+as the one Study B result most worth the research lead's independent
+scrutiny before it is treated as a standing finding for the paper.
+
+## 13. Step 6 -- Study B rebuilt on engine v5: does decision quality travel?
+
+Per-pass covariates were built directly from `options_ev_v4`'s chosen
+rows (`passer_x`, already the corrected-coordinate value since
+`engine_v2.geometry.team_period_directions` is +1 everywhere -- no
+normalization step needed) joined to `pass_der_v8.parquet`'s
+`decision_new`, replacing the withdrawn engine's
+`passes_situation.parquet` (built via `decision_engine`'s OLD
+`pitch_direction.py`). This IS the brief's required coordinate-routing
+fix -- disclosed here as instructed.
+
+**Stage 1**: 250850 per-pass rows -> **2099 stage-1 units** (player x team-context, >=20 passes), 1521 players, 159 team contexts.
+
+**Gate E**:
+| quantity | value |
+|---|---|
+| players with 2+ units | 416 |
+| club+international movers | 172 |
+| movers with matching position group | 172 |
+
+**Parameter recovery test** (Amendment v2-3.2, `reml_crossed.py`'s software unchanged, 100 sims x 3 scenarios on this design's own observed variance): **all 3 scenarios PASSED** (True).
+
+**B4 -- primary REML fit** (real 2,099-unit design):
+| quantity | value |
+|---|---|
+| var_player | 2.4298e-07 |
+| var_team | 6.3065e-08 |
+| S = var_player / (var_player + var_team) | **0.7939** |
+| converged | True |
+
+**Interval selection** (Amendment v2-6.1's coverage test, this design's own fitted variances as ground truth, cut to 50 simulations per the brief's own 2-hour time-budget contingency -- disclosed, same fallback rule Task 10 used):
+| method | coverage | mean width |
+|---|---|---|
+| (i) cluster bootstrap | 0.00 | 0.2138 |
+| (ii) parametric bootstrap | 0.92 | 0.1808 |
+| (iii) profile-likelihood | 0.92 | 0.1849 |
+
+**PRIMARY method: ii** (parametric bootstrap) -- (ii) and (iii) tied at 0.92 coverage; (i) cluster bootstrap again shows near-zero coverage (0.00), confirming Amendment v2-6.1's own diagnosis that it is invalid, not merely engine-v1-specific. Tie broken by the same list-order convention Task 10 used and explicitly disclosed there.
+
+**B4 interval, all three methods, real data:**
+| method | CI |
+|---|---|
+| (i) cluster bootstrap | [0.3683, 0.7114] |
+| (ii) parametric bootstrap (PRIMARY) | [0.7086, 0.8866] |
+| (iii) profile-likelihood | [0.6872, 0.8810] |
+
+**PH-B1** (position-group fixed effects; GK dropped -- ['GK'], zero units after the eligibility filter, same as engine v1's own Study B): S=0.7683, CI=[0.6793, 0.8774].
+
+**PH-B2** (disattenuated mover correlation, 172 movers): rel_club=0.4176, rel_intl=0.6205, r_obs=0.3173, **r_true=0.6234**, CI=[0.2586, 1.0000] (upper bound capped at 1.0 -- some bootstrap draws exceeded the [-1,1] range before capping, per the pre-registered procedure).
+
+**PH-B3** (players with 2+ units only, n=994 units): S=0.8589, CI=[0.7545, 0.9474].
+
+**v2-5.4 claim tiers:**
+| tier | condition | verdict |
+|---|---|---|
+| Tier 1 ("most systematic variation sits with players") | B4 CI low > 0.5 AND PH-B1 CI low > 0.5 | **ALLOWED** |
+| Tier 2 ("decision quality travels between systems") | Tier 1 AND PH-B2 positive excl. zero AND PH-B3 CI low > 0.5 | **ALLOWED** |
+
+Both tiers are ALLOWED on engine v5 -- unlike engine v1's own standing verdict (Tier 1 ALLOWED, Tier 2 NOT ALLOWED, `docs/results/10-validation.md`). The design calculation (v2-5.5) is not computed, since it only runs when Tier 2 is NOT ALLOWED.
+
+Wall clock: 4062s (67.7 min).
+
+### Comparison with engine v1's standing Study B verdict
+| quantity | engine v1 (Task 10, final) | engine v5 (this task) |
+|---|---|---|
+| n stage-1 units | 1,701 | 2,099 |
+| n players | 1,232 | 1,521 |
+| B4 S (point estimate) | 0.6537 | 0.7939 |
+| B4 primary interval | [0.5662, 0.7550] (parametric bootstrap) | [0.7086, 0.8866] (parametric bootstrap) |
+| PH-B1 CI low | 0.5473 | 0.6793 |
+| PH-B2 r_true | 0.1015, CI [-0.2476, 0.5263] | 0.6234, CI [0.2586, 1.0] |
+| PH-B3 CI low | 0.4656 | 0.7545 |
+| Tier 1 | ALLOWED | ALLOWED |
+| Tier 2 | NOT ALLOWED | **ALLOWED** |
+
+This is a substantive, not incremental, difference from engine v1's own
+standing verdict -- most visibly in PH-B2, where the disattenuated mover
+correlation flips from a confidence interval straddling zero to one
+entirely above zero. Reported as computed, per the hard rule; no
+interpretation of WHY beyond what is stated above.
+
+## 14. Step 6 -- deviations, problems, questions specific to this step
+**Deviations**: none from the hard rules. The coverage test was cut from
+the target 100 simulations to 50 after the 25-simulation checkpoint
+projected a 2.16-hour runtime against the brief's 2-hour budget --
+disclosed, the identical contingency rule Task 10 used on engine v1's
+own Study B.
+
+**Problems and surprises**: (1) The cluster bootstrap's coverage was
+again 0.00 on an entirely different design (2,099 engine-v5 units vs.
+1,701 engine-v1 units) -- this confirms Amendment v2-6.1's diagnosis
+(resampling one factor of a crossed design damages the other) is a
+property of the METHOD, not an artifact of engine v1's specific data.
+(2) (ii) and (iii) tied again at exactly 0.92 coverage, the same tie
+Task 10 hit on engine v1 -- resolved by the same disclosed list-order
+convention both times, not a new judgment call.
+
+**Question for the research lead**: Tier 2 ("decision quality travels
+between systems") is ALLOWED here where it was NOT ALLOWED on engine
+v1. Given the brief's own framing (Study B "rebuilt... as plan v2
+section 4 and Amendments v2-5, v2-6.1 specify"), is this now the
+standing Study B verdict for the paper, superseding
+`docs/results/10-validation.md`'s Tier 2 NOT ALLOWED finding, or does
+it require independent confirmation given how large a swing PH-B2
+alone shows (Section 13)?
+
+## 15. Files produced (Step 6)
+- `src/engine_v2/task26_step6_study_b.py` -- new. Full Study B rebuild
+  (stage-1 units, Gate E, recovery test, B4 fit, coverage test, PH-B1/
+  B2/B3, v2-5.4 tier rules), reusing `reml_crossed.py`'s
+  `fit_reml`/`bootstrap_by_player`/`simulate_units`/`profile_likelihood_ci_S`
+  and `task04_situation_context.py`'s `CLUB_COMPETITIONS`/
+  `INTL_COMPETITIONS`/`position_group` unchanged.
+- `data/processed/engine_v2/study_b_units_v5.parquet` -- new data
+  artifact (not committed, `data/` is never committed).
+- `data/engine_v2_task26_step6_recovery.json`,
+  `engine_v2_task26_step6_study_b.json` -- new summary JSONs backing
+  Section 13 (also under `data/`, not committed).
+- Commit hashes: `<pending>` (this Step 6 section + code) -- to be
+  filled in a follow-up commit per CLAUDE.md rule 9.
