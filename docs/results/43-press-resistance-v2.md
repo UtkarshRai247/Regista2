@@ -413,7 +413,7 @@ PR2_fwd (all 111):
 - `data/engine_v2_task43_steps3_6.json`, `data/pff_task43_step5.json` (not committed).
 - `data/processed/engine_v2/task43_spells.parquet`, `task43_pressured_spells.parquet`, `data/engine_v2_task43_steps1_2.json` (not committed).
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched. Holdout untouched.
-- Commits: brief 0eed693; interim page after Step 2 c5cc7d9; final: recorded in a follow-up commit.
+- Commits: brief 0eed693; interim page after Step 2 c5cc7d9; final ed3b7b5.
 
 ## 8. Confidence
 The spell definition follows the brief, with the disclosed exclusions.
