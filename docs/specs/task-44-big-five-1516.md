@@ -87,3 +87,13 @@ measure that passes R1.
 
 ## Output
 docs/results/44-big-five-1516.md (template). Commit per rule 9.
+
+## Operational note (2026-09-28, research lead)
+The author will download StatsBomb's open-data repository manually as a
+ZIP and unzip it into `data/raw_1516/`. Step 1 therefore reads the local
+copy instead of calling statsbombpy: take the match lists from
+`data/matches/<competition_id>/27.json` for competition ids 2, 7, 9, 11
+and 12 inside the unzipped folder, and the events from
+`data/events/<match_id>.json`. Use only those 2015/16 matches; ignore
+every other file in the download. If the ZIP is incomplete or any listed
+match's events file is missing, stop and list what is missing.
