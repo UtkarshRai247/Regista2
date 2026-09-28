@@ -169,9 +169,9 @@ Section 3.
 - Git tag `benchmark-v5` (annotated, local only, not pushed).
 - `docs/results/31-benchmark-freeze.md` -- this file.
 - Commit hashes: `d7a6202` (Step 0, brief alone), `4a2b6fc` (Step 1,
-  the four research-lead documents), `<pending>` (this results page +
+  the four research-lead documents), `59f0bb1` (this results page +
   Step 2/4 code + manifest -- the commit the `benchmark-v5` tag points
-  to) -- to be filled in a follow-up commit per CLAUDE.md rule 9.
+  to).
 
 ## 11. Confidence
 High confidence throughout: this is bookkeeping with a built-in,
