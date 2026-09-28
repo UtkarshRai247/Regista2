@@ -127,7 +127,7 @@ Positive control: POSITIVE, so the brief's condition for interpreting (a)-(d) is
 - `src/engine_v2/task35_step1_mde.py`, `src/engine_v2/task35_ptest.py`.
 - `data/engine_v2_task35_step1.json`, `data/engine_v2_task35_ptest.json` (not committed; data/).
 - This page.
-- Commits: brief 61b576f; final commit recorded in a follow-up commit.
+- Commits: brief 61b576f; final d7024fa.
 - Side effects: none beyond these files. No memory writes. JOURNAL.md, AGENTS.md and task-36 spec left untouched and uncommitted.
 
 ## 8. Confidence
