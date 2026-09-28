@@ -337,9 +337,8 @@ touched.
   -- new summary JSONs backing this page (also under `data/`, not
   committed).
 - `docs/results/29-deep-midfield-noise.md` -- this file.
-- Commit hashes: `b197846` (Step 0, brief alone), `<pending>` (this
-  results page + code) -- to be filled in a follow-up commit per
-  CLAUDE.md rule 9.
+- Commit hashes: `b197846` (Step 0, brief alone), `af80149` (this
+  results page + code).
 
 ## 13. Confidence
 High confidence in Steps 1-2's mechanics: both are direct, literal
