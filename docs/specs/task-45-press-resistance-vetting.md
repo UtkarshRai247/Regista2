@@ -63,6 +63,20 @@ five present players in turn.
 Task 44's P-test (DM and all, Y_F3 and net xG) with S = the player's
 other-match A1 score, then A2 score. Same design and controls.
 
+## Step 6 — Every role, not just deep midfielders (added before any run,
+## 2026-09-28, at the author's request; report only, no claim)
+For each Task 32 role (CB, FB, DM, CM, AM/W, FW) in 2015/16, for
+unadjusted PR2_flag_keep and A1:
+- stability (Task 38's method, players with >= 10 matches), n;
+- Task 44's P-test within the role (Y_F3 and net xG), with the
+  retention control on the same rows;
+- the Q test and the top 10 by shrunken score (Task 29's method within
+  the role), output only;
+- for spells ending in a completed pass under pressure: share forward /
+  sideways / backward and median length, role average.
+Also for PR2_flag_fwd (unadjusted only): stability per role.
+Label everything "second use of 2015/16; exploratory".
+
 ## Claim rule (fixed now; wording amended before any run)
 A1 (team style) is the essential test. The statement "keeping the ball
 under pressure is a stable deep-midfield trait on which the
