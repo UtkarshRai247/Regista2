@@ -125,3 +125,9 @@ by the possession-value model, rather than assuming it either way.
 
 Addition 3 (Part C): report the correlation between PR3 and Task 46's
 willingness W (players >= 50 spells and >= 100 receptions), DM and all.
+
+## WITHDRAWN (2026-09-29, main project chat, on the author's instruction)
+This brief was written in a separate chat and is WITHDRAWN. It must not
+be run, in whole or in part. The review note above ("adopted in main
+chat") was not written in the main project chat. The next task is
+Task 50.
