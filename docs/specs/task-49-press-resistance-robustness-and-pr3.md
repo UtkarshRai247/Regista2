@@ -104,3 +104,24 @@ C4. Tests (bars fixed now; all development, no claim beyond "study"):
 ## Output
 docs/results/49-press-resistance-robustness-and-pr3.md (template).
 Commit per rule 9.
+
+## Research lead review (main chat, 2026-09-29, before any result)
+This brief was written in a separate chat. It was reviewed in the main
+project chat and is ADOPTED with the additions below. Nothing above is
+removed.
+
+Addition 1 (Part B): apply the reading rule separately to deep
+midfielders and to all players, and report both.
+
+Addition 2 (Part C): the author's point is that under pressure a short
+backward or sideways outlet can itself be the skill (it breaks the
+press or recycles possession). So, descriptive and report only:
+mean dV (C2) and mean PR3 by spell ending (completed forward /
+sideways / backward pass, Task 45's dx rule; loss), for (i) all
+players, (ii) the top 20 and bottom 20 deep midfielders of Task 44's
+unadjusted PR2_flag_keep table, (iii) the praised players present.
+This shows whether recycling under pressure is valued as positive
+by the possession-value model, rather than assuming it either way.
+
+Addition 3 (Part C): report the correlation between PR3 and Task 46's
+willingness W (players >= 50 spells and >= 100 receptions), DM and all.
