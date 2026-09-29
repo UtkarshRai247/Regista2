@@ -392,7 +392,7 @@ Deep-midfielder list (≥50% DM and ≥300 eligible passes):
 - `src/engine_v2/task48_ingest.py`, `task48_build.py`, `task48_tests.py`.
 - `data/raw_reserved/` (events and matches, derived from the open-data copy), `data/processed/engine_v2/task48_*.parquet`, `data/engine_v2_task48_ingest.json`, `data/engine_v2_task48_build.json`, `data/engine_v2_task48.json` (none committed).
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched. Holdout untouched. Nothing beyond the brief was run on the reserved data.
-- Commits: brief 2161d66 (research lead); this page: recorded in a follow-up commit.
+- Commits: brief 2161d66 (research lead); this page 21dd601.
 
 ## 8. Confidence
 - Every estimator and definition was reused unchanged and fixed before opening the data.
