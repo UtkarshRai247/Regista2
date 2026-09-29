@@ -526,7 +526,7 @@ PC1 share of variance, {PR2_flag_keep, Decision, M4_ACCEL, M5}: 0.469 (n 15 DMs;
 - **Commits:**
   - 53b48a9: Step 1; tag `benchmark-v9`, not pushed.
   - af9eaf1: Step 2 split.
-  - The final commit hash is recorded below.
+  - 6f83484: Steps 3-6 and the results page.
 - **Side effects:** a system temporary folder during Step 1 (auto-deleted).
 - **Not mine and not committed:** pre-existing uncommitted changes to `docs/JOURNAL.md` and the untracked `AGENTS.md`.
 
