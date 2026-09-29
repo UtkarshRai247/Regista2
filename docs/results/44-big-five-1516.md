@@ -351,7 +351,11 @@ Coordinate check: 6,155 team-periods with shots, and a share of 1.0000 have mean
 
 ## 4. Deviations from the brief
 - **Coordinate check:** only task24_evidence.py's part (i) was run. Its parts (ii) and (iii) need 360 frames, which 2015/16 does not have.
-- **Author's decisions for the missing 360 data** (Section 2): eligible pass = the engine rule minus the frame condition; g = Task 35's features minus the 360-derived ones.
+- **Missing 360 data.** The author chose, when asked, and the research lead then wrote into the brief as corrections dff3e4e (eligible pass) and 8f6ff58 (g):
+  - **Eligible pass** = the engine rule minus the frame condition. It defines the role rule, the deep-midfield group, the pass units and the pass floors. Tempo's S keeps its own `is_open_play_pass` eligibility.
+  - Passes admitted in 2015/16: engine rule minus frame **1,286,650**; tempo's `is_open_play_pass` **1,286,650**. The counts are identical because every open-play pass has an end location. Tempo's time-on-ball chain then resolved 813,250 of them.
+  - **g features** (for 2015/16 only): ball x, ball y, previous-event x, previous-event y, time remaining in the period, score difference, play_pattern_code, under_pressure, period, minute. Settings are Task 35's XGBoost settings, 5 match folds, seed 20260928.
+  - **g out-of-fold R^2:** passes net xG 0.051, Y_F3 0.153, completion 0.099; pressured receptions net xG 0.023, Y_F3 0.094, keep_spell 0.061.
 - **Role population:** the Task 32 rule is applied to players with ≥100 eligible passes (Task 32's own population floor). The brief's ≥500 applies to the deep-midfield group.
 - **2015/16 match folds:** a seeded (20260928) permutation of the 1,551 match ids into 5 folds.
 - **R1 for HOLD_VARIATION** uses each half's residual SD (ddof = 1), because the metric is an SD. The other measures use half-means.
