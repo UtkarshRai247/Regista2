@@ -378,7 +378,7 @@ Deep-midfielder list (≥50% DM and ≥300 eligible passes):
 ## 5. Problems and surprises
 - **Most of the reserved matches are women's football**, and all are pooled as the brief lists them:
   - FA WSL, NWSL, Liga F, Frauen Bundesliga, Serie A Women and the Women's World Cup 2019;
-  - 1,054 of 1,985 matches.
+  - 1,184 of 1,985 matches.
   Many of the deep midfielders and the table names are women players. The men's club data is mostly one team (Barcelona) across La Liga seasons.
 - **Several reserved competition-seasons contain only 1-7 matches** (historic single matches).
 - **C1 with Y = net xG is negative** within deep midfielders (−0.083, p = 0.022). Report only.
