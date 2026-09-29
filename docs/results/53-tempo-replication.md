@@ -422,7 +422,7 @@ Memory gate readings: [('replication tests', 49.0, 4.44)] (tests); 52.0 % / 4.23
   - `data/engine_v2_task53_build.json`, `data/engine_v2_task53.json`
 - **Commits:**
   - cdb6b1e: Step 1.
-  - The final commit hash is recorded below.
+  - 41a4735: Steps 2-4 and the results page.
 - **Side effects:** none beyond the files above.
 - **Not mine and not committed:** pre-existing uncommitted changes to `docs/JOURNAL.md` and the untracked `AGENTS.md`.
 
