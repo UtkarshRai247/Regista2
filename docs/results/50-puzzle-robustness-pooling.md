@@ -318,7 +318,7 @@ Dummy check (within vs full dummies, per SD): study (i) -0.0143001 / -0.0143001;
 - Commits:
   - 2540f07: Step 1; tag `benchmark-v8`, not pushed.
   - 6f6cbf9: interim page after Step 2.
-  - The final commit hash is recorded below.
+  - e6d0fe2: Steps 3-4 and the complete page.
 - Side effects: none outside the brief's outputs. Pre-existing uncommitted changes to `docs/JOURNAL.md`, `docs/CHAT-HANDOFF.md` and `AGENTS.md` were not made by me and are not committed by me.
 
 ## 8. Confidence
