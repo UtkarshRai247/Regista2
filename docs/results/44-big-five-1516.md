@@ -381,7 +381,7 @@ Coordinate check: 6,155 team-periods with shots, and a share of 1.0000 have mean
 - `data/processed/engine_v2/task44_{passes,receptions,roles}.parquet`, `data/processed/tempo_task44_*`, `data/tempo_task44_*.json`, and `data/engine_v2_task44_{step2,step3,steps4_5}.json` (none committed).
 - `data/raw_1516/events/` (1,551 parquet), `data/raw_1516/matches/`, `data/engine_v2_task44_step1.json` (not committed).
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched. Study and holdout data untouched.
-- Commits: brief 5b80f43 and note f89863f (research lead); Step 1 5abf571; Step 2 f1bf0f3; final: recorded in a follow-up commit.
+- Commits: brief 5b80f43 and note f89863f (research lead); Step 1 5abf571; Step 2 f1bf0f3; final b7ae68d.
 
 ## 8. Confidence
 Ingest is verified by row counts, the press-resistance flag version passed its gate (r = 0.84), and the confirmatory bars were fixed before any 2015/16 result.
