@@ -187,7 +187,7 @@ Top 10 by shrunken score within each role (Task 29's method; output only):
 - `src/engine_v2/task45_vetting.py`.
 - `data/engine_v2_task45.json` (not committed).
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched. Holdout, study data and Task 44 artifacts untouched.
-- Commits: brief 999cf5f (+ ca9362f, 51c29d1, research lead); this page: recorded in a follow-up commit.
+- Commits: brief 999cf5f (+ ca9362f, 51c29d1, research lead); this page b16283b.
 
 ## 8. Confidence
 - A1 is an exact team demeaning (asserted), and A2's player means equal its WLS residuals (asserted).
