@@ -128,7 +128,7 @@ Floors:
 - `src/engine_v2/task46_part_a.py`, `src/engine_v2/task46_part_b.py`.
 - `data/engine_v2_task46_part_a.json`, `data/engine_v2_task46_part_b.json`, `data/processed/engine_v2/task46_study_pr_flag.parquet` (none committed).
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched. Reserved data not opened; holdout untouched.
-- Commits: brief 105e500 (research lead); interim page 8648d7f; final: recorded in a follow-up commit.
+- Commits: brief 105e500 (research lead); interim page 8648d7f; final 6ad0ed7.
 
 ## 8. Confidence
 Study B's machinery is reused unchanged.
