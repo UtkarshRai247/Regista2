@@ -1,0 +1,23 @@
+Task 52 -- BENCHMARK v9 manifest
+Format: <path relative to data/benchmark_v9/>\t<size bytes>\t<sha256>\t(source path)
+
+engine_v2_task50_spotcheck.json	1099	ae8e7a93bb7ad1b6a8cb5daa54937c29272a03a5bbf3f06b0d14357543b4e641	(source: data/engine_v2_task50_spotcheck.json)
+engine_v2_task50_step2.json	133749	d24f52b456668124052e8b616ffaf553e3165ffe866b52d6b1dee48f85d25b92	(source: data/engine_v2_task50_step2.json)
+engine_v2_task50_step3.json	8151	2eba588cd02182046fa1ab96205f24ceb20d2a6b847669e1664dc6cd6d5027a6	(source: data/engine_v2_task50_step3.json)
+engine_v2_task50_step4.json	7108	f2b1f0594b5e9d995d119301f98546975ebd597e92b1375b176f492d8baf5e4b	(source: data/engine_v2_task50_step4.json)
+engine_v2_task51.json	12616	9bc08b8f9f6eb1bfb8ce6699100f48297a3c0425b600819f3e3945757cb5bca6	(source: data/engine_v2_task51.json)
+tempo_task51_redesign_rerun.json	1027	3f40d33c225d1cf0fef5aaca380dcda7f3825e944f3071d9d045d13d54a2258e	(source: data/tempo_task51_redesign_rerun.json)
+processed/scorecard_card_a.parquet	55982	1ebc11281275108a0f7a30258a98c6f65fa0c30e3bbf6a60811c52c0b28b7e7a	(source: data/processed/scorecard_card_a.parquet)
+processed/scorecard_card_b.parquet	40805	fd14063a6a0e3eeb9fbf4e9beff4b08f941811134a7498286ba9e74729a1f1b0	(source: data/processed/scorecard_card_b.parquet)
+processed/scorecard_card_c.parquet	11137	b5236553ed1f2f1151a2a44fd3e73b9f83a56f3a5ae7ec1e2c7dc1b25abcb483	(source: data/processed/scorecard_card_c.parquet)
+processed/tempo_task51_metrics.parquet	87305	9a41acce4e6e8ab32ff29d8df3ba6c2c6ba68bed73dd8af23238b65f213b6446	(source: data/processed/tempo_task51_metrics.parquet)
+processed/tempo_task51_move_residuals.parquet	1968275	4e4ace7b8fb41cb8d5905420cad626d03e3f8438ec609f63d1e631b9a04dd1ca	(source: data/processed/tempo_task51_move_residuals.parquet)
+processed/tempo_task51_hold_residuals.parquet	2246535	39e9ad2792f636a01b822021b432f0a15108b730c8b6f046ef4b5d696601fbfe	(source: data/processed/tempo_task51_hold_residuals.parquet)
+processed/engine_v2/task52_w_1516.parquet	54059236	91e249714f3ca661c1ab4acb1b7028d72d4ec43ac36f25931ff899d7f573b6c7	(source: data/processed/engine_v2/task52_w_1516.parquet)
+processed/engine_v2/task52_w_study.parquet	12862520	a67f7438dcd992585097de214c928c8f4e49be4e4b57c5d433d4fd6bc68dafc8	(source: data/processed/engine_v2/task52_w_study.parquet)
+processed/tempo_task52_study_move_residuals_ids.parquet	8462083	81d9de88bf6b3ff98cdbcfb0fae1d3f86e70f6b57547fac35fe080859b5efdd3	(source: data/processed/tempo_task52_study_move_residuals_ids.parquet)
+processed/tempo_task52_study_hold_residuals_ids.parquet	9792691	63bafad6ea554b300360c1df3a2bab5494a783a8137bfe6e7338b25c02ef0f99	(source: data/processed/tempo_task52_study_hold_residuals_ids.parquet)
+
+MISSING files (searched for, not found): none
+MISSING (never written): ['Task 50 per-unit tables: task50_puzzle / task50_robustness / task50_pooling wrote JSON summaries only']
+Written to disk in Task 52 Step 1 (were in memory only): task52_w_1516, task52_w_study (reproduce Task 46: {'n': 1158231, 'base_rate': 0.2875782119456309, 'auc': 0.6289478646692832}, {'n': 271830, 'base_rate': 0.22810580142000514, 'auc': 0.6134970381155733}); tempo_task52_study_{move,hold}_residuals_ids (identical to v2 residuals)
