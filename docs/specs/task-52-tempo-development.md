@@ -182,3 +182,24 @@ correlations with PR2_flag_keep and/or Decision are large AND its K2
 coefficient shrinks toward zero once they are entered; "tempo is its
 own trait" if it keeps its coefficient.
 No composite score is built in this task.
+
+## Clarification B (2026-09-29, before any run): what the REPLICATION lock covers
+The lock protects the NEW tempo measures (Step 3's time on ball and
+g_T, M1-M6), so that nothing learned on the replication half shapes
+them and none of their replication results is seen before Task 53.
+- NEW measures (T, g_T, M1, M2, M3, M4, M5, M6, and every baseline they
+  use): build STRICTLY from development per-match raw files (events,
+  frames, EV grid), with every baseline fitted on development folds
+  only. No derived table containing replication rows may feed them.
+- EXISTING, already-benchmarked measures used only as comparators or
+  controls (PR2_flag_keep, W, keep_spell, MOVE_ON_SPEED,
+  HOLD_VARIATION, v5 Decision from pass_der_crossfit_v5): read from the
+  existing tables with a development match-id filter. Replication rows
+  may be decoded in memory but must be dropped immediately, before any
+  computation. Keep their existing fitted baselines as they are (they
+  are the benchmarked versions, and their replication values were
+  already seen in earlier tasks). Disclose each such read on the page,
+  listing the table and the filter.
+- Outcomes (Y_F3, POSS_XG, retention control) for D3 and K2: compute
+  from development per-match raw events only.
+This is option 3 for existing measures and option 1 for new ones.
