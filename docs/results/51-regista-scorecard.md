@@ -177,7 +177,7 @@ Praised-list players present (Task 41's list, matched by name): Kroos (player_id
   - Python packages installed into `.venv` (Section 4).
   - The matplotlib font cache was built in the user cache directory.
   - A temporary local web server (127.0.0.1:8751) served the page for the check. It is stopped.
-- Commits: the Task 51 commit, whose hash is recorded below.
+- Commits: 5af9e43 (Task 51).
 - Not mine and not committed: pre-existing uncommitted changes to `docs/JOURNAL.md` and the untracked `AGENTS.md`.
 
 ## 8. Confidence
