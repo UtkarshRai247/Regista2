@@ -87,7 +87,7 @@ Status: COMPLETE (every section run; deviations in Section 4)
 - `src/engine_v2/task47_deterrence.py`.
 - `data/engine_v2_task47.json` (not committed).
 - Side effects: none else. No memory writes. JOURNAL.md and AGENTS.md untouched. Reserved data not opened; holdout untouched.
-- Commits: brief 105e500 (research lead); this page: recorded in a follow-up commit.
+- Commits: brief 105e500 (research lead); this page 78de959.
 
 ## 8. Confidence
 - The model reuses the project's fixed-effects estimator, with player-clustered SE.
