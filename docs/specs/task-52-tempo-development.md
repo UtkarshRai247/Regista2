@@ -103,3 +103,82 @@ written after this page is read and before REPLICATION rows are opened.
 
 ## Output
 docs/results/52-tempo-development.md (template). Commit per rule 9.
+
+## AMENDMENT A (2026-09-29, before any run): tempo as CHOICES, and the "culmination" test
+Added at the author's direction, before Task 52 has run. It extends
+Steps 4-5; nothing above is removed. Same DEVELOPMENT half only; the
+REPLICATION half stays locked.
+
+The author's point: dictating tempo is about the CHOICES on the ball
+(speed the play up with a forward, incisive pass; keep it; slow it
+down and recycle; switch the point of attack), how often and WHEN a
+player makes them, and whether his team's play actually speeds up or
+slows down. The author's hypothesis: tempo is what press resistance
+plus good timing look like to the eye (a "culmination").
+
+### Pass categories (shared; fixed now)
+Unit: eligible pass (the dataset's rule: study = engine rule; 2015/16 =
+the frame-free rule of dff3e4e). dx = end x - start x (team frame).
+  SWITCH = StatsBomb pass switch flag is true.
+  ACCEL  = not SWITCH, and (pass technique is Through Ball, OR dx >= 15).
+  SLOW   = not SWITCH, and dx <= -5.
+  KEEP   = everything else.
+Report the share of each, overall and for deep midfielders.
+
+### M4 TEMPO PROFILE (style; 2015/16 dev leagues and study dev half)
+For each category, a cross-fitted XGBoost classifier (Task 42 settings,
+5 match folds within development, seed 20260929) of the category
+indicator on Step 3's origin context (no identity, no team demeaning).
+M4_ACCEL, M4_KEEP, M4_SLOW, M4_SWITCH = per-player mean(indicator -
+p_oof). Needs >= 100 eligible passes. These describe style, not
+quality.
+
+### M5 TEMPO TIMING ("speeds up when it is on"; study dev half only)
+Uses engine v5's full-corpus EV grid for development matches (in-sample
+option values; disclosed) and the policy-restricted candidate set.
+At each eligible pass, OPPORTUNITY = the best EV among ACCEL-type
+candidates (candidate dx >= 15 from the ball) exceeds the best EV among
+all other candidates.
+Baseline: cross-fitted classifier of ACCEL on origin context WITHOUT
+OPPORTUNITY. M5 = mean(ACCEL - p_oof | OPPORTUNITY) minus
+mean(ACCEL - p_oof | no OPPORTUNITY). Higher = he accelerates when a
+forward option is the best one, and holds when it is not. Needs >= 30
+passes of each kind. Report the share of passes with OPPORTUNITY.
+
+### M6 TEAM TEMPO SHIFT ("does the team speed up after him?"; 2015/16 dev and study dev)
+Unit: eligible COMPLETED pass in open play. Using the team's on-ball
+events in the same possession:
+  V_before = (pass start x - x of the team's 3rd previous on-ball
+             event) / seconds between them
+  V_after  = (x of the team's 3rd on-ball event after the reception -
+             pass end x) / seconds between them
+Both windows must exist within the possession and be > 0 s. The
+player's own pass is excluded from V_after by construction.
+Baseline: cross-fitted regression of V_after on origin context plus
+V_before. M6 = per-player mean(V_after - prediction). Also report M6
+separately on his ACCEL and his SLOW passes. Needs >= 100 units.
+
+### Tests for M4-M6 (report only, development half)
+D1-D5 of Step 5 apply to M4_ACCEL, M4_SLOW, M4_SWITCH, M5 and M6
+(M4_KEEP reported descriptively). For D3 the unit is the pass for
+M4-M6. D5 declared direction: higher for M5; none for M4 and M6.
+
+### Step 6 — The culmination test (deep midfielders, development half)
+K1 Common core. Correlation matrix among PR2_flag_keep, W,
+   v5 Decision (study only), M1, M2, M3_speed, M4_ACCEL, M4_SLOW, M5, M6,
+   raw and DISATTENUATED (r / sqrt(rel_a x rel_b), reliabilities from
+   D1 on the same half), with 1,000-player bootstrap CIs. Also the
+   share of variance on the first principal component of
+   {PR2_flag_keep, Decision, M4_ACCEL, M5} (study) and of
+   {PR2_flag_keep, W, M4_ACCEL, M6} (2015/16).
+K2 Adds beyond? The P-test on passes (Y_F3 and POSS_XG) with every
+   player-level S attached to each of his passes (other-match means):
+   each tempo measure (M1-M6) entered TOGETHER with PR2_flag_keep (and
+   v5 Decision on the study sample). Report each tempo coefficient with
+   and without the others, and PR2_flag_keep's with and without tempo.
+Reading (for Task 53, report only here): "tempo is largely a
+culmination" is supported if a tempo measure's disattenuated
+correlations with PR2_flag_keep and/or Decision are large AND its K2
+coefficient shrinks toward zero once they are entered; "tempo is its
+own trait" if it keeps its coefficient.
+No composite score is built in this task.
