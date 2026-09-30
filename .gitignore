@@ -24,3 +24,11 @@ __pycache__/
 .DS_Store
 .venv/
 venv/
+# Task 54 (B4): model and output files
+*.pkl
+*.joblib
+*.onnx
+*.model
+*.ubj
+output/
+outputs/

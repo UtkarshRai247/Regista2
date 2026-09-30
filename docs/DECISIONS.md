@@ -189,3 +189,19 @@ StatsBomb Yassine Bounou (unique team + shirt match), per the Task 38
 brief. (3) PFF events come from the top-level Event Data folder (v2.5
 spec), per the Task 38 brief.
 Reversible? Yes.
+
+## D-017 — Five tracked data/ files are published; PFF organisational addresses stay
+Date: 2026-09-29
+Decision: (told by the research lead, Task 54 "Resolution of the B1 stop",
+commit e771149) The five tracked files under data/ stay tracked and the
+.gitignore whitelist is kept: data/splits/match_split.csv and
+data/splits/cv_folds.csv (match ids and split/fold labels, needed to
+reproduce the preregistered splits); data/processed/player_season_metrics.parquet
+(engine v1 player-season metrics, WITHDRAWN per D-015, kept as the
+historical record; the README says "engine v1, withdrawn; do not use");
+data/processed/worked_example.csv (seven rows illustrating one pass);
+data/expert_lists/selections.csv (published media selections with source
+URLs). None is raw StatsBomb or PFF data. PFF's own published
+organisational addresses (fchelp@pff.com, gradientsports.archive@pff.com)
+stay in the docs.
+Reversible? Yes, until the repository is made public.

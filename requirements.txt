@@ -1,0 +1,14 @@
+# Third-party packages imported by the headline scripts (Tasks 24-25, 35, 37, 44, 48, 51-54
+# and the data-download scripts), found by an import scan; versions from the author's .venv.
+# Python 3.14.
+matplotlib==3.11.2
+numpy==2.5.3
+pandas==3.0.6
+pyarrow==25.0.1
+requests==2.34.2
+requests-cache==1.3.3
+scikit-learn==1.9.1
+scipy==1.18.1
+statsbombpy==1.22.0
+statsmodels==0.15.0
+xgboost==3.4.1
