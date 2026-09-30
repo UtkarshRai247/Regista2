@@ -74,7 +74,7 @@ None.
 - `docs/scorecard/figure1.png` (redrawn), `docs/scorecard/figure1.pdf` (new)
 - `docs/scorecard/index.html`, `docs/scorecard/index_public.html`: note added
 - `data/engine_v2_task55.json` (not committed): the value check and sizes
-- Commits: the hash is recorded below.
+- Commits: ecfc466 (Task 55).
 - Side effects: a temporary local web server (127.0.0.1:8753) for the page check, now stopped.
 - Not staged: `docs/JOURNAL.md` and `AGENTS.md`.
 
