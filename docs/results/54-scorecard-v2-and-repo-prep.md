@@ -93,7 +93,7 @@ None. The brief's STOP rule was followed: Part A and B2-B6 were not run, and his
 
 ## 7. Files produced
 - This page only. The scan used read-only git commands; its path list went to a temporary file (`/tmp/t54_paths.txt`, outside the repo).
-- Commits: the hash of this page's commit is recorded below.
+- Commits: 164e291 (this page).
 - Not staged (B5): `docs/JOURNAL.md` (pre-existing uncommitted change) and `AGENTS.md` (untracked).
 
 ## 8. Confidence
