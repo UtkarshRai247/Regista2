@@ -857,3 +857,199 @@ predicts chance quality.
 
 Next: Task 14b-prep compiles the expert selection lists for verification
 before any leaderboard is computed.
+
+---
+
+## 2026-09-25 — The engine audit, and what it withdraws
+
+Full audit: `docs/ENGINE_AUDIT.md`. Rebuild spec:
+`docs/specs/engine-v2-rebuild.md`. Decision D-015.
+
+Prompted by the author's push-back: after three objectives produced the
+same bottom of the leaderboard, treating another null as a "finding" was
+no longer credible. I read the engine line by line instead. Five
+defects:
+
+1. **EV is arithmetically a risk score.** EV = V_turn + p(V_succ -
+   V_turn); the bracket barely varies across destinations while p varies
+   0.98 to 0.50, so ranking by EV is ranking by completion probability.
+   Turnovers are also double-penalised (success branch ignores
+   conceding; turnover branch ignores recovery).
+2. **The value model cannot see defenders.** Its features are location,
+   previous location, time, score, play pattern — nothing from the
+   freeze frame. A ball through the line and a sideways ball to the same
+   coordinate score identically. The Task 01 brief explicitly forbade a
+   location-only value function as "the known flaw we are fixing from
+   the previous project". It was never implemented and I never checked.
+3. **Execution measures nothing.** It reduces algebraically to
+   (1-p)(V_succ - V_turn) on completed passes: a completion residual.
+   This invalidates Study C.
+4. **The scored destination is often not the pass played** — median 5.05
+   yards off, 35 yards on 50+ yard passes, with the error growing in
+   pass length, i.e. worst for the players under study. It also
+   corrupted the pass-success model's training pairs.
+5. Feature defects: non-normalised coordinates and absolute bearings in
+   the success model; a 1-yard "lane" threshold from a yards/metres
+   confusion, so lane congestion never fires; no offside check; no
+   representation of passes into space; congested-area passes discarded
+   by the ambiguity rule.
+
+Withdrawn as measurements: Decision, Execution, Risk, all three
+leaderboards, Study A's blind spots, Study B's variance split, Study C,
+and both referees. Retained: the data pipeline, every piece of
+validation machinery, the validated win-probability function, and the
+process habits.
+
+The honest summary of the project to date: the process caught real
+errors repeatedly, but it was auditing conclusions drawn from an
+instrument nobody had audited. Preregistration disciplines inference,
+not measurement.
+
+## 2026-09-25 — Task 16: tempo
+
+Full results: `docs/results/16-tempo.md`
+
+Built before the rebuild deliberately: tempo uses only timestamps, so
+the engine defects cannot touch it. The gate did its job with no repair
+pass and no loop.
+
+- **median_time_on_ball: USABLE**, reliability 0.939 at 200
+  involvements. **one_touch_share: USABLE**, 0.959. These are far more
+  reliable than anything the engine ever produced.
+- **pressure_delta: PROVISIONAL** (0.595).
+- **pace_delta (0.456) and tempo_variation (0.097): NOT MEASURABLE** —
+  reported and dropped with no diagnosis, per T-1.3.
+- Coverage: 72.6% of open-play passes have a resolvable receipt chain;
+  the carry sanity check passed first time (1.285s vs 0.000s).
+
+Interpretation for the write-up, recorded now: the two usable metrics
+are reliable but largely encode ROLE. The ten longest holders are all
+defenders (Akanji 2.60s, Aké, Stones, Tapsoba, Marquinhos); the fastest
+releasers are forwards and attacking midfielders (Boniface 0.08s,
+Griezmann, Busquets). And pressure_delta correlates -0.858 with
+median_time_on_ball, which is close to arithmetic: a player who holds
+the ball longer has more room to drop, and nobody can drop below zero.
+It is a restatement of baseline hold time more than a measure of
+composure, and must be described that way.
+
+So the dimension the eye test actually means — does this player change
+the team's rhythm — is pace_delta, and it is not measurable at these
+sample sizes. That is the honest yield: time on the ball is highly
+measurable, tempo control is not. No follow-up, per T-1.1 and T-1.4.
+
+---
+
+## 2026-09-26 — Task 16b: tempo diagnosed and repaired
+
+Full results: `docs/results/16b-tempo-redesign.md`
+
+All four suspected causes confirmed, with sizes:
+- **Contamination**: sequences had been built from the withdrawn
+  engine's 171,618 matched passes rather than 289,001 open-play passes.
+  29,134 sequences once rebuilt, and **75.4%** of the old possessions
+  differ in pass count by 2 or more. Median pace 0.283 -> 0.373.
+- **On-pitch**: **42.0%** of every "without him" comparison sequence
+  occurred while the player was not on the pitch.
+- **Split granularity**: the dominant cause. On the SAME contaminated
+  data, splitting at sequence level instead of match level moves
+  pace_delta's reliability from 0.456 to **0.913**. Most of Task 16's
+  measured unreliability was the split, not the metric. (Diagnostic
+  only — that split needs 200 sequences per player, so n falls to 54.)
+- **Ratio noise**: real but smaller; 2.4% of sequences run under 3
+  seconds, and the (n-1)/duration convention shifts the whole
+  distribution down.
+
+The single permitted redesign succeeded. **MOVE_ON_SPEED 0.783** and
+**HOLD_VARIATION 0.881**, both USABLE, both with monotone reliability
+curves. Tempo now ships with five metrics.
+
+Why MOVE_ON_SPEED matters more than its reliability number: it is
+**nearly orthogonal to everything else** — 0.117 with median time on
+ball, 0.064 with completion rate, 0.054 with progressive passes, -0.225
+with xA. It is the first quantity in this project that is both reliable
+and not a restatement of role or safety. HOLD_VARIATION is weaker on
+that count (0.669 with median time on ball): players who hold longer
+have more room to vary.
+
+Face validity, recorded but NOT used as a criterion: hold variation is
+topped by Akanji, Ream, **Frenkie de Jong, Bernardo Silva**, Skriniar —
+players associated with changing gear; its bottom is Insigne, Phillips,
+Trippier, Pedri, Griezmann.
+
+Limitations to carry into any write-up, stated now:
+- MOVE_ON_SPEED measures how fast the TEAM's next pass follows his. That
+  is partly the receiver's doing, so attribution is shared, not
+  individual.
+- No outcome test exists for any tempo metric, by design: it would need
+  the rebuilt value model, and running it on engine v1 would build on a
+  withdrawn measurement. Whether moving the ball on faster is GOOD is
+  untested.
+- pressure_delta stays PROVISIONAL and is described as a restatement of
+  baseline hold time (Akanji is the most extreme unit on both, z=4.62
+  and z=-4.45), not as composure.
+
+Module closed. No further tempo work before the engine rebuild.
+
+## Condensed backfill, 2026-09-29 (research lead): Tasks 12-55
+Written late and condensed. Each results page (docs/results/NN-*.md) is
+the authoritative record; this entry is a map, not a restatement.
+Tasks 12, 13, 14b and 14b-prep have results pages but no journal entry.
+
+Engine rebuild (Tasks 15-25). Engine v2 (grid EV, policy baseline) was
+built on the ENGINE_AUDIT plan and failed T4 scenario_c from Task 19d.
+Tasks 21 and 22 fixed real defects (possession perspective; the label
+now counts its own event) but premise checks still failed. Task 24
+found the root cause: StatsBomb coordinates are already team-relative
+and team_period_directions rotated about half of all team-periods,
+since engine v1 (also in tempo). Engine v5 (Task 25) passed T1-T6.
+Lesson: the research lead's stop rules had conflated "stop claiming"
+with "stop investigating"; the author's refusal to stop led to the fix.
+
+Player results and their walk-backs (Tasks 26-34). Same-match outcome
+links looked strong and replicated on the women's holdout (Task 26),
+but Task 32 showed they are largely mechanical. Several research-lead
+formula errors were caught and fixed (DM group definition, shrinkage,
+clustered variance, pooled noise). Task 33's v6 fixes failed the
+out-of-match gate. Reception space (Task 34) was stable but not linked
+to results.
+
+The valid results test (Tasks 35-41). Team-match out-of-match tests had
+MDEs of 0.12-0.52 xG per match per SD: nearly blind, so earlier nulls
+were over-read. The pass-level P-test (designed after those failures,
+disclosed, with a positive control) found v5 Decision +0.0747 per 100
+passes per SD (Holm 0.0087), replicated on the holdout (+0.0780,
+p 0.0048; Task 37, final holdout use), carried by forwards (Task 41).
+PFF WC2022 was ingested (Task 36); availability was stable but linked
+to fewer chances (Task 38). "Elite registas take the ball in traffic"
+was withdrawn after the pre-existing praised list showed no difference
+(Task 41).
+
+Press resistance (Tasks 42-50). A weak first definition (Task 42) was
+redefined (Task 43); PFF and StatsBomb versions agree (r 0.78). On the
+untouched 2015/16 big five (Task 44) it was stable within DMs (0.666);
+the team-demeaned check failed in one season (Task 45) because team and
+player are confounded; movers settled it (Task 46). On the reserved
+data (Task 48, single use) it travels club to country (r_true 0.650,
+127 movers) and, team-adjusted, predicts reaching the final third
+(Holm 3.7e-17). DM-specific links and deterrence did not confirm.
+Task 50: the lower next-10-events xG is a window effect (whole-
+possession xG slightly up); both confirmed results hold in every subset.
+
+Scorecard and tempo (Tasks 51-55). The author steered tempo toward
+on-ball choices (speed up, recycle, switch) and proposed that tempo is
+a culmination of press resistance and decision quality. Developed on a
+locked half (Task 52) and replicated once on 2015/16 La Liga, Serie A
+and Ligue 1 (Task 53): tempo-style stability 0.83-0.90 within DMs;
+speeding up, recycling, switching and quick-and-safe release all
+predict progression for all players; for DMs switching adds to press
+resistance (Holm 3.1e-5); speed-up style trades off against press
+resistance (r -0.29). The praised-list name audit found one wrong match
+(Siem de Jong, Task 52 only). Scorecard v2, Figure 1 and repo prep
+(Tasks 54-55).
+
+Process notes. A separate chat wrote a Task 49 brief; it was withdrawn
+on the author's instruction and never run. Decisions D-016 to D-018 are
+recorded; D-018 publishes PFF-derived results (not data). Benchmarks
+v5-v9 are frozen and tagged except v7 (written, not tagged). All
+fresh data (holdout, 2015/16, reserved, the Task 53 replication half)
+is now spent.
