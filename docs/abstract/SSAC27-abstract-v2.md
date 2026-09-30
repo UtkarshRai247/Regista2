@@ -40,13 +40,13 @@ Kroos is a switcher (top 7%).
 Two popular ideas fail. Being "always available", open to receive at a
 teammate's pass, is stable but linked to fewer chances (tracking data;
 exploratory). Pass-choice value, the value of the chosen option minus a
-typical choice, is a genuine skill measured in a player's other matches
+typical choice, is a skill that shows up in a player's other matches
 (+0.075 xG per 100 passes per SD, replicated on 126 unseen matches), but
 it is driven by forwards and does not separate deep midfielders.
 
-An audit also found that a common coordinate-normalisation step had
-silently reversed half the data and, uncorrected, produced the opposite
-finding. Every failed test is published with the code. We release a
+An audit also found that a coordinate-normalisation step had reversed
+the attacking direction for about half of all events and, uncorrected,
+produced the opposite finding. Every failed test is published with the code. We release a
 scorecard for every deep midfielder, with uncertainty intervals and an
 evidence tier for each dimension (Figure 1).
 
