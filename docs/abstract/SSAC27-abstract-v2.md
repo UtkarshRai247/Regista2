@@ -26,8 +26,8 @@ he keeps the ball after receiving it under pressure. Tempo choices ask
 how often he speeds play up with a forward or through pass, slows it
 down by recycling, or switches play, and how often he releases the ball
 quickly and safely when pressed. A pass-value engine scores about 420
-possible destinations per pass. The tests are what is new. Each was pre-
-registered; results are measured against a player's teammates in the
+possible destinations per pass. The tests are what is new. Each was
+pre-registered; results are measured against a player's teammates in the
 same match, using his scores from other matches; club and international
 appearances separate player from team; and every headline result was
 confirmed on data held back from development.
