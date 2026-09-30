@@ -25,8 +25,7 @@ play by models trained on other matches. Press resistance asks whether
 he keeps the ball after receiving it under pressure. Tempo choices ask
 how often he speeds play up with a forward or through pass, slows it
 down by recycling, or switches play, and how often he releases the ball
-quickly and safely when pressed. A pass-value engine scores about 420
-possible destinations per pass. The tests are what is new. Each was
+quickly and safely when pressed. The tests are what is new. Each was
 pre-registered; results are measured against a player's teammates in the
 same match, using his scores from other matches; club and international
 appearances separate player from team; and every headline result was
@@ -46,19 +45,20 @@ play up or switch it more often help their teams progress (+0.63 and
 Holm-adjusted p < 10^-5). For deep midfielders, switching adds to press
 resistance (+0.74 points, p < 10^-4), while speeding up trades off
 against it: 6s who accelerate more often are less press-resistant (r =
--0.29). Elite registas sit at different points on it. Among 185 deep
-midfielders, Busquets and Kroos are both in the top 2% for press
-resistance; Busquets rarely speeds play up (bottom 8%) but releases
-quickly and safely under pressure (top 7%), while Kroos is a switcher
-(top 5%) who seldom accelerates (bottom 30%).
+-0.29). We find that elite registas sit at different points on this
+trade-off. Among 185 deep midfielders, Busquets and Kroos are both in
+the top 2% for press resistance; Busquets rarely speeds play up (bottom
+8%) but releases quickly and safely under pressure (top 7%), while Kroos
+is a switcher (top 5%) who seldom accelerates (bottom 30%).
 
-Pass-choice value is a skill measured in a player's other matches and
-replicated on 126 unseen matches (+0.075 xG per 100 passes per SD), but
-it mainly separates forwards. Being "always available" is stable but
-goes with fewer chances in tracked World Cup matches (exploratory). We
-release a scorecard for every deep midfielder, with uncertainty
-intervals and an evidence tier for each dimension (Figure 1); code and
-pre-registrations are public.
+Together, these results give the regista a measurable profile on two
+separate axes: security, keeping the ball under pressure, and ambition,
+speeding play up. Press resistance carries from club to national team,
+so it can inform recruitment and selection. The scorecard places every
+deep midfielder on both axes, with uncertainty intervals and evidence
+tiers (Figure 1). The data also question conventional wisdom: players
+most often open to receive create fewer chances than their teammates
+(tracking data, exploratory).
 
 ---
 
@@ -109,5 +109,5 @@ evidence tiers for the rule-selected players.]
 1. Figure 1 from Task 54.
 2. Percentiles now come from Card A (185 DMs), the same group as Figure 1.
 3. PFF-derived result (availability) kept in the abstract per D-018 (author, option a).
-4. Word count: body 495 words (title excluded; 507 with the title).
+4. Word count: body 496 words (title excluded; 508 with the title).
 5. Repo URL after it goes public.
