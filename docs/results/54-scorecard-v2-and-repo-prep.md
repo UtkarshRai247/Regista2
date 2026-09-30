@@ -197,7 +197,7 @@ This creates the GitHub repository, sets it as `origin`, and pushes. Alternative
 - **Data, not committed:** `data/processed/scorecard_v2_card_{a,b,c}.parquet`, `data/engine_v2_task54.json`.
 - **Commits:**
   - 164e291 and d23ba32: the stopped first run.
-  - The final commit hash is recorded below.
+  - 59216d9: Part A, B2-B6 and this page.
 - **Side effects:** a temporary local web server (127.0.0.1:8752) for the page check, now stopped.
 - **Not staged (B5):** `docs/JOURNAL.md` (pre-existing uncommitted change) and `AGENTS.md` (untracked).
 
