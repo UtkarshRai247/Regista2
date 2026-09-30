@@ -24,31 +24,42 @@ within deep midfielders (split-half reliability 0.67-0.70), travels
 with the player between club and national team (disattenuated r = 0.65,
 127 players), and predicts his team reaching the final third relative
 to teammates in the same match (+1.3 percentage points per SD,
-p < 10^-16) on 1,985 matches untouched during development. Tempo
-choices, how often a player speeds play up with a forward or through
-pass, slows it down by recycling, or switches play, are among the most
-stable traits we measured (0.83-0.90 within deep midfielders). On 1,137
-held-back matches they predict progression for all players (speeding up
-+0.63 points, recycling -0.62, switching +0.37; all Holm-adjusted
-p < 10^-5). For deep midfielders, switching adds to press resistance
-(+0.74 points, p < 10^-4), and the two trade off: 6s who accelerate more
-often are less press-resistant (r = -0.29). Elite registas sit at
-different points on this trade-off. Busquets rarely speeds play up
-(bottom 6%) but releases quickly and safely under pressure (top 7%);
-Kroos is a switcher (top 7%).
+p < 10^-16) on 1,985 matches untouched during development. The effect
+holds in men's and women's matches, in club and international football,
+and without Barcelona. Keeping the ball does not cost chances:
+possessions run longer, and expected goals over the whole possession
+rise slightly (p = 0.019).
+
+Tempo choices, how often a player speeds play up with a forward or
+through pass, slows it down by recycling, or switches play, are among
+the most stable traits we measured (0.83-0.90 within deep midfielders).
+On 1,137 held-back matches they predict progression for all players
+(speeding up +0.63 points, recycling -0.62, switching +0.37; all
+Holm-adjusted p < 10^-5). For deep midfielders, switching adds to press
+resistance (+0.74 points, p < 10^-4), and the two trade off: 6s who
+accelerate more often are less press-resistant (r = -0.29). Elite
+registas sit at different points on this trade-off. Busquets rarely
+speeds play up (bottom 6%) but releases quickly and safely under
+pressure (top 7%). Kroos is a switcher (top 7%) who seldom accelerates
+(bottom 27%). Marchisio ranks in the top 4% for both switching and
+quick, safe release.
 
 Two popular ideas fail. Being "always available", open to receive at a
-teammate's pass, is stable but linked to fewer chances (tracking data;
-exploratory). Pass-choice value, the value of the chosen option minus a
-typical choice, is a skill that shows up in a player's other matches
+teammate's pass, is stable but linked to fewer chances in 64 tracked
+World Cup matches (exploratory). Pass-choice value, the value of the
+chosen option minus a typical choice, is a skill that shows up in a
+player's other matches, with team, opponent and position held fixed
 (+0.075 xG per 100 passes per SD, replicated on 126 unseen matches), but
 it is driven by forwards and does not separate deep midfielders.
 
 An audit also found that a coordinate-normalisation step had reversed
 the attacking direction for about half of all events and, uncorrected,
-produced the opposite finding. Every failed test is published with the code. We release a
-scorecard for every deep midfielder, with uncertainty intervals and an
-evidence tier for each dimension (Figure 1).
+produced the opposite finding. Every failed test is published with the
+code. We release a scorecard for every deep midfielder, with
+uncertainty intervals and an evidence tier for each dimension. The
+tiers separate traits confirmed for deep midfielders, traits confirmed
+for all players, and style measures that describe a player's type
+rather than his quality (Figure 1).
 
 ---
 
@@ -91,6 +102,9 @@ evidence tiers for the rule-selected players.]
 - Pass-choice value: results/35 (+0.0747, Holm 0.0087); results/37
   holdout (+0.0780 [0.0237, 0.1322], p 0.0048); forwards: results/41;
   DM null: results/35, 37.
+- Robustness of C6 by subset and whole-possession xG (+0.0386, p 0.019, reserved, all players): results/50.
+- Kroos M4_ACCEL rank 103/141 (bottom 27%); Marchisio M4_SWITCH 5/141 and M2 5/141 (top 4%): results/53 Step 4.
+- Availability sample: PFF WC2022, 64 matches (results/38).
 - Coordinate audit: results/24 (80/156 vs 76/156 team-periods flipped);
   engine v1 xG -0.138 vs v5 +0.249 (same-match test, results/25).
 
@@ -100,5 +114,5 @@ evidence tiers for the rule-selected players.]
    DM table; if Figure 1 uses a different group, update the percentile.
 3. PFF-derived numbers (availability) appear in the abstract: author to
    confirm PFF's terms allow this before submission.
-4. Word count (body currently 395).
+4. Word count: body 492 words (title excluded; 504 with the title). If SSAC counts the title, trim 5+ words.
 5. Repo URL after it goes public.
