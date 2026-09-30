@@ -38,11 +38,11 @@ On 1,137 held-back matches they predict progression for all players
 Holm-adjusted p < 10^-5). For deep midfielders, switching adds to press
 resistance (+0.74 points, p < 10^-4), and the two trade off: 6s who
 accelerate more often are less press-resistant (r = -0.29). Elite
-registas sit at different points on this trade-off. Busquets rarely
-speeds play up (bottom 6%) but releases quickly and safely under
-pressure (top 7%). Kroos is a switcher (top 7%) who seldom accelerates
-(bottom 27%). Marchisio ranks in the top 4% for both switching and
-quick, safe release.
+registas sit at different points on this trade-off. Among 185 deep
+midfielders, Busquets and Kroos are both in the top 2% for press
+resistance. Busquets rarely speeds play up (bottom 8%) but releases
+quickly and safely under pressure (top 7%); Kroos is a switcher (top 5%)
+who seldom accelerates (bottom 30%).
 
 Two popular ideas fail. Being "always available", open to receive at a
 teammate's pass, is stable but linked to fewer chances in 64 tracked
@@ -95,24 +95,21 @@ evidence tiers for the rule-selected players.]
   R5 (-0.6239, 3.82e-09), R6 (+0.3684, 2.53e-06).
 - DM switching with PR: results/53 R1 (+0.7430 [0.4128, 1.0731], Holm 3.09e-05).
 - Trade-off: results/53 C1 (-0.292 [-0.439, -0.122]).
-- Busquets M4_ACCEL rank 133/141 (5.7%); M2 rank 9/141 (6.4%); Kroos
-  M4_SWITCH rank 9/141 (6.4%): results/53 Step 4 DM tables.
+- Player percentiles (Card A, 185 DMs, results/54 A5-A6): Busquets PR2 98, M4_ACCEL 8.1, M2 93.0; Kroos PR2 98, M4_SWITCH 95.7, M4_ACCEL 29.2.
 - Availability: results/38 (stability DM 0.740, n 28; P-test all
   -0.0692 per 100 receptions per SD, p 0.0028; not confirmed).
 - Pass-choice value: results/35 (+0.0747, Holm 0.0087); results/37
   holdout (+0.0780 [0.0237, 0.1322], p 0.0048); forwards: results/41;
   DM null: results/35, 37.
 - Robustness of C6 by subset and whole-possession xG (+0.0386, p 0.019, reserved, all players): results/50.
-- Kroos M4_ACCEL rank 103/141 (bottom 27%); Marchisio M4_SWITCH 5/141 and M2 5/141 (top 4%): results/53 Step 4.
 - Availability sample: PFF WC2022, 64 matches (results/38).
 - Coordinate audit: results/24 (80/156 vs 76/156 team-periods flipped);
   engine v1 xG -0.138 vs v5 +0.249 (same-match test, results/25).
 
 ## Open items before submission
 1. Figure 1 from Task 54.
-2. The quick-and-safe Busquets claim uses the 2015/16 replication-league
-   DM table; if Figure 1 uses a different group, update the percentile.
+2. Percentiles now come from Card A (185 DMs), the same group as Figure 1.
 3. PFF-derived numbers (availability) appear in the abstract: author to
    confirm PFF's terms allow this before submission.
-4. Word count: body 492 words (title excluded; 504 with the title). If SSAC counts the title, trim 5+ words.
+4. Word count: body 495 words (title excluded; 507 with the title). If SSAC counts the title, trim 8+ words.
 5. Repo URL after it goes public.
