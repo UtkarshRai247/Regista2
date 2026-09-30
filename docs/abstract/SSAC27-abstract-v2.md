@@ -10,56 +10,55 @@ Limit: 500 words for the body; up to two tables/figures.
 ## The Regista's Trade-off: Measuring Tempo and Press Resistance in Elite Deep Midfielders
 
 Deep-lying playmakers are judged by the eye test: they "dictate the
-tempo" and "never lose the ball." We ask which of these qualities can be
-measured reliably from free data, whether they belong to the player
-rather than his team, and whether they matter for results. Using nearly
-4,000 StatsBomb open-data matches (men's and women's, club and
-international) plus PFF broadcast tracking of the 2022 World Cup, we
-built candidate measures, pre-registered every test, and judged each
-only on data held back from its development.
+tempo" and "never lose the ball." These qualities are easy to see and
+hard to count, and a count means little unless it describes the player
+rather than his team. We turn both into measures from free data and show
+that they are stable within deep midfielders, that they help a team move
+the ball up the pitch, and that press resistance follows the player from
+club to country.
 
-Two traits pass. Press resistance, keeping the ball after receiving it
-under pressure relative to what is typical for the situation, is stable
-within deep midfielders (split-half reliability 0.67-0.70), travels
-with the player between club and national team (disattenuated r = 0.65,
-127 players), and predicts his team reaching the final third relative
-to teammates in the same match (+1.3 percentage points per SD,
-p < 10^-16) on 1,985 matches untouched during development. The effect
-holds in men's and women's matches, in club and international football,
-and without Barcelona. Keeping the ball does not cost chances:
-possessions run longer, and expected goals over the whole possession
-rise slightly (p = 0.019).
+We use nearly 4,000 StatsBomb open-data matches, men's and women's, club
+and international, plus PFF broadcast tracking of the 2022 World Cup.
+Every measure compares what a player did with what is typical in the
+same situation, predicted from location, pressure, score and type of
+play by models trained on other matches. Press resistance asks whether
+he keeps the ball after receiving it under pressure. Tempo choices ask
+how often he speeds play up with a forward or through pass, slows it
+down by recycling, or switches play, and how often he releases the ball
+quickly and safely when pressed. A pass-value engine scores about 420
+possible destinations per pass. The tests are what is new. Each was pre-
+registered; results are measured against a player's teammates in the
+same match, using his scores from other matches; club and international
+appearances separate player from team; and every headline result was
+confirmed on data held back from development.
 
-Tempo choices, how often a player speeds play up with a forward or
-through pass, slows it down by recycling, or switches play, are among
-the most stable traits we measured (0.83-0.90 within deep midfielders).
-On 1,137 held-back matches they predict progression for all players
-(speeding up +0.63 points, recycling -0.62, switching +0.37; all
+Press resistance is stable within deep midfielders (split-half
+reliability 0.67-0.70) and follows the player between club and national
+team (disattenuated r = 0.65, 127 players). On 1,985 untouched matches,
+a player one standard deviation more press-resistant sees his pressured
+receptions lead to the final third 1.3 percentage points more often than
+his teammates' (p < 10^-16).
+
+Tempo choices are among the most stable traits we measured (0.83-0.90
+within deep midfielders). On 1,137 held-back matches, players who speed
+play up or switch it more often help their teams progress (+0.63 and
++0.37 points), and those who recycle more often slow it (-0.62; all
 Holm-adjusted p < 10^-5). For deep midfielders, switching adds to press
-resistance (+0.74 points, p < 10^-4), and the two trade off: 6s who
-accelerate more often are less press-resistant (r = -0.29). Elite
-registas sit at different points on this trade-off. Among 185 deep
+resistance (+0.74 points, p < 10^-4), while speeding up trades off
+against it: 6s who accelerate more often are less press-resistant (r =
+-0.29). Elite registas sit at different points on it. Among 185 deep
 midfielders, Busquets and Kroos are both in the top 2% for press
-resistance. Busquets rarely speeds play up (bottom 8%) but releases
-quickly and safely under pressure (top 7%); Kroos is a switcher (top 5%)
-who seldom accelerates (bottom 30%).
+resistance; Busquets rarely speeds play up (bottom 8%) but releases
+quickly and safely under pressure (top 7%), while Kroos is a switcher
+(top 5%) who seldom accelerates (bottom 30%).
 
-Two popular ideas fail. Being "always available", open to receive at a
-teammate's pass, is stable but linked to fewer chances in 64 tracked
-World Cup matches (exploratory). Pass-choice value, the value of the
-chosen option minus a typical choice, is a skill that shows up in a
-player's other matches, with team, opponent and position held fixed
-(+0.075 xG per 100 passes per SD, replicated on 126 unseen matches), but
-it is driven by forwards and does not separate deep midfielders.
-
-An audit also found that a coordinate-normalisation step had reversed
-the attacking direction for about half of all events and, uncorrected,
-produced the opposite finding. Every failed test is published with the
-code. We release a scorecard for every deep midfielder, with
-uncertainty intervals and an evidence tier for each dimension. The
-tiers separate traits confirmed for deep midfielders, traits confirmed
-for all players, and style measures that describe a player's type
-rather than his quality (Figure 1).
+Pass-choice value is a skill measured in a player's other matches and
+replicated on 126 unseen matches (+0.075 xG per 100 passes per SD), but
+it mainly separates forwards. Being "always available" is stable but
+goes with fewer chances in tracked World Cup matches (exploratory). We
+release a scorecard for every deep midfielder, with uncertainty
+intervals and an evidence tier for each dimension (Figure 1); code and
+pre-registrations are public.
 
 ---
 
@@ -109,7 +108,6 @@ evidence tiers for the rule-selected players.]
 ## Open items before submission
 1. Figure 1 from Task 54.
 2. Percentiles now come from Card A (185 DMs), the same group as Figure 1.
-3. PFF-derived numbers (availability) appear in the abstract: author to
-   confirm PFF's terms allow this before submission.
-4. Word count: body 495 words (title excluded; 507 with the title). If SSAC counts the title, trim 8+ words.
+3. PFF-derived result (availability) kept in the abstract per D-018 (author, option a).
+4. Word count: body 495 words (title excluded; 507 with the title).
 5. Repo URL after it goes public.
