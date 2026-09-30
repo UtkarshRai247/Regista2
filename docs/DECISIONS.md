@@ -205,3 +205,23 @@ URLs). None is raw StatsBomb or PFF data. PFF's own published
 organisational addresses (fchelp@pff.com, gradientsports.archive@pff.com)
 stay in the docs.
 Reversible? Yes, until the repository is made public.
+
+## D-018 — PFF-derived results are published (not the data); reverses D-005's exclusion
+Date: 2026-09-29
+Decision: (author, option (a), recorded by the research lead) Results
+derived from the PFF FC / Gradient Sports World Cup 2022 dataset
+(availability, the PFF vs StatsBomb press-resistance cross-check, the
+Task 36 ingest audit, and the scorecard's AV column) may appear in the
+repository, the abstract and the paper, credited to PFF FC / Gradient
+Sports. No raw PFF file is committed or redistributed. This reverses
+D-005's "no PFF-derived number appears in the abstract, paper, or repo".
+Basis: PFF released the dataset free for public analysis; no written
+terms on publishing derived results were found and PFF's reply to the
+author's email is still outstanding. If PFF objects, the PFF-derived
+sentence and files are removed and the public scorecard variant
+(index_public.html) is used.
+Also recorded: the off-ball availability extension cut by D-002 was
+built later (Task 38), and women's data were used for non-market
+analyses (holdout, Tasks 26 and 37; reserved data, Task 48), as D-007
+allows.
+Reversible? Yes, until the repository is made public.

@@ -89,3 +89,15 @@ that stop being used, note that instead.
 - These files live in the separate Regista 1 repo
   (`/Users/utkarshrai/Desktop/Regista`), not copied into Regista 2. Nothing
   from Regista 1's `/data` has been added to this repo or to git.
+
+## Update 2026-09-29 (research lead)
+- PFF: the author decided (D-018) to publish PFF-derived RESULTS with
+  credit to PFF FC / Gradient Sports; no raw PFF data is committed.
+  PFF's reply on terms is still outstanding.
+- Also downloaded since this file was written, all StatsBomb open data
+  under the same StatsBomb terms: the women's holdout (data/raw_holdout/,
+  Women's Euro 2022, WWC 2023, Women's Euro 2025), the 2015/16 big-five
+  leagues and the rest of the open-data release
+  (data/raw_1516/open-data-master/), used in Tasks 44-53. None is
+  committed.
+- Full PFF WC2022 download: data/raw_pff/ (Task 36), not committed.
