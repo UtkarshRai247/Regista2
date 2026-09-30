@@ -90,3 +90,23 @@ B6. Report the exact command the author runs to make the repo public,
 
 ## Output
 docs/results/54-scorecard-v2-and-repo-prep.md (template). Commit per rule 9.
+
+## Resolution of the B1 stop (research lead, 2026-09-29) — continue the task
+The five tracked files under data/ were inspected and are FINE TO
+PUBLISH. Keep them tracked and keep the .gitignore whitelist:
+- data/splits/match_split.csv, data/splits/cv_folds.csv: match ids and
+  split/fold labels only; needed to reproduce the preregistered splits.
+- data/processed/player_season_metrics.parquet: engine v1 player-season
+  metrics, WITHDRAWN (D-015). Kept as the historical record behind the
+  early results pages. The README (B3) must say so plainly: "engine v1,
+  withdrawn; do not use".
+- data/processed/worked_example.csv: seven rows illustrating one pass.
+- data/expert_lists/selections.csv: published media selections with
+  source URLs (public facts, attributed).
+None is raw StatsBomb or PFF data. Record this decision in the results
+page.
+PFF contact addresses (fchelp@pff.com, gradientsports.archive@pff.com)
+are PFF's own published organisational addresses, not personal ones:
+leave them in the docs.
+Now run Part A and B2-B6 exactly as written. B1 is resolved; do not
+re-run it.
